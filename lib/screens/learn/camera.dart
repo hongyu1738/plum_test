@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -19,27 +20,106 @@ class _CameraState extends State<Camera> {
   //Function to get image from Camera
   Future getImageFromCamera() async{
     //Access camera and get image from camera
-    final image = await imagePicker.getImage(source: ImageSource.camera, maxHeight: 480, maxWidth: 600);
+    final image = await imagePicker.getImage(source: ImageSource.camera);
     setState(() {
       //Assign image to image file
       _image = File(image.path);
     });
   }
 
+  Future getImageFromGallery() async{
+    //Access camera and get image from camera
+    final image = await imagePicker.getImage(source: ImageSource.gallery);
+    setState(() {
+      //Assign image to image file
+      _image = File(image.path);
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _image == null ? Text('Tap on the Camera to take a picture') : Image.file(_image),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: getImageFromCamera,
-        backgroundColor: Colors.black,
-        child: Icon(
-          Icons.camera_alt,
-          color: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.orange[400],
+        centerTitle: true,
+        title: Text('Learn'),
+        titleTextStyle: TextStyle(
+          fontSize: 24.0,
         ),
+      ),
+      body: Center(
+        child: _image == null ? Text('Tap on the Camera to take a picture') : Image.file(_image, height: 440),
+      ),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(size: 30),
+        backgroundColor: Colors.orange[400],
+        visible: true,
+        curve: Curves.bounceIn,
+        spaceBetweenChildren: 10.0,
+        children: [
+          SpeedDialChild(
+              child: Icon(Icons.camera_alt),
+              backgroundColor: Colors.white,
+              onTap: getImageFromCamera,
+              label: 'Camera',
+              labelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 20.0),
+              labelBackgroundColor: Colors.orange[400]
+          ),
+
+          SpeedDialChild(
+              child: Icon(Icons.photo),
+              backgroundColor: Colors.white,
+              onTap: getImageFromGallery,
+              label: 'Gallery',
+              labelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 20.0),
+              labelBackgroundColor: Colors.orange[400]
+          ),
+        ],
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return SpeedDial(
+  //     animatedIcon: AnimatedIcons.menu_close,
+  //     animatedIconTheme: IconThemeData(size: 22),
+  //     backgroundColor: Colors.purple[800],
+  //     visible: true,
+  //     curve: Curves.bounceIn,
+  //     children: [
+  //       SpeedDialChild(
+  //         child: Icon(Icons.camera_alt),
+  //         backgroundColor: Colors.white,
+  //         onTap: getImageFromCamera,
+  //         label: 'Camera',
+  //         labelStyle: TextStyle(
+  //           fontWeight: FontWeight.w500,
+  //           color: Colors.white,
+  //           fontSize: 16.0),
+  //         labelBackgroundColor: Colors.purple[800]
+  //       ),
+  //
+  //       SpeedDialChild(
+  //           child: Icon(Icons.photo),
+  //           backgroundColor: Colors.white,
+  //           onTap: getImageFromGallery,
+  //           label: 'Gallery',
+  //           labelStyle: TextStyle(
+  //               fontWeight: FontWeight.w500,
+  //               color: Colors.white,
+  //               fontSize: 16.0),
+  //           labelBackgroundColor: Colors.purple[800]
+  //       ),
+  //     ],
+  //   );
+  // }
 }
