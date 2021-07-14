@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "990906294550",
+    "project_id": "plum-test-c7836",
+    "storage_bucket": "plum-test-c7836.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990906294550:android:f1a43ae240b7fb184e3037",
+        "android_client_info": {
+          "package_name": "com.example.plum_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990906294550-sdjmqpav3qmvjnvnq8h3ovuh4oh3vtmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHt_b2Fb6zj76y6g72hKF78JejtydQGGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990906294550-sdjmqpav3qmvjnvnq8h3ovuh4oh3vtmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
