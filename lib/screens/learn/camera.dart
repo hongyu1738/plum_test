@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Camera extends StatefulWidget {
 
@@ -22,17 +25,26 @@ class _CameraState extends State<Camera> {
     //Access camera and get image from camera
     final image = await imagePicker.getImage(source: ImageSource.camera);
     setState(() {
-      //Assign image to image file
-      _image = File(image.path);
+      //Assign image to image file if image is taken
+      if (image == null){
+        _image = null;
+      } else {
+        _image = File(image.path);
+        GallerySaver.saveImage(image.path); // Save image to gallery
+      }
     });
   }
 
   Future getImageFromGallery() async{
-    //Access camera and get image from camera
+    //Access gallery and get image from gallery
     final image = await imagePicker.getImage(source: ImageSource.gallery);
     setState(() {
-      //Assign image to image file
-      _image = File(image.path);
+      //Assign image to image file if image is selected
+      if (image == null){
+        _image = null;
+      } else {
+        _image = File(image.path);
+      }
     });
   }
 
