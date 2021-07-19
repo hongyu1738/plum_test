@@ -22,6 +22,22 @@ class Home extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     textStyle: TextStyle(fontSize: 20),
                 )
+              ),
+
+              SizedBox(height: 20),
+
+              ElevatedButton.icon(
+                  onPressed: (){
+                    Navigator.pushNamed(context, '/settings');
+                  },
+                  icon: Icon(Icons.settings),
+                  label: Text('Settings'),
+                style: ElevatedButton.styleFrom(
+                  // background color
+                    primary: Colors.orange,
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: TextStyle(fontSize: 20),
+                )
               )
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/screens/learn/camera.dart';
+import 'package:plum_test/screens/settings/settings.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       home: Home(),
       routes: {
         '/camera' : (context) => Camera(),
+        '/settings' : (context) => Settings()
       },
     );
   }
