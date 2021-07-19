@@ -60,19 +60,8 @@ class _CameraState extends State<Camera> {
           fontSize: 24.0,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 0),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            child: _image == null ? Text('Select an image from the right bottom corner', 
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18)
-              ) 
-              : Image.file(_image, height: 350),
-          ),
-        ),
+      body: Center(
+        child: _image == null ? Text('Tap on the Camera to take a picture') : Image.file(_image, height: 440),
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
