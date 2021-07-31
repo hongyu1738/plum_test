@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:permission_handler/permission_handler.dart';
+//import 'package:permission_handler/permission_handler.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:path_provider/path_provider.dart';
+//import 'package:path_provider/path_provider.dart';
+//import 'package:meta/meta.dart';
+import 'package:tflite/tflite.dart';
 
 class Camera extends StatefulWidget {
 
@@ -20,6 +22,15 @@ class _CameraState extends State<Camera> {
   //Instantiate image object
   final imagePicker = ImagePicker();
 
+  //List to store results from model
+  List _result;
+
+  //String to indicate confidence level of the image
+  String _confidence;
+
+  //String to indicate class label of the image
+  String _label;
+
   //Function to get image from Camera
   Future getImageFromCamera() async{
     //Access camera and get image from camera
@@ -30,11 +41,13 @@ class _CameraState extends State<Camera> {
         _image = null;
       } else {
         _image = File(image.path);
+        runModel(_image); //Classify image from camera
         GallerySaver.saveImage(image.path); // Save image to gallery
       }
     });
   }
 
+  //Function to get image from gallery
   Future getImageFromGallery() async{
     //Access gallery and get image from gallery
     final image = await imagePicker.getImage(source: ImageSource.gallery);
@@ -44,10 +57,48 @@ class _CameraState extends State<Camera> {
         _image = null;
       } else {
         _image = File(image.path);
+        runModel(_image); //Classify image from gallery
       }
     });
   }
 
+  //Function for default loading of image classification model
+  loadModel() async {
+    var loadModelResult = await Tflite.loadModel(
+      labels: "assets/labels.txt",
+      model: "assets/model_unquant.tflite"
+    );
+
+    print("Result: $loadModelResult");
+  }
+
+  //Run image classification model for image selected
+  runModel(File file) async {
+    var runModelResult = await Tflite.runModelOnImage(
+      path: file.path,
+      numResults: 50,
+      threshold: 0.5,
+      imageMean: 127.5,
+      imageStd: 127.5,
+    );
+
+    setState(() {
+      _result = runModelResult; //Assign results to _result list variable
+
+      String labels = _result[0]["label"]; //Assign class labels to labels variable
+      _label = labels.substring(2); //Assign class labels to _label variable
+
+      _confidence = _result != null ? (_result[0]["confidence"] * 100.0).toString().substring(0,3) + "%" 
+      : "No result for image."; //Display condidence level between class labels and image
+
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadModel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,20 +111,96 @@ class _CameraState extends State<Camera> {
           fontSize: 24.0,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 0),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            child: _image == null ? Text('Select an image from the right bottom corner', 
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18)
-              ) 
-              : Image.file(_image, height: 350),
-          ),
-        ),
+
+      body: Container(
+        child: Column(
+          children: [
+
+            SizedBox(height: 30), //Spacing
+            
+            _image == null ? Center(
+              child: Container(
+                height: 300,
+                width: 300,
+                child: Text('Select an image from the right bottom corner', //Text if no image is selected
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18
+                  ),
+                ),
+              ),
+            )
+
+            : Column(
+              children: [
+
+                Center(
+                  child: Container(
+                    height: 350,
+                    width: 350,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: FileImage(_image), //Load image if image is selected
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 30),
+
+                Text(
+                  "Name: $_label \nConfidence: $_confidence", //Display class labels and confidence level for the image
+                  style: TextStyle(
+                    fontSize: 18
+                  ),
+                ),
+              ],
+            ),
+
+            //SizedBox(height: 30.0),
+
+            // Text(
+            //   "Name: $_label \nConfidence: $_confidence",
+            //   style: TextStyle(
+            //     fontSize: 18
+            //   ),
+            // ),
+
+          ],
+        )
       ),
+      
+      // body: Padding(
+      //   padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 0),
+      //   child: Align(
+      //     alignment: Alignment.topCenter,
+      //     child: Container(
+      //       child: _image == null ? Center(
+      //         child: Container(
+      //           height: 350,
+      //           width: 350,
+      //           child: Text('Select an image from the right bottom corner', 
+      //             textAlign: TextAlign.center,
+      //             style: TextStyle(
+      //             fontSize: 18)
+      //             ) ,
+      //           )
+      //         )
+      //         : Center(child: Container(
+      //           height: 350,
+      //           width: 350,
+      //           decoration: BoxDecoration(image: DecorationImage(
+      //             image: FileImage(_image),
+      //             fit: BoxFit.contain,
+      //               )
+      //             ),
+      //           )
+      //         )
+      //     ),
+      //   ),
+      // ),
+
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         animatedIconTheme: IconThemeData(size: 30),
