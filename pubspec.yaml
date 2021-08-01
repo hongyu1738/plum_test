@@ -37,6 +37,7 @@ dependencies:
   gallery_saver: ^2.1.2
   tflite: ^1.1.2
   meta: ^1.1.8
+  flutter_tts: ^3.2.2
 
 dev_dependencies:
   flutter_test:

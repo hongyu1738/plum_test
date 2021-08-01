@@ -7,6 +7,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 //import 'package:path_provider/path_provider.dart';
 //import 'package:meta/meta.dart';
 import 'package:tflite/tflite.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class Camera extends StatefulWidget {
 
@@ -30,6 +31,8 @@ class _CameraState extends State<Camera> {
 
   //String to indicate class label of the image
   String _label;
+
+  final FlutterTts flutterTts = FlutterTts();
 
   //Function to get image from Camera
   Future getImageFromCamera() async{
@@ -94,6 +97,10 @@ class _CameraState extends State<Camera> {
     });
   }
 
+  getSpeech() async {
+      await flutterTts.speak(_label);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -116,22 +123,30 @@ class _CameraState extends State<Camera> {
         child: Column(
           children: [
 
-            SizedBox(height: 30), //Spacing
+            //SizedBox(height: 30), //Spacing
             
-            _image == null ? Center(
-              child: Container(
-                height: 300,
-                width: 300,
-                child: Text('Select an image from the right bottom corner', //Text if no image is selected
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18
+            _image == null ? Column(
+              
+              children: [
+
+                SizedBox(height: 200),
+
+                Center(
+                  child: Container(
+                    height: 300,
+                    width: 300,
+                    child: Text('Select an image from the right bottom corner', //Text if no image is selected
+                    textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 24),
+                    ),
                   ),
                 ),
-              ),
+
+              ],
             )
 
             : Column(
+              
               children: [
 
                 Center(
@@ -147,13 +162,52 @@ class _CameraState extends State<Camera> {
                   ),
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 40),
 
-                Text(
-                  "Name: $_label \nConfidence: $_confidence", //Display class labels and confidence level for the image
-                  style: TextStyle(
-                    fontSize: 18
-                  ),
+                Row(
+                  children: [
+
+                    Spacer(),
+
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: Text("$_label",
+                          style: TextStyle(
+                            fontSize: 30
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        onPressed: getSpeech,
+                        icon: Icon(Icons.volume_up_rounded),
+                        color: Colors.grey[800],
+                        iconSize: 40,
+                        tooltip: "Press for pronounciation",
+                      ),
+                    ),
+
+                    Spacer(),
+
+
+                    // Expanded(
+                    //   child: ListTile(
+                    //     onTap: getSpeech,
+                    //     trailing: Icon(Icons.volume_up_rounded),
+                    //     title: Center(
+                    //       child: Text("$_label",
+                    //       style: TextStyle(
+                    //         fontSize: 24
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
                 ),
               ],
             ),
@@ -168,7 +222,7 @@ class _CameraState extends State<Camera> {
             // ),
 
           ],
-        )
+        ),
       ),
       
       // body: Padding(
@@ -272,4 +326,5 @@ class _CameraState extends State<Camera> {
   //     ],
   //   );
   // }
+
 }
