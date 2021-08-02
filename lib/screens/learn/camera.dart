@@ -1,9 +1,10 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-//import 'package:permission_handler/permission_handler.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 //import 'package:path_provider/path_provider.dart';
 //import 'package:meta/meta.dart';
 import 'package:tflite/tflite.dart';
@@ -17,52 +18,85 @@ class Camera extends StatefulWidget {
 
 class _CameraState extends State<Camera> {
 
-  //Create an image object
-  File _image;
-
   //Instantiate image object
   final imagePicker = ImagePicker();
+
+  //Instantiate classification model
+  final FlutterTts flutterTts = FlutterTts();
+
+  final _storage = FirebaseStorage.instance;
+
+  //Create an image object
+  File _image;
 
   //List to store results from model
   List _result;
 
-  //String to indicate confidence level of the image
-  String _confidence;
-
   //String to indicate class label of the image
   String _label;
 
-  final FlutterTts flutterTts = FlutterTts();
-
   //Function to get image from Camera
   Future getImageFromCamera() async{
-    //Access camera and get image from camera
-    final image = await imagePicker.getImage(source: ImageSource.camera);
-    setState(() {
+    
+    //Get permission for Camera
+    await Permission.camera.request();
+
+    var cameraPermissionStatus = await Permission.camera.status;
+
+    if (cameraPermissionStatus.isGranted){
+
+      //Access camera and get image from camera
+      final image = await imagePicker.getImage(source: ImageSource.camera);
+
       //Assign image to image file if image is taken
-      if (image == null){
-        _image = null;
-      } else {
+      if (image != null){
+
         _image = File(image.path);
-        runModel(_image); //Classify image from camera
+
+        await runModel(_image); //Classify image from camera
+
         GallerySaver.saveImage(image.path); // Save image to gallery
+
+        _storage.ref().child("$_label").child(image.path).putFile(_image);
+
+      } else {
+        _image = null;
       }
-    });
+
+    } else {
+      print ("Camera permission not granted. Please try again.");
+    }
   }
 
   //Function to get image from gallery
   Future getImageFromGallery() async{
-    //Access gallery and get image from gallery
-    final image = await imagePicker.getImage(source: ImageSource.gallery);
-    setState(() {
+
+    //Get permission for Gallery
+    await Permission.storage.request();
+
+    var photoPermissionStatus = await Permission.storage.status;
+
+    if (photoPermissionStatus.isGranted){
+
+      //Access gallery and get image from gallery
+      final image = await imagePicker.getImage(source: ImageSource.gallery);
+
       //Assign image to image file if image is selected
-      if (image == null){
-        _image = null;
-      } else {
+      if (image != null){
+
         _image = File(image.path);
-        runModel(_image); //Classify image from gallery
+
+        await runModel(_image); //Classify image from gallery
+
+        _storage.ref().child("$_label").child(image.path).putFile(_image);
+
+      } else {
+        _image = null;
       }
-    });
+
+    } else {
+      print("Gallery permission not granted. Please try again.");
+    }
   }
 
   //Function for default loading of image classification model
@@ -90,9 +124,6 @@ class _CameraState extends State<Camera> {
 
       String labels = _result[0]["label"]; //Assign class labels to labels variable
       _label = labels.substring(2); //Assign class labels to _label variable
-
-      _confidence = _result != null ? (_result[0]["confidence"] * 100.0).toString().substring(0,3) + "%" 
-      : "No result for image."; //Display condidence level between class labels and image
 
     });
   }
@@ -122,11 +153,7 @@ class _CameraState extends State<Camera> {
       body: Container(
         child: Column(
           children: [
-
-            //SizedBox(height: 30), //Spacing
-            
             _image == null ? Column(
-              
               children: [
 
                 SizedBox(height: 200),
@@ -148,6 +175,8 @@ class _CameraState extends State<Camera> {
             : Column(
               
               children: [
+
+                SizedBox(height: 30),
 
                 Center(
                   child: Container(
@@ -192,35 +221,10 @@ class _CameraState extends State<Camera> {
                     ),
 
                     Spacer(),
-
-
-                    // Expanded(
-                    //   child: ListTile(
-                    //     onTap: getSpeech,
-                    //     trailing: Icon(Icons.volume_up_rounded),
-                    //     title: Center(
-                    //       child: Text("$_label",
-                    //       style: TextStyle(
-                    //         fontSize: 24
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ],
             ),
-
-            //SizedBox(height: 30.0),
-
-            // Text(
-            //   "Name: $_label \nConfidence: $_confidence",
-            //   style: TextStyle(
-            //     fontSize: 18
-            //   ),
-            // ),
-
           ],
         ),
       ),
