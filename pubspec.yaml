@@ -38,6 +38,7 @@ dependencies:
   tflite: ^1.1.2
   meta: ^1.1.8
   flutter_tts: ^3.2.2
+  firebase_core: ^1.4.0
 
 dev_dependencies:
   flutter_test:
