@@ -24,6 +24,7 @@ class _CameraState extends State<Camera> {
   //Instantiate classification model
   final FlutterTts flutterTts = FlutterTts();
 
+  //Instantiate Firebase Storage
   final _storage = FirebaseStorage.instance;
 
   //Create an image object
@@ -40,9 +41,11 @@ class _CameraState extends State<Camera> {
     
     //Get permission for Camera
     await Permission.camera.request();
-
+    
+    //Assign permission status to variable
     var cameraPermissionStatus = await Permission.camera.status;
 
+    //Execute code for image accessibility from camera on permission granted
     if (cameraPermissionStatus.isGranted){
 
       //Access camera and get image from camera
@@ -55,9 +58,10 @@ class _CameraState extends State<Camera> {
 
         await runModel(_image); //Classify image from camera
 
-        GallerySaver.saveImage(image.path); // Save image to gallery
+        GallerySaver.saveImage(image.path); //Save image to gallery
 
-        _storage.ref().child("$_label").child(image.path).putFile(_image);
+        _storage.ref().child("$_label").child(image.path).putFile(_image); 
+        //Save image to Cloud Storage with class label and image path
 
       } else {
         _image = null;
@@ -74,8 +78,10 @@ class _CameraState extends State<Camera> {
     //Get permission for Gallery
     await Permission.storage.request();
 
+    //Assign permission status to variable
     var photoPermissionStatus = await Permission.storage.status;
 
+    //Execute code for image accessibility from camera on permission granted
     if (photoPermissionStatus.isGranted){
 
       //Access gallery and get image from gallery
@@ -89,6 +95,7 @@ class _CameraState extends State<Camera> {
         await runModel(_image); //Classify image from gallery
 
         _storage.ref().child("$_label").child(image.path).putFile(_image);
+        //Save image to Cloud Storage with class label and image path
 
       } else {
         _image = null;
@@ -101,6 +108,7 @@ class _CameraState extends State<Camera> {
 
   //Function for default loading of image classification model
   loadModel() async {
+
     var loadModelResult = await Tflite.loadModel(
       labels: "assets/labels.txt",
       model: "assets/model_unquant.tflite"
@@ -111,7 +119,10 @@ class _CameraState extends State<Camera> {
 
   //Run image classification model for image selected
   runModel(File file) async {
-    var runModelResult = await Tflite.runModelOnImage(
+
+    var runModelResult = await Tflite.runModelOnImage( 
+
+      //Customization for display on threshold and number of results
       path: file.path,
       numResults: 50,
       threshold: 0.5,
@@ -128,12 +139,12 @@ class _CameraState extends State<Camera> {
     });
   }
 
-  getSpeech() async {
+  getSpeech() async { //Function for text to speech without customization
       await flutterTts.speak(_label);
   }
 
   @override
-  void initState() {
+  void initState() { //Load image classification model on screen initialization
     super.initState();
     loadModel();
   }
@@ -151,9 +162,13 @@ class _CameraState extends State<Camera> {
       ),
 
       body: Container(
+
         child: Column(
+
           children: [
+
             _image == null ? Column(
+              
               children: [
 
                 SizedBox(height: 200),
