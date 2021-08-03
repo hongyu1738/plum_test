@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/screens/learn/camera.dart';
+import 'package:plum_test/screens/revision/revision.dart';
 import 'package:plum_test/screens/settings/settings.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
       home: Home(),
       routes: {
         '/camera' : (context) => Camera(),
-        '/settings' : (context) => Settings()
+        '/settings' : (context) => Settings(),
+        '/revision' : (context) => Revision(),
       },
     );
   }

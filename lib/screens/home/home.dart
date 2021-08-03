@@ -28,6 +28,22 @@ class Home extends StatelessWidget {
 
               ElevatedButton.icon(
                   onPressed: (){
+                    Navigator.pushNamed(context, '/revision');
+                  },
+                  icon: Icon(Icons.photo_album_rounded),
+                  label: Text('Revision'),
+                style: ElevatedButton.styleFrom(
+                  // background color
+                    primary: Colors.orange,
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: TextStyle(fontSize: 20),
+                )
+              ),
+
+              SizedBox(height: 20),
+
+              ElevatedButton.icon(
+                  onPressed: (){
                     Navigator.pushNamed(context, '/settings');
                   },
                   icon: Icon(Icons.settings),
@@ -38,7 +54,7 @@ class Home extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     textStyle: TextStyle(fontSize: 20),
                 )
-              )
+              ),
             ],
           ),
         ),

@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -19,13 +22,13 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera> {
 
   //Instantiate image object
-  final imagePicker = ImagePicker();
+  final ImagePicker imagePicker = ImagePicker();
 
   //Instantiate classification model
   final FlutterTts flutterTts = FlutterTts();
 
   //Instantiate Firebase Storage
-  final _storage = FirebaseStorage.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   //Create an image object
   File _image;
@@ -35,6 +38,13 @@ class _CameraState extends State<Camera> {
 
   //String to indicate class label of the image
   String _label;
+
+  //Load image classification model on screen initialization
+  @override
+  void initState() { 
+    super.initState();
+    loadModel();
+  }
 
   //Function to get image from Camera
   Future getImageFromCamera() async{
@@ -60,8 +70,7 @@ class _CameraState extends State<Camera> {
 
         GallerySaver.saveImage(image.path); //Save image to gallery
 
-        _storage.ref().child("$_label").child(image.path).putFile(_image); 
-        //Save image to Cloud Storage with class label and image path
+        addImageToStorage(_image);
 
       } else {
         _image = null;
@@ -94,8 +103,7 @@ class _CameraState extends State<Camera> {
 
         await runModel(_image); //Classify image from gallery
 
-        _storage.ref().child("$_label").child(image.path).putFile(_image);
-        //Save image to Cloud Storage with class label and image path
+        addImageToStorage(_image);
 
       } else {
         _image = null;
@@ -104,6 +112,34 @@ class _CameraState extends State<Camera> {
     } else {
       print("Gallery permission not granted. Please try again.");
     }
+  }
+
+  //Function to upload images to Cloud Storage
+  Future addImageToStorage(File image) async {
+
+    //Random number to distinguish images
+    int randomNumber = Random().nextInt(1000);
+
+    //Set image path in Cloud Storage
+    String imageLocation = "$_label/$randomNumber.jpg";
+
+    //Upload images to Cloud Storage
+    await _storage.ref().child(imageLocation).putFile(image);
+
+    addLocationToDatabase(imageLocation, randomNumber);
+  }
+
+  //Function to upload download URL of images to Cloud Firestore
+  Future addLocationToDatabase(String location, int number) async {
+
+    //Acquire storage reference of images through image path
+    final ref = _storage.ref().child(location);
+
+    //Acquire download URL of images through storage reference
+    var locationString = await ref.getDownloadURL();
+
+    //Upload download URL of images to Cloud Firestore
+    await FirebaseFirestore.instance.collection("$_label").doc(number.toString()).set({'url' : locationString});
   }
 
   //Function for default loading of image classification model
@@ -143,11 +179,6 @@ class _CameraState extends State<Camera> {
       await flutterTts.speak(_label);
   }
 
-  @override
-  void initState() { //Load image classification model on screen initialization
-    super.initState();
-    loadModel();
-  }
 
   @override
   Widget build(BuildContext context) {
