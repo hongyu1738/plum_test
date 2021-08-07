@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:plum_test/models/image.dart';
 import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/screens/learn/camera.dart';
 import 'package:plum_test/screens/revision/revision.dart';
 import 'package:plum_test/screens/settings/settings.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +22,12 @@ class MyApp extends StatelessWidget {
       routes: {
         '/camera' : (context) => Camera(),
         '/settings' : (context) => Settings(),
-        '/revision' : (context) => Revision(),
+        '/revision' : (context) => ChangeNotifierProvider(
+          create: (context) => ImageData(),
+          builder: (context, child){
+            return Revision();
+          }
+        ),
       },
     );
   }

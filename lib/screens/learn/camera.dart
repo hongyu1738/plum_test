@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -11,6 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 //import 'package:meta/meta.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:toast/toast.dart';
 
 class Camera extends StatefulWidget {
 
@@ -74,10 +75,12 @@ class _CameraState extends State<Camera> {
       } else {
         _image = null;
         //print("No image");
+        Toast.show("No image taken. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
 
     } else {
-      print ("Camera permission not granted. Please try again.");
+      //print ("Camera permission not granted. Please try again.");
+      Toast.show("Camera permission not granted. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
 
@@ -108,10 +111,12 @@ class _CameraState extends State<Camera> {
       } else {
         _image = null;
         //print("No image");
+        Toast.show("No image selected. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
 
     } else {
-      print("Gallery permission not granted. Please try again.");
+      //print("Gallery permission not granted. Please try again.");
+      Toast.show("Gallery permission not granted. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
 
@@ -140,14 +145,28 @@ class _CameraState extends State<Camera> {
 
     List labelList = [];
 
+    List urlList = [];
+
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection("Images").get();
 
-    int imageSnapshotSize = imageSnapshot.size;
+    for (var doc in imageSnapshot.docs){
+      Map<String, dynamic> urlMap = doc.data();
+      String url = urlMap['url'].toString();
+      urlList.add(url);
+    }
 
-    //Upload download URL of images to Cloud Firestore
-    //await FirebaseFirestore.instance.collection("$_label").doc("$imagePath").set({'url' : locationString, 'label' : _label});
+    if (urlList.contains(locationString)){
+      Toast.show("The image already exists.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      //print("URL exists.");
+    } else {
 
-    await FirebaseFirestore.instance.collection("Images").doc(imageSnapshotSize.toString()).set({ 'url' : locationString, 'label' : _label});
+      //Upload download URL of images to Cloud Firestore
+      //await FirebaseFirestore.instance.collection("$_label").doc("$imagePath").set({'url' : locationString, 'label' : _label});
+
+      int imageSnapshotSize = imageSnapshot.size;
+      await FirebaseFirestore.instance.collection("Images").doc(imageSnapshotSize.toString()).set({ 'url' : locationString, 'label' : _label});
+    }
+
 
     QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection("Class").get();
 
@@ -159,6 +178,7 @@ class _CameraState extends State<Camera> {
 
     if (labelList.contains('$_label')){
       print("Element exists");
+      //Toast.show("No image selected", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     } else {
       int classSnapshotSize = classSnapshot.size;
       await FirebaseFirestore.instance.collection("Class").doc(classSnapshotSize.toString()).set({'label' : _label});
@@ -208,10 +228,16 @@ class _CameraState extends State<Camera> {
       appBar: AppBar(
         backgroundColor: Colors.orange[400],
         centerTitle: true,
-        title: Text('Learn'),
-        titleTextStyle: TextStyle(
-          fontSize: 24.0,
-        ),
+        title: Text('Learn',
+        style: GoogleFonts.lato(
+          //textStyle: Theme.of(context).textTheme.headline4,
+          fontSize: 26,
+          fontWeight: FontWeight.w500,
+          fontStyle: FontStyle.italic,
+        )),
+        // titleTextStyle: TextStyle(
+        //   fontSize: 24.0,
+        // ),
       ),
       body: Container(
         child: Column(
@@ -225,9 +251,15 @@ class _CameraState extends State<Camera> {
                   child: Container(
                     height: 300,
                     width: 300,
-                    child: Text('Select an image from the right bottom corner', //Text if no image is selected
+                    child: Text('Select an image from the right bottom corner',
                     textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24),
+                    style: GoogleFonts.lato(
+                      //textStyle: Theme.of(context).textTheme.headline4,
+                      fontSize: 36,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.italic,
+                      letterSpacing: .5,
+                    ), 
                     ),
                   ),
                 ),
@@ -258,12 +290,16 @@ class _CameraState extends State<Camera> {
                     Spacer(),
 
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Center(
                         child: Text("$_label",
-                          style: TextStyle(
-                            fontSize: 30
-                          ),
+                        style: GoogleFonts.lato(
+                          //textStyle: Theme.of(context).textTheme.headline4,
+                          fontSize: 40,
+                          fontWeight: FontWeight.w500,
+                          //fontStyle: FontStyle.italic,
+                          letterSpacing: .5,
+                        ), 
                         ),
                       ),
                     ),
@@ -274,7 +310,7 @@ class _CameraState extends State<Camera> {
                         onPressed: getSpeech,
                         icon: Icon(Icons.volume_up_rounded),
                         color: Colors.grey[800],
-                        iconSize: 40,
+                        iconSize: 44,
                         tooltip: "Press for pronounciation",
                       ),
                     ),
@@ -301,10 +337,11 @@ class _CameraState extends State<Camera> {
               backgroundColor: Colors.white,
               onTap: getImageFromCamera,
               label: 'Camera',
-              labelStyle: TextStyle(
-                  fontWeight: FontWeight.w500,
+              labelStyle: GoogleFonts.lato(
+                  fontWeight: FontWeight.w600,
                   color: Colors.white,
-                  fontSize: 20.0),
+                  fontSize: 24.0,
+                  fontStyle: FontStyle.italic),
               labelBackgroundColor: Colors.orange[400]
           ),
 
@@ -313,10 +350,11 @@ class _CameraState extends State<Camera> {
               backgroundColor: Colors.white,
               onTap: getImageFromGallery,
               label: 'Gallery',
-              labelStyle: TextStyle(
-                  fontWeight: FontWeight.w500,
+              labelStyle: GoogleFonts.lato(
+                  fontWeight: FontWeight.w600,
                   color: Colors.white,
-                  fontSize: 20.0),
+                  fontSize: 24.0,
+                  fontStyle: FontStyle.italic),
               labelBackgroundColor: Colors.orange[400]
           ),
         ],
