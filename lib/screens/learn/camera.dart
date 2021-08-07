@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -34,10 +33,10 @@ class _CameraState extends State<Camera> {
   File _image;
 
   //List to store results from model
-  List _result;
+  List _result = [];
 
   //String to indicate class label of the image
-  String _label;
+  String _label = "";
 
   //Load image classification model on screen initialization
   @override
@@ -74,6 +73,7 @@ class _CameraState extends State<Camera> {
 
       } else {
         _image = null;
+        //print("No image");
       }
 
     } else {
@@ -107,6 +107,7 @@ class _CameraState extends State<Camera> {
 
       } else {
         _image = null;
+        //print("No image");
       }
 
     } else {
@@ -117,20 +118,19 @@ class _CameraState extends State<Camera> {
   //Function to upload images to Cloud Storage
   Future addImageToStorage(File image) async {
 
-    //Random number to distinguish images
-    int randomNumber = Random().nextInt(1000);
+    String imagePath = image.path.split('/').last;
 
     //Set image path in Cloud Storage
-    String imageLocation = "$_label/$randomNumber.jpg";
+    String imageLocation = "$_label/$imagePath";
 
     //Upload images to Cloud Storage
     await _storage.ref().child(imageLocation).putFile(image);
 
-    addLocationToDatabase(imageLocation, randomNumber);
+    addLocationToDatabase(imageLocation, imagePath);
   }
 
   //Function to upload download URL of images to Cloud Firestore
-  Future addLocationToDatabase(String location, int number) async {
+  Future addLocationToDatabase(String location, String imagePath) async {
 
     //Acquire storage reference of images through image path
     final ref = _storage.ref().child(location);
@@ -138,8 +138,31 @@ class _CameraState extends State<Camera> {
     //Acquire download URL of images through storage reference
     var locationString = await ref.getDownloadURL();
 
+    List labelList = [];
+
+    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection("Images").get();
+
+    int imageSnapshotSize = imageSnapshot.size;
+
     //Upload download URL of images to Cloud Firestore
-    await FirebaseFirestore.instance.collection("$_label").doc(number.toString()).set({'url' : locationString});
+    //await FirebaseFirestore.instance.collection("$_label").doc("$imagePath").set({'url' : locationString, 'label' : _label});
+
+    await FirebaseFirestore.instance.collection("Images").doc(imageSnapshotSize.toString()).set({ 'url' : locationString, 'label' : _label});
+
+    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection("Class").get();
+
+    for (var doc in classSnapshot.docs) {
+      Map<String, dynamic> labelMap = doc.data();
+      String label = labelMap['label'].toString();
+      labelList.add(label);
+    }
+
+    if (labelList.contains('$_label')){
+      print("Element exists");
+    } else {
+      int classSnapshotSize = classSnapshot.size;
+      await FirebaseFirestore.instance.collection("Class").doc(classSnapshotSize.toString()).set({'label' : _label});
+    }
   }
 
   //Function for default loading of image classification model
@@ -170,7 +193,7 @@ class _CameraState extends State<Camera> {
       _result = runModelResult; //Assign results to _result list variable
 
       String labels = _result[0]["label"]; //Assign class labels to labels variable
-      _label = labels.substring(2); //Assign class labels to _label variable
+      _label = labels.substring(3); //Assign class labels to _label variable
 
     });
   }
@@ -178,7 +201,6 @@ class _CameraState extends State<Camera> {
   getSpeech() async { //Function for text to speech without customization
       await flutterTts.speak(_label);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -191,15 +213,10 @@ class _CameraState extends State<Camera> {
           fontSize: 24.0,
         ),
       ),
-
       body: Container(
-
         child: Column(
-
           children: [
-
             _image == null ? Column(
-              
               children: [
 
                 SizedBox(height: 200),
@@ -214,14 +231,11 @@ class _CameraState extends State<Camera> {
                     ),
                   ),
                 ),
-
               ],
             )
 
             : Column(
-              
               children: [
-
                 SizedBox(height: 30),
 
                 Center(
@@ -241,7 +255,6 @@ class _CameraState extends State<Camera> {
 
                 Row(
                   children: [
-
                     Spacer(),
 
                     Expanded(
@@ -274,36 +287,6 @@ class _CameraState extends State<Camera> {
           ],
         ),
       ),
-      
-      // body: Padding(
-      //   padding: const EdgeInsets.fromLTRB(0, 50.0, 0, 0),
-      //   child: Align(
-      //     alignment: Alignment.topCenter,
-      //     child: Container(
-      //       child: _image == null ? Center(
-      //         child: Container(
-      //           height: 350,
-      //           width: 350,
-      //           child: Text('Select an image from the right bottom corner', 
-      //             textAlign: TextAlign.center,
-      //             style: TextStyle(
-      //             fontSize: 18)
-      //             ) ,
-      //           )
-      //         )
-      //         : Center(child: Container(
-      //           height: 350,
-      //           width: 350,
-      //           decoration: BoxDecoration(image: DecorationImage(
-      //             image: FileImage(_image),
-      //             fit: BoxFit.contain,
-      //               )
-      //             ),
-      //           )
-      //         )
-      //     ),
-      //   ),
-      // ),
 
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
@@ -340,41 +323,4 @@ class _CameraState extends State<Camera> {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return SpeedDial(
-  //     animatedIcon: AnimatedIcons.menu_close,
-  //     animatedIconTheme: IconThemeData(size: 22),
-  //     backgroundColor: Colors.purple[800],
-  //     visible: true,
-  //     curve: Curves.bounceIn,
-  //     children: [
-  //       SpeedDialChild(
-  //         child: Icon(Icons.camera_alt),
-  //         backgroundColor: Colors.white,
-  //         onTap: getImageFromCamera,
-  //         label: 'Camera',
-  //         labelStyle: TextStyle(
-  //           fontWeight: FontWeight.w500,
-  //           color: Colors.white,
-  //           fontSize: 16.0),
-  //         labelBackgroundColor: Colors.purple[800]
-  //       ),
-  //
-  //       SpeedDialChild(
-  //           child: Icon(Icons.photo),
-  //           backgroundColor: Colors.white,
-  //           onTap: getImageFromGallery,
-  //           label: 'Gallery',
-  //           labelStyle: TextStyle(
-  //               fontWeight: FontWeight.w500,
-  //               color: Colors.white,
-  //               fontSize: 16.0),
-  //           labelBackgroundColor: Colors.purple[800]
-  //       ),
-  //     ],
-  //   );
-  // }
-
 }
