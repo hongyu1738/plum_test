@@ -29,7 +29,12 @@ class MyApp extends StatelessWidget {
             return Revision();
           }
         ),
-        '/vocabularyQuiz' : (context) => VocabularyQuiz(),
+        '/vocabularyQuiz' : (context) => ChangeNotifierProvider(
+          create: (context) => ImageData(), 
+          builder: (context, child){
+            return VocabularyQuiz();
+          }
+        ),
       },
     );
   }

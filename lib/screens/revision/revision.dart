@@ -38,14 +38,17 @@ class _RevisionState extends State<Revision> {
       ),
 
       body: RefreshIndicator(
-        onRefresh: () async {},
+        onRefresh: () async {
+          await context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
+          await context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
+        },
         child: Center(
           child: Consumer<ImageData>(
             builder: (context, value, child){
               return (value.classMap.length == 0 && !value.classError) //Check for availability of elements and errors for classMap
               && (value.imageMap.length == 0 && !value.imageError) //Check for availability of elements and errors for ImageMap
               ? CircularProgressIndicator() 
-              : value.classError ? Text('Something went wrong when fetching class data. ${value.classErrorMessage}',
+              : value.classError ? Text('Oops. Something went wrong. \n${value.classErrorMessage}',
               //Error message when classError == true
               textAlign: TextAlign.center,
               style: GoogleFonts.ibmPlexSans(
@@ -53,9 +56,9 @@ class _RevisionState extends State<Revision> {
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
                 //fontStyle: FontStyle.italic,
-                letterSpacing: .5,
+                //letterSpacing: .5,
               ), )
-              : value.imageError ? Text('Something went wrong when fetching image data. ${value.imageErrorMessage}',
+              : value.imageError ? Text('Oops. Something went wrong. \n${value.imageErrorMessage}',
               //Error message when imageError == true
               textAlign: TextAlign.center,
               style: GoogleFonts.ibmPlexSans(
@@ -63,7 +66,7 @@ class _RevisionState extends State<Revision> {
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
                 //fontStyle: FontStyle.italic,
-                letterSpacing: .5,
+                //letterSpacing: .5,
               ), )
               : value.classMap.length == 0 && value.imageMap.length != 0
               //Load circular progress indicator when fetching data for classMap
