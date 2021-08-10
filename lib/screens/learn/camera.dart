@@ -14,6 +14,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:toast/toast.dart';
 
 class Camera extends StatefulWidget {
+  const Camera({ Key key }) : super(key: key);
 
   @override
   _CameraState createState() => _CameraState();
@@ -229,11 +230,12 @@ class _CameraState extends State<Camera> {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Learn',
-        style: GoogleFonts.lato(
+        style: GoogleFonts.ibmPlexSans(
           //textStyle: Theme.of(context).textTheme.headline4,
           fontSize: 26,
-          fontWeight: FontWeight.w500,
-          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w400,
+          letterSpacing: .5,
+          //fontStyle: FontStyle.italic,
         )),
         // titleTextStyle: TextStyle(
         //   fontSize: 24.0,
@@ -253,11 +255,10 @@ class _CameraState extends State<Camera> {
                     width: 300,
                     child: Text('Select an image from the right bottom corner',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.lato(
-                      //textStyle: Theme.of(context).textTheme.headline4,
-                      fontSize: 36,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
+                    style: GoogleFonts.ibmPlexSans(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w400,
+                      //fontStyle: FontStyle.italic,
                       letterSpacing: .5,
                     ), 
                     ),
@@ -287,35 +288,37 @@ class _CameraState extends State<Camera> {
 
                 Row(
                   children: [
-                    Spacer(),
+                    Spacer(flex: 2),
 
                     Expanded(
-                      flex: 3,
+                      flex: 7,
                       child: Center(
                         child: Text("$_label",
-                        style: GoogleFonts.lato(
+                        style: GoogleFonts.ibmPlexSans(
                           //textStyle: Theme.of(context).textTheme.headline4,
                           fontSize: 40,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w400,
                           //fontStyle: FontStyle.italic,
-                          letterSpacing: .5,
+                          letterSpacing: .8,
                         ), 
                         ),
                       ),
                     ),
 
+                    Spacer(),
+
                     Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: IconButton(
                         onPressed: getSpeech,
                         icon: Icon(Icons.volume_up_rounded),
                         color: Colors.grey[800],
-                        iconSize: 44,
+                        iconSize: 38,
                         tooltip: "Press for pronounciation",
                       ),
                     ),
 
-                    Spacer(),
+                    Spacer(flex: 2),
                   ],
                 ),
               ],
@@ -337,11 +340,13 @@ class _CameraState extends State<Camera> {
               backgroundColor: Colors.white,
               onTap: getImageFromCamera,
               label: 'Camera',
-              labelStyle: GoogleFonts.lato(
-                  fontWeight: FontWeight.w600,
+              labelStyle: GoogleFonts.ibmPlexSans(
+                  fontWeight: FontWeight.w400,
                   color: Colors.white,
-                  fontSize: 24.0,
-                  fontStyle: FontStyle.italic),
+                  fontSize: 24,
+                  letterSpacing: .5,
+                  // fontStyle: FontStyle.italic,
+              ),
               labelBackgroundColor: Colors.orange[400]
           ),
 
@@ -350,11 +355,13 @@ class _CameraState extends State<Camera> {
               backgroundColor: Colors.white,
               onTap: getImageFromGallery,
               label: 'Gallery',
-              labelStyle: GoogleFonts.lato(
-                  fontWeight: FontWeight.w600,
+              labelStyle: GoogleFonts.ibmPlexSans(
+                  fontWeight: FontWeight.w400,
                   color: Colors.white,
-                  fontSize: 24.0,
-                  fontStyle: FontStyle.italic),
+                  fontSize: 24,
+                  letterSpacing: .5,
+                  // fontStyle: FontStyle.italic,
+              ),
               labelBackgroundColor: Colors.orange[400]
           ),
         ],

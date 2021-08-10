@@ -7,9 +7,8 @@ class VerticalView extends StatelessWidget {
   final String classResult;
   final Map<String, dynamic> imageResult; 
 
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { //Create a row for each instance of a class in classResult list
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,9 +20,9 @@ class VerticalView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
           child: Text('$classResult',
-            style: GoogleFonts.lato(
+            style: GoogleFonts.ibmPlexSans(
               fontSize: 32,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w400,
               letterSpacing: .5,
               //fontStyle: FontStyle.italic,
             ),
@@ -66,22 +65,20 @@ class HorizontalView extends StatelessWidget {
   final dynamic imageUrl;  
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          width: 300,
-          height: 300,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(imageUrl),
-              fit: BoxFit.contain,
-            )
-          ),
-          //child: Image.network(imageUrl, width: 300, height: 300),
+  Widget build(BuildContext context) { //Creates a container for each instance of an image url in imageResult map
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Container(
+        width: 300,
+        height: 300,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          image: DecorationImage(
+            image: NetworkImage(imageUrl),
+            fit: BoxFit.contain,
+          )
         ),
+          //child: Image.network(imageUrl, width: 300, height: 300),
       )
     );
   }
