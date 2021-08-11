@@ -6,13 +6,12 @@ class ImageData with ChangeNotifier {
 
   //Initialization of variables
 
-  Map<String, List> _imageResults = {};
   List <dynamic> _classResults = [];
-
   Map<String, dynamic> _classMap = {};
   bool _classError = false;
   String _classErrorMessage = '';
 
+  Map<String, List> _imageResults = {};
   Map<String, dynamic> _imageMap = {};
   bool _imageError = false;
   String _imageErrorMessage = '';
@@ -24,15 +23,21 @@ class ImageData with ChangeNotifier {
   bool _randomError = false;
   String _randomErrorMessage = '';
 
+  List<dynamic> _answerResults = [];
+  Map<String, dynamic> _answerMap = {};
+  bool _answerError = false;
+  String _answerErrorMessage = '';
+  int _randomNumForAns = 0;
+  List<String> _answerChoices = [];
+
   //Getter functions for variables
 
-  Map<String,dynamic> get imageResults => _imageResults;
   List <dynamic> get classResults => _classResults;
-
   Map<String,dynamic> get classMap => _classMap;
   bool get classError => _classError;
   String get classErrorMessage => _classErrorMessage;
 
+  Map<String,dynamic> get imageResults => _imageResults;
   Map<String,dynamic> get imageMap => _imageMap;
   bool get imageError => _imageError;
   String get imageErrorMessage => _imageErrorMessage;
@@ -41,6 +46,12 @@ class ImageData with ChangeNotifier {
   String get randomImageUrl => _randomImageUrl;
   bool get randomError => _randomError;
   String get randomErrorMessage => _randomErrorMessage;
+
+  List <dynamic> get answerResults => _answerResults;
+  Map<String,dynamic> get answerMap => _answerMap;
+  bool get answerError => _answerError;
+  String get answerErrorMessage => _answerErrorMessage;
+  List <String> get answerChoices => _answerChoices;
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
@@ -57,22 +68,21 @@ class ImageData with ChangeNotifier {
           _imageResults.update(label, (urlList) => urlList..add(url), ifAbsent: () => [url]); //Add values of key 'label' and 'url' to _imageResults map
           _imageCounter++;
         }
-        //generateRandomNumber(_imageCounter);
         _imageError = false;
       } catch (e) {
         _imageError = true;
-        _imageErrorMessage = e.toString();
+        _imageErrorMessage = "Something went wrong.\n" + e.toString();
         _imageMap = {};
       }
     } else {
       _imageError = true;
-      _imageErrorMessage = 'An unexpected error has arised. Please try again.';
+      _imageErrorMessage = "There are no images found. Take an image to get started!";
       _imageMap = {};
     }
 
     notifyListeners();
-    print(_imageResults);
-    print(_imageCounter);
+    //print(_imageResults);
+    //print(_imageCounter);
   }
 
   Future<void> get fetchClassData async { //Function to fetch class data from Cloud Firestore
@@ -90,18 +100,68 @@ class ImageData with ChangeNotifier {
         _classError = false;
       } catch (e) {
         _classError = true;
-        _classErrorMessage = e.toString();
+        _classErrorMessage = "Something went wrong.\n" + e.toString();
         _classMap = {};
       }
     } else {
       _classError = true;
-      _classErrorMessage = 'An unexpected error has arised. Please try again.';
+      _classErrorMessage = "There are no images found. Take an image to get started!";
       _classMap = {};
     }
 
     _classResults.sort((a, b) => a.toString().compareTo(b.toString())); //Sort class results alphabetically
     notifyListeners(); 
-    print(_classResults);
+    //print(_classResults);
+  }
+
+  Future<void> get fetchAnswerData async {
+    QuerySnapshot answerSnapshot = await FirebaseFirestore.instance.collection('Answer').get();
+    List<DocumentSnapshot<Object>> answerDocuments = answerSnapshot.docs;
+    _answerResults.clear();
+
+    if (answerDocuments.isNotEmpty){
+      try {
+        for (var doc in answerDocuments){ 
+          _answerMap = doc.data(); 
+          var answer = _answerMap['answer']; 
+          _answerResults.add(answer);
+        }
+        _answerError = false;
+      } catch (e) {
+        _answerError = true;
+        _answerErrorMessage = "Something went wrong.\n" + e.toString();
+        _answerMap = {};
+      }
+    } else {
+      _answerError = true;
+      _answerErrorMessage = "There are no images found. Take an image to get started!";
+      _answerMap = {};
+    }
+
+    notifyListeners(); 
+    print(_answerResults);
+  }
+
+  Future<void> get fetchRandomAnswer async {
+
+    await fetchAnswerData;
+
+    _answerChoices.clear();
+    _answerChoices.add(_randomImageLabel);
+
+    for (var i = 1; i < 4; i++){
+      generateRandomNumberForAnswer();
+      String ans = _answerResults[_randomNumForAns];
+
+      if (_answerChoices.contains(ans)){
+        i--;
+      } else {
+        _answerChoices.add(ans);
+      }
+    }
+
+    notifyListeners();
+    print(_answerChoices);
   }
 
   Future<void> get fetchRandomImage async {
@@ -126,7 +186,7 @@ class ImageData with ChangeNotifier {
       }
     } else {
       _randomError = true;
-      _randomErrorMessage = 'Please try again.';
+      _randomErrorMessage = "There are no images found. Take an image to get started!";
       _randomImageLabel = '';
       _randomImageUrl = '';
     }
@@ -134,6 +194,12 @@ class ImageData with ChangeNotifier {
     notifyListeners();
     print(_randomImageUrl);
     print(_randomImageLabel);
+  }
+
+  void generateRandomNumberForAnswer(){
+    Random random = new Random();
+    _randomNumForAns = random.nextInt(50);
+    notifyListeners();
   }
   
   void generateRandomNumber(int counter){

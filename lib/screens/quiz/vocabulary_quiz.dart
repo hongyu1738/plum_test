@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plum_test/layout/vocabulary_question.dart';
 import 'package:plum_test/models/image.dart';
 import 'package:provider/provider.dart';
 
@@ -40,53 +41,58 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
         onRefresh: () async {
           await context.read<ImageData>().fetchRandomImage;
         },
-        child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics()
-          ),
-          child: Center(
-            child: Consumer<ImageData>(
-                builder: (context, value, child){
-                  return (value.randomImageLabel == '' && value.randomImageUrl == '' && !value.randomError)
-                  ? CircularProgressIndicator() 
-                  : value.randomError ? Text('Oops. Something went wrong. \n${value.randomErrorMessage}',
-                  //Error message when randomError == true
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.ibmPlexSans(
-                    //textStyle: Theme.of(context).textTheme.headline4,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                    //fontStyle: FontStyle.italic,
-                    //letterSpacing: .5,
-                  ), )
-                  : value.randomImageLabel == '' && value.randomImageUrl != ''
-                  //Load circular progress indicator when fetching data for randomImageLabel
-                  ? CircularProgressIndicator()
-                  : value.randomImageLabel != '' && value.randomImageUrl == ''
-                  //Load circular progress indicator when fetching data for randomImageUrl
-                  ? CircularProgressIndicator()
-                  : Column(
-                    children: [
-                      SizedBox(height: 30),
-                      Center(
-                      child: Container(
-                        height: 350,
-                        width: 350,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(value.randomImageUrl), //Load image if image is selected
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                      ),
-                    ),
-                    ],
-                  );
-                },
-              )
+        child: Center(
+          child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()
+            ),
+            child: Center(
+              child: Consumer<ImageData>(
+                  builder: (context, value, child){
+                    return (value.randomImageLabel == '' && value.randomImageUrl == '' && !value.randomError)
+                    && (value.answerResults.length == 0 && value.answerChoices.length == 0 && !value.answerError)
+                    ? CircularProgressIndicator() 
+                    : value.randomError ? Text('Oops. \n${value.randomErrorMessage}',
+                    //Error message when randomError == true
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.ibmPlexSans(
+                      //textStyle: Theme.of(context).textTheme.headline4,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400,
+                      //fontStyle: FontStyle.italic,
+                      //letterSpacing: .5,
+                    ), )
+                    : value.answerError ? Text('Oops. \n${value.answerErrorMessage}',
+                    //Error message when answerError == true
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.ibmPlexSans(
+                      //textStyle: Theme.of(context).textTheme.headline4,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400,
+                      //fontStyle: FontStyle.italic,
+                      //letterSpacing: .5,
+                    ), )
+                    : value.answerResults.length != 0 && value.answerChoices.length == 0
+                    //Load circular progress indicator when fetching data for answerChocies
+                    ? CircularProgressIndicator()
+                    : value.answerResults.length == 0 && value.answerChoices.length != 0
+                    //Load circular progress indicator when fetching data for answerResults
+                    ? CircularProgressIndicator()
+                    : value.randomImageLabel == '' && value.randomImageUrl != ''
+                    //Load circular progress indicator when fetching data for randomImageLabel
+                    ? CircularProgressIndicator()
+                    : value.randomImageLabel != '' && value.randomImageUrl == ''
+                    //Load circular progress indicator when fetching data for randomImageUrl
+                    ? CircularProgressIndicator()
+                    : VocabularyQuestionLayout(label: value.randomImageLabel, url: value.randomImageUrl,
+                    choices: value.answerChoices);
+                  },
+                )
+            ),
           ),
         ),
       ),
     );
   }
 }
+

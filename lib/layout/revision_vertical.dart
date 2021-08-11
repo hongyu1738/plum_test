@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:plum_test/layout/revision_horizontal.dart';
 
 class VerticalView extends StatelessWidget {
   const VerticalView({ Key key, this.classResult, this.imageResult}) : super(key: key);
@@ -14,9 +15,6 @@ class VerticalView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
 
       children: [
-
-        //SizedBox(height: 20),
-
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
           child: Text('$classResult',
@@ -50,7 +48,6 @@ class VerticalView extends StatelessWidget {
                       ),
                     ),
                   );
-                  //return HorizontalView(imageUrl: imageResult[classResult][index]);
                 }),
             ),
           ),
@@ -60,26 +57,3 @@ class VerticalView extends StatelessWidget {
   }
 }
 
-class HorizontalView extends StatelessWidget {
-  const HorizontalView({ Key key, this.imageUrl}) : super(key: key);
-  final dynamic imageUrl;  
-
-  @override
-  Widget build(BuildContext context) { //Creates a container for each instance of an image url in imageResult map
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Container(
-        width: 300,
-        height: 300,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          image: DecorationImage(
-            image: NetworkImage(imageUrl),
-            fit: BoxFit.contain,
-          )
-        ),
-          //child: Image.network(imageUrl, width: 300, height: 300),
-      )
-    );
-  }
-}

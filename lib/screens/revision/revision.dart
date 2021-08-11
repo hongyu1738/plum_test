@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:plum_test/models/image.dart';
-import 'package:plum_test/layout/view.dart';
+import 'package:plum_test/layout/revision_vertical.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -48,7 +48,7 @@ class _RevisionState extends State<Revision> {
               return (value.classMap.length == 0 && !value.classError) //Check for availability of elements and errors for classMap
               && (value.imageMap.length == 0 && !value.imageError) //Check for availability of elements and errors for ImageMap
               ? CircularProgressIndicator() 
-              : value.classError ? Text('Oops. Something went wrong. \n${value.classErrorMessage}',
+              : value.classError ? Text('Oops. ${value.classErrorMessage}',
               //Error message when classError == true
               textAlign: TextAlign.center,
               style: GoogleFonts.ibmPlexSans(
@@ -58,7 +58,7 @@ class _RevisionState extends State<Revision> {
                 //fontStyle: FontStyle.italic,
                 //letterSpacing: .5,
               ), )
-              : value.imageError ? Text('Oops. Something went wrong. \n${value.imageErrorMessage}',
+              : value.imageError ? Text('Oops. ${value.imageErrorMessage}',
               //Error message when imageError == true
               textAlign: TextAlign.center,
               style: GoogleFonts.ibmPlexSans(
@@ -88,7 +88,6 @@ class _RevisionState extends State<Revision> {
                         ),
                       ),
                     );
-                    //return VerticalView(classResult: value.classResults[index], imageResult: value.imageResults);
                   }),
               );
             },
