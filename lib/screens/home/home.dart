@@ -89,6 +89,7 @@ class Home extends StatelessWidget {
                               ),
                               
                               ListTile(
+                                contentPadding: EdgeInsets.only(left: 25),
                                 title: Text('Vocabulary Quiz',
                                 style: GoogleFonts.ibmPlexSans(
                                   //textStyle: Theme.of(context).textTheme.headline4,
@@ -99,6 +100,21 @@ class Home extends StatelessWidget {
                                 onTap: () {
                                   Navigator.pop(context);
                                   Navigator.pushNamed(context, '/vocabularyQuiz');
+                                },
+                              ),
+
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 25),
+                                title: Text('Image Quiz',
+                                style: GoogleFonts.ibmPlexSans(
+                                  //textStyle: Theme.of(context).textTheme.headline4,
+                                  fontSize: 24,
+                                  //fontWeight: FontWeight.w600,
+                                  //fontStyle: FontStyle.italic,
+                                )),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, '/imageQuiz');
                                 },
                               ),
 

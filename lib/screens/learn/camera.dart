@@ -205,7 +205,7 @@ class _CameraState extends State<Camera> {
       //Customization for display on threshold and number of results
       path: file.path,
       numResults: 50,
-      threshold: 0.5,
+      threshold: 0.8,
       imageMean: 127.5,
       imageStd: 127.5,
     );
@@ -214,8 +214,8 @@ class _CameraState extends State<Camera> {
       _result = runModelResult; //Assign results to _result list variable
 
       String labels = _result[0]["label"]; //Assign class labels to labels variable
-      _label = labels.substring(3); //Assign class labels to _label variable
-
+      _label = labels.substring(2); //Assign class labels to _label variable
+      _label.trimLeft();
     });
   }
 
@@ -241,13 +241,17 @@ class _CameraState extends State<Camera> {
         //   fontSize: 24.0,
         // ),
       ),
+
       body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
             _image == null ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
-                SizedBox(height: 200),
+                
+               SizedBox(height: 200),
 
                 Center(
                   child: Container(
@@ -261,7 +265,7 @@ class _CameraState extends State<Camera> {
                       //fontStyle: FontStyle.italic,
                       letterSpacing: .5,
                     ), 
-                    ),
+                    ), 
                   ),
                 ),
               ],

@@ -6,29 +6,35 @@ class ImageData with ChangeNotifier {
 
   //Initialization of variables
 
+  //Class data for revision.dart
   List <dynamic> _classResults = [];
   Map<String, dynamic> _classMap = {};
   bool _classError = false;
   String _classErrorMessage = '';
 
+  //Image data for revision.dart
   Map<String, List> _imageResults = {};
   Map<String, dynamic> _imageMap = {};
   bool _imageError = false;
   String _imageErrorMessage = '';
 
-  int _imageCounter = 0;
-  int _randomNum = 0;
-  String _randomImageUrl = '';
-  String _randomImageLabel = '';
-  bool _randomError = false;
-  String _randomErrorMessage = '';
+  //Question data for vocabulary_quiz.dart
+  int _imageCounter = 0; //Variable to count number of documents in Images collection
+  int _randomNum = 0; //Variable to store random number generated through imageCounter as max
+  String _vocabularyImageUrl = ''; //Variable to store image url from Images collection
+  String _vocabularyImageLabel = ''; //Variable to store correct image label from Images collection
+  bool _vocabularyError = false;
+  String _vocabularyErrorMessage = '';
 
-  List<dynamic> _answerResults = [];
-  Map<String, dynamic> _answerMap = {};
-  bool _answerError = false;
-  String _answerErrorMessage = '';
-  int _randomNumForAns = 0;
-  List<String> _answerChoices = [];
+  //Choices data for vocabulary_quiz.dart
+  List<dynamic> _choiceResults = []; //List to store all possible choices
+  Map<String, dynamic> _choiceMap = {};
+  bool _choiceError = false;
+  String _choiceErrorMessage = '';
+  int _randomNumForAns = 0; //Variable to randomize choice from all possible choices
+  List<String> _answerChoices = []; //List to store randomized choices
+
+  List<String> _urlList = [];
 
   //Getter functions for variables
 
@@ -42,21 +48,22 @@ class ImageData with ChangeNotifier {
   bool get imageError => _imageError;
   String get imageErrorMessage => _imageErrorMessage;
 
-  String get randomImageLabel => _randomImageLabel;
-  String get randomImageUrl => _randomImageUrl;
-  bool get randomError => _randomError;
-  String get randomErrorMessage => _randomErrorMessage;
+  String get vocabularyImageLabel => _vocabularyImageLabel;
+  String get vocabularyImageUrl => _vocabularyImageUrl;
+  bool get vocabularyError => _vocabularyError;
+  String get vocabularyErrorMessage => _vocabularyErrorMessage;
 
-  List <dynamic> get answerResults => _answerResults;
-  Map<String,dynamic> get answerMap => _answerMap;
-  bool get answerError => _answerError;
-  String get answerErrorMessage => _answerErrorMessage;
+  List <dynamic> get choiceResults => _choiceResults;
+  Map<String,dynamic> get choiceMap => _choiceMap;
+  bool get choiceError => _choiceError;
+  String get choiceErrorMessage => _choiceErrorMessage;
   List <String> get answerChoices => _answerChoices;
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
     List<DocumentSnapshot<Object>> imageDocuments = imageSnapshot.docs;
     _imageResults.clear();
+    _urlList.clear();
     _imageCounter = 0;
 
     if (imageDocuments.isNotEmpty){
@@ -65,6 +72,7 @@ class ImageData with ChangeNotifier {
           _imageMap = doc.data(); //Map field and values of each document to _ImageMap
           var label = _imageMap['label']; //Acquire values of key 'label'
           var url = _imageMap['url']; //Acquire values of key 'url'
+          _urlList.add(url);
           _imageResults.update(label, (urlList) => urlList..add(url), ifAbsent: () => [url]); //Add values of key 'label' and 'url' to _imageResults map
           _imageCounter++;
         }
@@ -81,6 +89,7 @@ class ImageData with ChangeNotifier {
     }
 
     notifyListeners();
+    print(_urlList);
     //print(_imageResults);
     //print(_imageCounter);
   }
@@ -114,44 +123,45 @@ class ImageData with ChangeNotifier {
     //print(_classResults);
   }
 
-  Future<void> get fetchAnswerData async {
-    QuerySnapshot answerSnapshot = await FirebaseFirestore.instance.collection('Answer').get();
-    List<DocumentSnapshot<Object>> answerDocuments = answerSnapshot.docs;
-    _answerResults.clear();
+  Future<void> get fetchChoicesData async { //Function to fetch all possible choices of answer from Cloud Firestore
+    QuerySnapshot choiceSnapshot = await FirebaseFirestore.instance.collection('Answer').get();
+    List<DocumentSnapshot<Object>> choiceDocuments = choiceSnapshot.docs;
+    _choiceResults.clear();
 
-    if (answerDocuments.isNotEmpty){
+    if (choiceDocuments.isNotEmpty){
       try {
-        for (var doc in answerDocuments){ 
-          _answerMap = doc.data(); 
-          var answer = _answerMap['answer']; 
-          _answerResults.add(answer);
+        for (var doc in choiceDocuments){ 
+          _choiceMap = doc.data(); 
+          var answer = _choiceMap['answer']; 
+          _choiceResults.add(answer);
         }
-        _answerError = false;
+        _choiceError = false;
       } catch (e) {
-        _answerError = true;
-        _answerErrorMessage = "Something went wrong.\n" + e.toString();
-        _answerMap = {};
+        _choiceError = true;
+        _choiceErrorMessage = "Something went wrong.\n" + e.toString();
+        _choiceMap = {};
       }
     } else {
-      _answerError = true;
-      _answerErrorMessage = "There are no images found. Take an image to get started!";
-      _answerMap = {};
+      _choiceError = true;
+      _choiceErrorMessage = "There are no images found. Take an image to get started!";
+      _choiceMap = {};
     }
 
     notifyListeners(); 
-    print(_answerResults);
+    //print(_answerResults);
   }
 
-  Future<void> get fetchRandomAnswer async {
+  Future<void> get fetchRandomAnswer async { //Function to fetch randomized answer chocies for Vocabulary Quiz
 
-    await fetchAnswerData;
+    await fetchChoicesData;
+    await fetchVocabularyImage;
 
     _answerChoices.clear();
-    _answerChoices.add(_randomImageLabel);
+    _answerChoices.add(_vocabularyImageLabel);
 
     for (var i = 1; i < 4; i++){
       generateRandomNumberForAnswer();
-      String ans = _answerResults[_randomNumForAns];
+      String ans = _choiceResults[_randomNumForAns];
 
       if (_answerChoices.contains(ans)){
         i--;
@@ -159,41 +169,42 @@ class ImageData with ChangeNotifier {
         _answerChoices.add(ans);
       }
     }
+    _answerChoices.shuffle();
 
     notifyListeners();
-    print(_answerChoices);
+    //print(_answerChoices);
   }
 
-  Future<void> get fetchRandomImage async {
+  Future<void> get fetchVocabularyImage async { //Function to fetch a random image as question for Vocabulary Quiz
 
     await fetchImageData;
-    await fetchClassData;
+    //await fetchClassData;
 
     generateRandomNumber(_imageCounter);
     String rand = _randomNum.toString();
-    DocumentSnapshot randomSnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
+    DocumentSnapshot vocabularySnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
 
-    if (randomSnapshot.exists){
+    if (vocabularySnapshot.exists){
       try {
-        _randomImageLabel = randomSnapshot['label'];
-        _randomImageUrl = randomSnapshot['url'];
-        _randomError = false;
+        _vocabularyImageLabel = vocabularySnapshot['label'];
+        _vocabularyImageUrl = vocabularySnapshot['url'];
+        _vocabularyError = false;
       } catch (e) {
-        _randomError = true;
-        _randomErrorMessage = e.toString();
-        _randomImageLabel = '';
-        _randomImageUrl = '';
+        _vocabularyError = true;
+        _vocabularyErrorMessage = e.toString();
+        _vocabularyImageLabel = '';
+        _vocabularyImageUrl = '';
       }
     } else {
-      _randomError = true;
-      _randomErrorMessage = "There are no images found. Take an image to get started!";
-      _randomImageLabel = '';
-      _randomImageUrl = '';
+      _vocabularyError = true;
+      _vocabularyErrorMessage = "There are no images found. Take an image to get started!";
+      _vocabularyImageLabel = '';
+      _vocabularyImageUrl = '';
     }
 
     notifyListeners();
-    print(_randomImageUrl);
-    print(_randomImageLabel);
+    print(_vocabularyImageUrl);
+    print(_vocabularyImageLabel);
   }
 
   void generateRandomNumberForAnswer(){

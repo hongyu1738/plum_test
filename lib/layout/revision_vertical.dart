@@ -22,7 +22,6 @@ class VerticalView extends StatelessWidget {
               fontSize: 32,
               fontWeight: FontWeight.w400,
               letterSpacing: .5,
-              //fontStyle: FontStyle.italic,
             ),
           ),
         ),
@@ -33,8 +32,6 @@ class VerticalView extends StatelessWidget {
             height: 200,
             child: AnimationLimiter(
               child: ListView.builder(
-                physics: ClampingScrollPhysics(),
-                shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: imageResult[classResult].length,
                 itemBuilder: (context, index){

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:plum_test/models/image.dart';
 import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/screens/learn/camera.dart';
+import 'package:plum_test/screens/quiz/image_quiz.dart';
 import 'package:plum_test/screens/quiz/vocabulary_quiz.dart';
+import 'package:plum_test/layout/vocabulary_result_failure.dart';
+import 'package:plum_test/layout/vocabulary_result_success.dart';
 import 'package:plum_test/screens/revision/revision.dart';
 import 'package:plum_test/screens/settings/settings.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Home(),
       routes: {
+        '/home' : (context) => Home(),
         '/camera' : (context) => Camera(),
         '/settings' : (context) => Settings(),
         '/revision' : (context) => ChangeNotifierProvider(
@@ -35,6 +39,14 @@ class MyApp extends StatelessWidget {
             return VocabularyQuiz();
           }
         ),
+        '/imageQuiz' : (context) => ChangeNotifierProvider(
+          create: (context) => ImageData(), 
+          builder: (context, child){
+            return ImageQuiz();
+          }
+        ),
+        '/vocabularyResultSuccess' : (context) => VocabularyResultSuccess(),
+        '/vocabularyResultFailure' : (context) => VocabularyResultFailure(),
       },
     );
   }

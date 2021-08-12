@@ -16,9 +16,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
   @override
   Widget build(BuildContext context) {
 
-    //context.read<ImageData>().fetchImageData;
-    //context.read<ImageData>().fetchClassData;
-    context.read<ImageData>().fetchRandomImage;
+    context.read<ImageData>().fetchRandomAnswer;
 
     return Scaffold(
       appBar: AppBar(
@@ -39,21 +37,21 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
 
       body: RefreshIndicator(
         onRefresh: () async {
-          await context.read<ImageData>().fetchRandomImage;
+          await context.read<ImageData>().fetchRandomAnswer;
         },
         child: Center(
           child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(
+            physics: BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics()
             ),
             child: Center(
               child: Consumer<ImageData>(
                   builder: (context, value, child){
-                    return (value.randomImageLabel == '' && value.randomImageUrl == '' && !value.randomError)
-                    && (value.answerResults.length == 0 && value.answerChoices.length == 0 && !value.answerError)
+                    return (value.vocabularyImageLabel == '' && value.vocabularyImageUrl == '' && !value.vocabularyError)
+                    && (value.choiceResults.length == 0 && value.answerChoices.length == 0 && !value.choiceError)
                     ? CircularProgressIndicator() 
-                    : value.randomError ? Text('Oops. \n${value.randomErrorMessage}',
-                    //Error message when randomError == true
+                    : value.vocabularyError ? Text('Oops. \n${value.vocabularyErrorMessage}',
+                    //Error message when vocabularyError == true
                     textAlign: TextAlign.center,
                     style: GoogleFonts.ibmPlexSans(
                       //textStyle: Theme.of(context).textTheme.headline4,
@@ -62,8 +60,8 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                       //fontStyle: FontStyle.italic,
                       //letterSpacing: .5,
                     ), )
-                    : value.answerError ? Text('Oops. \n${value.answerErrorMessage}',
-                    //Error message when answerError == true
+                    : value.choiceError ? Text('Oops. \n${value.choiceErrorMessage}',
+                    //Error message when choiceError == true
                     textAlign: TextAlign.center,
                     style: GoogleFonts.ibmPlexSans(
                       //textStyle: Theme.of(context).textTheme.headline4,
@@ -72,20 +70,20 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                       //fontStyle: FontStyle.italic,
                       //letterSpacing: .5,
                     ), )
-                    : value.answerResults.length != 0 && value.answerChoices.length == 0
+                    : value.choiceResults.length != 0 && value.answerChoices.length == 0
                     //Load circular progress indicator when fetching data for answerChocies
                     ? CircularProgressIndicator()
-                    : value.answerResults.length == 0 && value.answerChoices.length != 0
-                    //Load circular progress indicator when fetching data for answerResults
+                    : value.choiceResults.length == 0 && value.answerChoices.length != 0
+                    //Load circular progress indicator when fetching data for choiceResults
                     ? CircularProgressIndicator()
-                    : value.randomImageLabel == '' && value.randomImageUrl != ''
-                    //Load circular progress indicator when fetching data for randomImageLabel
+                    : value.vocabularyImageLabel == '' && value.vocabularyImageUrl != ''
+                    //Load circular progress indicator when fetching data for vocabularyImageLabel
                     ? CircularProgressIndicator()
-                    : value.randomImageLabel != '' && value.randomImageUrl == ''
-                    //Load circular progress indicator when fetching data for randomImageUrl
+                    : value.vocabularyImageLabel != '' && value.vocabularyImageUrl == ''
+                    //Load circular progress indicator when fetching data for vocabularyImageUrl
                     ? CircularProgressIndicator()
-                    : VocabularyQuestionLayout(label: value.randomImageLabel, url: value.randomImageUrl,
-                    choices: value.answerChoices);
+                    : VocabularyQuestionLayout(vocabularyLabel: value.vocabularyImageLabel, vocabularyUrl: value.vocabularyImageUrl,
+                    choicesList: value.answerChoices);
                   },
                 )
             ),

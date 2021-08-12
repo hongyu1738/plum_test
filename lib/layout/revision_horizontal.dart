@@ -12,6 +12,7 @@ class HorizontalView extends StatelessWidget {
         width: 300,
         height: 300,
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
           border: Border.all(color: Colors.black),
           image: DecorationImage(
             image: NetworkImage(imageUrl),
