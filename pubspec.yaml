@@ -45,6 +45,7 @@ dependencies:
   google_fonts: ^2.1.0
   toast: ^0.1.5
   modal_bottom_sheet: ^2.0.0
+  liquid_pull_to_refresh: ^3.0.0
 
 
 dev_dependencies:

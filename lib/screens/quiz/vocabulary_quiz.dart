@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:plum_test/layout/vocabulary_question.dart';
 import 'package:plum_test/models/image.dart';
 import 'package:provider/provider.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:animate_do/animate_do.dart';
 
 class VocabularyQuiz extends StatefulWidget {
   const VocabularyQuiz({ Key key }) : super(key: key);
@@ -35,11 +37,15 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
         // ),
       ),
 
-      body: RefreshIndicator(
-        onRefresh: () async {
-          await context.read<ImageData>().fetchRandomAnswer;
-        },
-        child: Center(
+      body: BounceInDown(
+        child: LiquidPullToRefresh(
+          springAnimationDurationInMilliseconds: 500,
+          showChildOpacityTransition: false,
+          animSpeedFactor: 1.5,
+          color: Colors.orangeAccent,
+          onRefresh: () async {
+            await context.read<ImageData>().fetchRandomAnswer;
+          },
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics()
@@ -82,7 +88,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     : value.vocabularyImageLabel != '' && value.vocabularyImageUrl == ''
                     //Load circular progress indicator when fetching data for vocabularyImageUrl
                     ? CircularProgressIndicator()
-                    : VocabularyQuestionLayout(vocabularyLabel: value.vocabularyImageLabel, vocabularyUrl: value.vocabularyImageUrl,
+                    : VocabularyQuestion(vocabularyLabel: value.vocabularyImageLabel, vocabularyUrl: value.vocabularyImageUrl,
                     choicesList: value.answerChoices);
                   },
                 )

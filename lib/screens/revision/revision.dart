@@ -4,6 +4,7 @@ import 'package:plum_test/models/image.dart';
 import 'package:plum_test/layout/revision_vertical.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class Revision extends StatefulWidget {
   const Revision({ Key key }) : super(key: key);
@@ -33,7 +34,11 @@ class _RevisionState extends State<Revision> {
       ),
 
       body: BounceInDown(
-        child: RefreshIndicator(
+        child: LiquidPullToRefresh(
+          springAnimationDurationInMilliseconds: 500,
+          showChildOpacityTransition: false,
+          animSpeedFactor: 1.5,
+          color: Colors.orangeAccent,
           onRefresh: () async {
             await context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
             await context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
@@ -65,9 +70,9 @@ class _RevisionState extends State<Revision> {
                 //Load circular progress indicator when fetching data for imageMap
                 ? CircularProgressIndicator()
                 : ListView.builder(
-                    physics: BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()
-                  ),
+                  //   physics: BouncingScrollPhysics(
+                  //   parent: AlwaysScrollableScrollPhysics()
+                  // ),
                   itemCount: value.classResults.length, //Determine number of rows/total number of classes
                   itemBuilder: (context, index){
                     return VerticalView(classResult: value.classResults[index], imageResult: value.imageResults);

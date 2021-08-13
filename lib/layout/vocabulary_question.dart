@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class VocabularyQuestionLayout extends StatelessWidget {
-  const VocabularyQuestionLayout({ Key key, this.vocabularyLabel, this.vocabularyUrl, this.choicesList }) : super(key: key);
+class VocabularyQuestion extends StatelessWidget {
+  const VocabularyQuestion({ Key key, this.vocabularyLabel, this.vocabularyUrl, this.choicesList }) : super(key: key);
 
   final String vocabularyLabel;
   final String vocabularyUrl;

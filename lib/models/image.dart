@@ -35,6 +35,7 @@ class ImageData with ChangeNotifier {
   List<String> _answerChoices = []; //List to store randomized choices
 
   List<String> _urlList = [];
+  List<String> _urlChoices = [];
 
   //Getter functions for variables
 
@@ -58,6 +59,9 @@ class ImageData with ChangeNotifier {
   bool get choiceError => _choiceError;
   String get choiceErrorMessage => _choiceErrorMessage;
   List <String> get answerChoices => _answerChoices;
+
+  List<String> get urlList => _urlList;
+  List<String> get urlChoices => _urlChoices;
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
@@ -160,8 +164,8 @@ class ImageData with ChangeNotifier {
     _answerChoices.add(_vocabularyImageLabel);
 
     for (var i = 1; i < 4; i++){
-      generateRandomNumberForAnswer();
-      String ans = _choiceResults[_randomNumForAns];
+      generateRandomNumber(50);
+      String ans = _choiceResults[_randomNum];
 
       if (_answerChoices.contains(ans)){
         i--;
@@ -207,10 +211,27 @@ class ImageData with ChangeNotifier {
     print(_vocabularyImageLabel);
   }
 
-  void generateRandomNumberForAnswer(){
-    Random random = new Random();
-    _randomNumForAns = random.nextInt(50);
+  Future<void> get fetchImageQuizData async {
+
+    await fetchVocabularyImage;
+    
+    _urlChoices.clear();
+    _urlChoices.add(vocabularyImageUrl);
+
+    for (var i = 1; i < 2; i++){
+      generateRandomNumber(_imageCounter);
+      String url = _urlList[_randomNum];
+
+      if (_urlChoices.contains(url)){
+        i--;
+      } else {
+        _urlChoices.add(url);
+      }
+    }
+
+    _urlChoices.shuffle();
     notifyListeners();
+    print(_urlChoices);
   }
   
   void generateRandomNumber(int counter){
