@@ -118,6 +118,21 @@ class Home extends StatelessWidget {
                                 },
                               ),
 
+                              ListTile(
+                                contentPadding: EdgeInsets.only(left: 25),
+                                title: Text('Drag and Drop',
+                                style: GoogleFonts.ibmPlexSans(
+                                  //textStyle: Theme.of(context).textTheme.headline4,
+                                  fontSize: 24,
+                                  //fontWeight: FontWeight.w600,
+                                  //fontStyle: FontStyle.italic,
+                                )),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, '/dragQuiz');
+                                },
+                              ),
+
                               SizedBox(height: 30),
                             ],
                           );

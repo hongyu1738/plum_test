@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class VocabularyQuestion extends StatelessWidget {
   const VocabularyQuestion({ Key key, this.vocabularyLabel, this.vocabularyUrl, this.choicesList }) : super(key: key);
@@ -45,9 +46,10 @@ class VocabularyQuestion extends StatelessWidget {
           mainAxisSpacing: 10), 
         itemCount: choices.length,
         itemBuilder: (context, index){
-          return GestureDetector(
-            onTap: () => [compareResult(context, index)],
-            child: showQuestionChoices(choices[index])
+          return InkWell(
+              onTap: () => [compareResult(context, index)],
+              splashColor: Colors.orangeAccent,
+              child: showQuestionChoices(choices[index])
           );
         }
       ),
@@ -72,15 +74,19 @@ class VocabularyQuestion extends StatelessWidget {
     ),
   );
 
+
   void compareResult(BuildContext context, int index){ 
 
     if(vocabularyLabel == choicesList[index]){
-      // Timer(Duration(milliseconds: 4), () {
-        
-      // });
-      Navigator.of(context).popAndPushNamed('/vocabularyResultSuccess');
+      Timer(Duration(milliseconds: 600), () {
+        Navigator.of(context).pushReplacementNamed('/vocabularyResultSuccess');
+      });
+      //Navigator.of(context).popAndPushNamed('/vocabularyResultSuccess');
     } else {
-      Navigator.of(context).pushNamed('/vocabularyResultFailure');
+      //Navigator.of(context).pushNamed('/vocabularyResultFailure');
+      Timer(Duration(milliseconds: 600), () {
+        Navigator.of(context).pushNamed('/vocabularyResultFailure');
+      });
     }
   }
 }

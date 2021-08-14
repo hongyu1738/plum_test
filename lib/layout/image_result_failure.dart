@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 
-class VocabularyResultSuccess extends StatelessWidget {
-  const VocabularyResultSuccess({ Key key }) : super(key: key);
+class ImageResultFailure extends StatelessWidget {
+  const ImageResultFailure({ Key key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class VocabularyResultSuccess extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.orange[400],
         centerTitle: true,
-        title: Text('Success',
+        title: Text('Fail',
         style: GoogleFonts.ibmPlexSans(
           //textStyle: Theme.of(context).textTheme.headline4,
           fontSize: 26,
@@ -27,6 +27,8 @@ class VocabularyResultSuccess extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            //Text("Vocabulary result failure page"),
+
             SizedBox(height: 50),
 
             BounceInDown(
@@ -53,10 +55,10 @@ class VocabularyResultSuccess extends StatelessWidget {
             BounceInDown(
               child: ElevatedButton.icon(
                 onPressed: (){
-                  Navigator.of(context).pushReplacementNamed('/vocabularyQuiz');
+                  Navigator.pop(context);
                 },
                 icon: Icon(Icons.home_rounded),
-                label: Text('Try Another?'),
+                label: Text('Try Again?'),
                 style: ElevatedButton.styleFrom(
                   // background color
                   primary: Colors.orange,

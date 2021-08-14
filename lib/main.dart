@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:plum_test/layout/drag_result_success.dart';
+import 'package:plum_test/layout/image_result_failure.dart';
+import 'package:plum_test/layout/image_result_success.dart';
 import 'package:plum_test/models/image.dart';
 import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/screens/learn/camera.dart';
+import 'package:plum_test/screens/quiz/drag_n_drop.dart';
 import 'package:plum_test/screens/quiz/image_quiz.dart';
 import 'package:plum_test/screens/quiz/vocabulary_quiz.dart';
 import 'package:plum_test/layout/vocabulary_result_failure.dart';
@@ -47,6 +51,15 @@ class MyApp extends StatelessWidget {
         ),
         '/vocabularyResultSuccess' : (context) => VocabularyResultSuccess(),
         '/vocabularyResultFailure' : (context) => VocabularyResultFailure(),
+        '/imageResultSuccess' : (context) => ImageResultSuccess(),
+        '/imageResultFailure' : (context) => ImageResultFailure(),
+        '/dragQuiz' : (context) => ChangeNotifierProvider(
+          create: (context) => ImageData(), 
+          builder: (context, child){
+            return DragAndDrop();
+          }
+        ),
+        '/dragResultSuccess' : (context) => DragResultSuccess(),
       },
     );
   }

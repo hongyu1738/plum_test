@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:async';
 
 class ImageQuestion extends StatelessWidget {
   const ImageQuestion({ Key key, this.imageLabel, this.imageUrl, this.urlChoices }) : super(key: key);
@@ -27,14 +28,18 @@ class ImageQuestion extends StatelessWidget {
       child: ListView.builder(
         itemCount: urlChoices.length,
         itemBuilder: (context, index){
-          return showIndividualImage(context, urlChoices[index]);
+          return InkWell(
+            onTap: () => [compareResult(context, index)],
+            splashColor: Colors.orangeAccent,
+            child: showIndividualImage(context, urlChoices[index]));
       }),
     ),
   );
 
   Widget showIndividualImage(BuildContext context, String url) => Padding(
-    padding: const EdgeInsets.all(12),
+    padding: const EdgeInsets.all(12.0),
     child: Container(
+      //padding: const EdgeInsets.all(12),
       height: MediaQuery.of(context).size.height * 0.30,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -48,6 +53,7 @@ class ImageQuestion extends StatelessWidget {
     ),
   );
 
+
   Widget showQuizLabel(String label) => Padding(
       padding: const EdgeInsets.only(top: 12.0),
       child: Text("$label", 
@@ -58,5 +64,21 @@ class ImageQuestion extends StatelessWidget {
         letterSpacing: .5,
       ),),
     );
+
+
+  void compareResult(BuildContext context, int index){ 
+
+    if(imageUrl == urlChoices[index]){
+      Timer(Duration(milliseconds: 600), () {
+        Navigator.of(context).pushReplacementNamed('/imageResultSuccess');
+      });
+      //Navigator.of(context).popAndPushNamed('/vocabularyResultSuccess');
+    } else {
+      //Navigator.of(context).pushNamed('/vocabularyResultFailure');
+      Timer(Duration(milliseconds: 600), () {
+        Navigator.of(context).pushNamed('/imageResultFailure');
+      });
+    }
+  }
   
 }

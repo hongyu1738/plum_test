@@ -15,11 +15,14 @@ class Revision extends StatefulWidget {
 
 class _RevisionState extends State<Revision> {
 
-  @override
-  Widget build(BuildContext context) {
-
+  void initState() {
+    super.initState();
     context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
     context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
+  }
+
+  @override
+  Widget build(BuildContext context) {
     
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +51,7 @@ class _RevisionState extends State<Revision> {
               builder: (context, value, child){
                 return (value.classMap.length == 0 && !value.classError) //Check for availability of elements and errors for classMap
                 && (value.imageMap.length == 0 && !value.imageError) //Check for availability of elements and errors for ImageMap
-                ? CircularProgressIndicator() 
+                ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                 : value.classError ? Text('Oops. ${value.classErrorMessage}',
                 //Error message when classError == true
                 textAlign: TextAlign.center,
@@ -65,10 +68,10 @@ class _RevisionState extends State<Revision> {
                 ), )
                 : value.classMap.length == 0 && value.imageMap.length != 0
                 //Load circular progress indicator when fetching data for classMap
-                ? CircularProgressIndicator()
+                ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                 : value.imageMap.length == 0 && value.classMap.length != 0
                 //Load circular progress indicator when fetching data for imageMap
-                ? CircularProgressIndicator()
+                ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                 : ListView.builder(
                   //   physics: BouncingScrollPhysics(
                   //   parent: AlwaysScrollableScrollPhysics()

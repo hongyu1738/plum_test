@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 
-class VocabularyResultSuccess extends StatelessWidget {
-  const VocabularyResultSuccess({ Key key }) : super(key: key);
+class DragResultSuccess extends StatelessWidget {
+  const DragResultSuccess({ Key key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class VocabularyResultSuccess extends StatelessWidget {
             BounceInDown(
               child: ElevatedButton.icon(
                 onPressed: (){
-                  Navigator.of(context).pushReplacementNamed('/vocabularyQuiz');
+                  Navigator.of(context).pushReplacementNamed('/dragQuiz');
                 },
                 icon: Icon(Icons.home_rounded),
                 label: Text('Try Another?'),

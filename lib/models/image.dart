@@ -31,11 +31,14 @@ class ImageData with ChangeNotifier {
   Map<String, dynamic> _choiceMap = {};
   bool _choiceError = false;
   String _choiceErrorMessage = '';
-  int _randomNumForAns = 0; //Variable to randomize choice from all possible choices
   List<String> _answerChoices = []; //List to store randomized choices
 
   List<String> _urlList = [];
   List<String> _urlChoices = [];
+
+   Map<String, String> _dragMap = {};
+   bool _dragError = false;
+   String _dragErrorMessage = '';
 
   //Getter functions for variables
 
@@ -44,8 +47,8 @@ class ImageData with ChangeNotifier {
   bool get classError => _classError;
   String get classErrorMessage => _classErrorMessage;
 
-  Map<String,dynamic> get imageResults => _imageResults;
-  Map<String,dynamic> get imageMap => _imageMap;
+  Map<String, dynamic> get imageResults => _imageResults;
+  Map<String, dynamic> get imageMap => _imageMap;
   bool get imageError => _imageError;
   String get imageErrorMessage => _imageErrorMessage;
 
@@ -55,13 +58,18 @@ class ImageData with ChangeNotifier {
   String get vocabularyErrorMessage => _vocabularyErrorMessage;
 
   List <dynamic> get choiceResults => _choiceResults;
-  Map<String,dynamic> get choiceMap => _choiceMap;
+  Map<String, dynamic> get choiceMap => _choiceMap;
   bool get choiceError => _choiceError;
   String get choiceErrorMessage => _choiceErrorMessage;
   List <String> get answerChoices => _answerChoices;
 
   List<String> get urlList => _urlList;
   List<String> get urlChoices => _urlChoices;
+
+  Map<String, String> get dragMap => _dragMap;
+  //List<String> get dragList => _dragList;
+  bool get dragError => _dragError;
+  String get dragErrorMessage => _dragErrorMessage;
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
@@ -93,7 +101,7 @@ class ImageData with ChangeNotifier {
     }
 
     notifyListeners();
-    print(_urlList);
+    //print(_urlList);
     //print(_imageResults);
     //print(_imageCounter);
   }
@@ -209,6 +217,46 @@ class ImageData with ChangeNotifier {
     notifyListeners();
     print(_vocabularyImageUrl);
     print(_vocabularyImageLabel);
+  }
+
+  Future<void> get fetchDragData async {
+
+    await fetchImageData;
+    _dragMap.clear();
+    //_dragList.clear();
+
+    for (var i = 1; i < 4; i++){
+      generateRandomNumber(_imageCounter);
+      String rand = _randomNum.toString();
+      DocumentSnapshot dragSnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
+
+      if (dragSnapshot.exists){
+        try {
+          String tempLabel = dragSnapshot['label'];
+          String tempUrl = dragSnapshot['url'];
+
+          if (dragMap.containsKey(tempLabel)){
+            dragMap.update(tempLabel, (value) => tempUrl, ifAbsent: () => tempUrl);
+            i--;
+          } else {
+            dragMap[tempLabel] = tempUrl;
+          }
+          _dragError = false;
+
+        } catch (e) {
+          _dragError = true;
+          _dragErrorMessage = "Something went wrong.\n" + e.toString();
+          _dragMap = {};
+        }
+      } else {
+        _dragError = true;
+        _dragErrorMessage = "There are no images found. Take an image to get started!";
+        _dragMap = {};
+      }
+    }
+
+    notifyListeners();
+    print(_dragMap);
   }
 
   Future<void> get fetchImageQuizData async {

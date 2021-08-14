@@ -15,10 +15,13 @@ class ImageQuiz extends StatefulWidget {
 
 class _ImageQuizState extends State<ImageQuiz> {
 
+  void initState() {
+    super.initState();
+    context.read<ImageData>().fetchImageQuizData;
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    context.read<ImageData>().fetchImageQuizData;
 
     return Scaffold(
       appBar: AppBar(
@@ -51,7 +54,7 @@ class _ImageQuizState extends State<ImageQuiz> {
               child: Consumer<ImageData>(
                 builder: (context, value, child){
                   return (value.vocabularyImageLabel == '' && value.vocabularyImageUrl == '' && !value.vocabularyError) 
-                  ? CircularProgressIndicator()
+                  ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                   : value.vocabularyError ? Text('Oops. \n${value.vocabularyErrorMessage}',
                   //Error message when vocabularyError == true
                   textAlign: TextAlign.center,
@@ -64,10 +67,10 @@ class _ImageQuizState extends State<ImageQuiz> {
                   ), )
                   : value.vocabularyImageLabel == '' && value.vocabularyImageUrl != ''
                   //Load circular progress indicator when fetching data for vocabularyImageLabel
-                  ? CircularProgressIndicator()
+                  ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                   : value.vocabularyImageLabel != '' && value.vocabularyImageUrl == ''
                   //Load circular progress indicator when fetching data for vocabularyImageUrl
-                  ? CircularProgressIndicator()
+                  ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                   : ImageQuestion(imageLabel: value.vocabularyImageLabel, imageUrl: value.vocabularyImageUrl, urlChoices: value.urlChoices);
                 }
               )

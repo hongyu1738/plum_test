@@ -38,7 +38,7 @@ class _CameraState extends State<Camera> {
   List _result = [];
 
   //String to indicate class label of the image
-  String _label = "";
+  String _label;
 
   //Load image classification model on screen initialization
   @override
@@ -213,9 +213,10 @@ class _CameraState extends State<Camera> {
     setState(() {
       _result = runModelResult; //Assign results to _result list variable
 
-      String labels = _result[0]["label"]; //Assign class labels to labels variable
-      _label = labels.substring(2); //Assign class labels to _label variable
-      _label.trimLeft();
+      String labels = _result[0]["label"];
+      //Assign class labels to labels variable
+      _label = labels.substring(3); //Assign class labels to _label variable 
+      print(_label);
     });
   }
 

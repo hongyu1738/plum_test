@@ -15,10 +15,13 @@ class VocabularyQuiz extends StatefulWidget {
 
 class _VocabularyQuizState extends State<VocabularyQuiz> {
 
+  void initState() {
+    super.initState();
+    context.read<ImageData>().fetchRandomAnswer;
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    context.read<ImageData>().fetchRandomAnswer;
 
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +58,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                   builder: (context, value, child){
                     return (value.vocabularyImageLabel == '' && value.vocabularyImageUrl == '' && !value.vocabularyError)
                     && (value.choiceResults.length == 0 && value.answerChoices.length == 0 && !value.choiceError)
-                    ? CircularProgressIndicator() 
+                    ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator())) 
                     : value.vocabularyError ? Text('Oops. \n${value.vocabularyErrorMessage}',
                     //Error message when vocabularyError == true
                     textAlign: TextAlign.center,
@@ -78,16 +81,16 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     ), )
                     : value.choiceResults.length != 0 && value.answerChoices.length == 0
                     //Load circular progress indicator when fetching data for answerChocies
-                    ? CircularProgressIndicator()
+                    ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                     : value.choiceResults.length == 0 && value.answerChoices.length != 0
                     //Load circular progress indicator when fetching data for choiceResults
-                    ? CircularProgressIndicator()
+                    ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                     : value.vocabularyImageLabel == '' && value.vocabularyImageUrl != ''
                     //Load circular progress indicator when fetching data for vocabularyImageLabel
-                    ? CircularProgressIndicator()
+                    ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                     : value.vocabularyImageLabel != '' && value.vocabularyImageUrl == ''
                     //Load circular progress indicator when fetching data for vocabularyImageUrl
-                    ? CircularProgressIndicator()
+                    ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                     : VocabularyQuestion(vocabularyLabel: value.vocabularyImageLabel, vocabularyUrl: value.vocabularyImageUrl,
                     choicesList: value.answerChoices);
                   },
