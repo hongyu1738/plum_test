@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:plum_test/layout/image_question.dart';
 import 'package:provider/provider.dart';
-import 'package:plum_test/models/image.dart';
+import 'package:plum_test/models/image_model.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:animate_do/animate_do.dart';
 

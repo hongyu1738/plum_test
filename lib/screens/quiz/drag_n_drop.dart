@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:plum_test/models/image.dart';
+import 'package:plum_test/models/image_model.dart';
 import 'package:plum_test/layout/drag_item.dart';
 import 'dart:math';
 import 'package:animate_do/animate_do.dart';

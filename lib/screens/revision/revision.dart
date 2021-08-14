@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:plum_test/models/image.dart';
+import 'package:plum_test/models/image_model.dart';
 import 'package:plum_test/layout/revision_vertical.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
@@ -19,6 +19,9 @@ class _RevisionState extends State<Revision> {
     super.initState();
     context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
     context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
+    context.read<ImageData>().fetchVolumeData;
+    context.read<ImageData>().fetchRateData;
+
   }
 
   @override
@@ -45,6 +48,8 @@ class _RevisionState extends State<Revision> {
           onRefresh: () async {
             await context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
             await context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
+            await context.read<ImageData>().fetchVolumeData;
+            await context.read<ImageData>().fetchRateData;
           },
           child: Center(
             child: Consumer<ImageData>(
@@ -78,7 +83,8 @@ class _RevisionState extends State<Revision> {
                   // ),
                   itemCount: value.classResults.length, //Determine number of rows/total number of classes
                   itemBuilder: (context, index){
-                    return VerticalView(classResult: value.classResults[index], imageResult: value.imageResults);
+                    return VerticalView(classResult: value.classResults[index], imageResult: value.imageResults, 
+                    volume: value.ttsVolume, rate: value.ttsRate);
                   }
                 );
               },

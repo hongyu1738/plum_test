@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:plum_test/layout/drag_result_success.dart';
 import 'package:plum_test/layout/image_result_failure.dart';
 import 'package:plum_test/layout/image_result_success.dart';
-import 'package:plum_test/models/image.dart';
+import 'package:plum_test/models/image_model.dart';
+import 'package:plum_test/models/settings_model.dart';
 import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/screens/learn/camera.dart';
 import 'package:plum_test/screens/quiz/drag_n_drop.dart';
@@ -29,7 +30,12 @@ class MyApp extends StatelessWidget {
       home: Home(),
       routes: {
         '/home' : (context) => Home(),
-        '/camera' : (context) => Camera(),
+        '/camera' : (context) => ChangeNotifierProvider(
+          create: (context) => ImageData(), 
+          builder: (context, child){ 
+            return Camera(); 
+          }
+        ),
         '/settings' : (context) => Settings(),
         '/revision' : (context) => ChangeNotifierProvider(
           create: (context) => ImageData(),

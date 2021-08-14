@@ -40,6 +40,11 @@ class ImageData with ChangeNotifier {
    bool _dragError = false;
    String _dragErrorMessage = '';
 
+  double _ttsVolume = 0.0;
+  double _ttsRate = 0.0;
+  bool _ttsError = false;
+  String _ttsErrorMessage = "";
+
   //Getter functions for variables
 
   List <dynamic> get classResults => _classResults;
@@ -70,6 +75,11 @@ class ImageData with ChangeNotifier {
   //List<String> get dragList => _dragList;
   bool get dragError => _dragError;
   String get dragErrorMessage => _dragErrorMessage;
+
+  double get ttsVolume => _ttsVolume;
+  double get ttsRate => _ttsRate;
+  bool get ttsError => _ttsError;
+  String get ttsErrorMessage => _ttsErrorMessage;
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
@@ -280,6 +290,52 @@ class ImageData with ChangeNotifier {
     _urlChoices.shuffle();
     notifyListeners();
     print(_urlChoices);
+  }
+
+  Future <void> get fetchVolumeData async {
+    DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('volume').get();
+
+    if (ttsSnapshot.exists){
+      try {
+        _ttsVolume = ttsSnapshot['volume'];
+         _ttsError = false;
+        // double volume = double.parse(volumeString);
+        // _ttsVolume = volume;
+
+      } catch(e) {
+        _ttsError = true;
+        _ttsErrorMessage = e.toString();
+        _ttsVolume = 0.0;
+      }
+    } else {
+      _ttsError = true;
+      _ttsErrorMessage = "There is no specified volume. Please try again.";
+      _ttsVolume = 0.0;
+    } 
+
+    notifyListeners();
+  }
+
+  Future <void> get fetchRateData async {
+    DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('rate').get();
+
+    if (ttsSnapshot.exists){
+      try {
+        _ttsRate = ttsSnapshot['rate'];
+        _ttsError = false;
+
+      } catch(e) {
+        _ttsError = true;
+        _ttsErrorMessage = e.toString();
+        _ttsRate = 0.0;
+      }
+    } else {
+      _ttsError = true;
+      _ttsErrorMessage = "There is no specified rate. Please try again.";
+      _ttsRate = 0.0;
+    } 
+
+    notifyListeners();
   }
   
   void generateRandomNumber(int counter){

@@ -7,11 +7,13 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:plum_test/models/image_model.dart';
 //import 'package:path_provider/path_provider.dart';
 //import 'package:meta/meta.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:toast/toast.dart';
+import 'package:provider/provider.dart';
 
 class Camera extends StatefulWidget {
   const Camera({ Key key }) : super(key: key);
@@ -45,6 +47,7 @@ class _CameraState extends State<Camera> {
   void initState() { 
     super.initState();
     loadModel();
+    context.read<ImageData>().fetchVolumeData;
   }
 
   //Function to get image from Camera
@@ -221,7 +224,8 @@ class _CameraState extends State<Camera> {
   }
 
   getSpeech() async { //Function for text to speech without customization
-      await flutterTts.speak(_label);
+    await flutterTts.setVolume(ImageData().ttsVolume);
+    await flutterTts.speak(_label);
   }
 
   @override
