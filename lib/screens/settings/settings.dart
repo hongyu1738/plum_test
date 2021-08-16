@@ -50,10 +50,15 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         backgroundColor: Colors.orange[400],
         centerTitle: true,
-        title: Text('Settings'),
-        titleTextStyle: TextStyle(
-          fontSize: 24.0,
-        ),
+        title: Text('Settings',
+        // titleTextStyle: TextStyle(
+        //   fontSize: 30,
+        // ),
+        style: TextStyle(
+          fontSize: 30,
+          //fontWeight: FontWeight.w400,
+          letterSpacing: .5,
+        )),
       ),
 
       body: Column(
@@ -62,8 +67,8 @@ class _SettingsState extends State<Settings> {
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
             child: Text("Pronunciation",
-            style: GoogleFonts.ibmPlexSans(
-              fontSize: 28,
+            style: TextStyle(
+              fontSize: 34,
               fontWeight: FontWeight.w400,
               ),
             ),
@@ -76,8 +81,8 @@ class _SettingsState extends State<Settings> {
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
             child: Text("Volume",
-            style: GoogleFonts.ibmPlexSans(
-              fontSize: 24,
+            style: TextStyle(
+              fontSize: 30,
               fontWeight: FontWeight.w400,
               ),
             ),
@@ -91,8 +96,8 @@ class _SettingsState extends State<Settings> {
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
             child: Text("Speech Rate",
-            style: GoogleFonts.ibmPlexSans(
-              fontSize: 24,
+            style: TextStyle(
+              fontSize: 30,
               fontWeight: FontWeight.w400,
               ),
             ),

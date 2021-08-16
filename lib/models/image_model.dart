@@ -35,6 +35,7 @@ class ImageData with ChangeNotifier {
 
   List<String> _urlList = [];
   List<String> _urlChoices = [];
+  String _tempUrl = '';
 
    Map<String, String> _dragMap = {};
    bool _dragError = false;
@@ -269,22 +270,48 @@ class ImageData with ChangeNotifier {
     print(_dragMap);
   }
 
-  Future<void> get fetchImageQuizData async {
+  Future<void> get fetchImageQuizData async { //Correction needed to change logic to prevent image of 
+  //same class from appearing
 
     await fetchVocabularyImage;
+    await fetchClassData;
     
     _urlChoices.clear();
     _urlChoices.add(vocabularyImageUrl);
 
     for (var i = 1; i < 2; i++){
-      generateRandomNumber(_imageCounter);
-      String url = _urlList[_randomNum];
+      // generateRandomNumber(_imageCounter);
 
-      if (_urlChoices.contains(url)){
+      // imageResults.entries.map((results) {
+      //   if (results.key != vocabularyImageLabel){
+      //     int tempLength = e.value.length;
+      //     generateRandomNumber(tempLength);
+      //     _tempUrl = e.value[_randomNum];
+      //   } else {
+      //     i--;
+      //   }
+      // });
+
+      generateRandomNumber(_classResults.length);
+      String tempClass = _classResults[_randomNum];
+
+      if (tempClass == vocabularyImageLabel){
         i--;
       } else {
-        _urlChoices.add(url);
+        List <dynamic> tempList = _imageResults[tempClass];
+        generateRandomNumber(tempList.length);
+        _tempUrl = tempList[_randomNum];
+        _urlChoices.add(_tempUrl);
       }
+
+
+      //String url = _urlList[_randomNum];
+
+      // if (urlChoices.contains(_tempUrl)){
+      //   i--;
+      // } else {
+      //   _urlChoices.add(_tempUrl);
+      // }
     }
 
     _urlChoices.shuffle();

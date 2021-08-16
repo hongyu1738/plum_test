@@ -38,9 +38,9 @@ class _VerticalViewState extends State<VerticalView> {
           child: Row(
             children: [
               Text('${widget.classResult}',
-                style: GoogleFonts.ibmPlexSans(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w400,
+                style: TextStyle(
+                  fontSize: 36,
+                  //fontWeight: FontWeight.w400,
                   letterSpacing: .5,
                 ),
               ),

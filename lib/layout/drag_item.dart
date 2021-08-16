@@ -19,7 +19,7 @@ class DragItem extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.05,
         width: MediaQuery.of(context).size.width * 0.40,
         //padding: EdgeInsets.all(12),
-        child: Text(label, style: GoogleFonts.ibmPlexSans(fontSize: 26, fontWeight: FontWeight.w400)),
+        child: Text(label, style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400)),
       ),
     );
   }

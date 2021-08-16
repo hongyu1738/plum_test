@@ -55,9 +55,9 @@ class ImageQuestion extends StatelessWidget {
 
 
   Widget showQuizLabel(String label) => Padding(
-      padding: const EdgeInsets.only(top: 12.0),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 8.0),
       child: Text("$label", 
-        style: GoogleFonts.ibmPlexSans(
+        style: TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.w400,
         //fontStyle: FontStyle.italic,

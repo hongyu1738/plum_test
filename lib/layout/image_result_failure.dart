@@ -12,9 +12,9 @@ class ImageResultFailure extends StatelessWidget {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Fail',
-        style: GoogleFonts.ibmPlexSans(
+        style: TextStyle(
           //textStyle: Theme.of(context).textTheme.headline4,
-          fontSize: 26,
+          fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
           //fontStyle: FontStyle.italic,
@@ -37,12 +37,13 @@ class ImageResultFailure extends StatelessWidget {
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
                 icon: Icon(Icons.home_rounded),
-                label: Text('Back to Main Menu'),
+                label: Text('Back to Main Menu',
+                style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
                 style: ElevatedButton.styleFrom(
                   // background color
                   primary: Colors.orange,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                  textStyle: GoogleFonts.ibmPlexSans(
+                  textStyle: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
                   ),
@@ -57,13 +58,14 @@ class ImageResultFailure extends StatelessWidget {
                 onPressed: (){
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.home_rounded),
-                label: Text('Try Again?'),
+                icon: Icon(Icons.autorenew_rounded),
+                label: Text('Try Again?',
+                style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
                 style: ElevatedButton.styleFrom(
                   // background color
                   primary: Colors.orange,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                  textStyle: GoogleFonts.ibmPlexSans(
+                  textStyle: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w500,
                   ),

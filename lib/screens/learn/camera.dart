@@ -48,6 +48,7 @@ class _CameraState extends State<Camera> {
     super.initState();
     loadModel();
     context.read<ImageData>().fetchVolumeData;
+    context.read<ImageData>().fetchRateData;
   }
 
   //Function to get image from Camera
@@ -225,6 +226,7 @@ class _CameraState extends State<Camera> {
 
   getSpeech() async { //Function for text to speech without customization
     await flutterTts.setVolume(ImageData().ttsVolume);
+    await flutterTts.setSpeechRate(ImageData().ttsRate);
     await flutterTts.speak(_label);
   }
 
@@ -235,10 +237,10 @@ class _CameraState extends State<Camera> {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Learn',
-        style: GoogleFonts.ibmPlexSans(
+        style: TextStyle(
           //textStyle: Theme.of(context).textTheme.headline4,
-          fontSize: 26,
-          fontWeight: FontWeight.w400,
+          fontSize: 30,
+          //fontWeight: FontWeight.w400,
           letterSpacing: .5,
           //fontStyle: FontStyle.italic,
         )),
@@ -264,9 +266,9 @@ class _CameraState extends State<Camera> {
                     width: 300,
                     child: Text('Select an image from the right bottom corner',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.ibmPlexSans(
+                    style: TextStyle(
                       fontSize: 32,
-                      fontWeight: FontWeight.w400,
+                      //fontWeight: FontWeight.w400,
                       //fontStyle: FontStyle.italic,
                       letterSpacing: .5,
                     ), 
@@ -303,12 +305,12 @@ class _CameraState extends State<Camera> {
                       flex: 7,
                       child: Center(
                         child: Text("$_label",
-                        style: GoogleFonts.ibmPlexSans(
+                        style: TextStyle(
                           //textStyle: Theme.of(context).textTheme.headline4,
                           fontSize: 40,
                           fontWeight: FontWeight.w400,
                           //fontStyle: FontStyle.italic,
-                          letterSpacing: .8,
+                          letterSpacing: .5,
                         ), 
                         ),
                       ),
@@ -337,7 +339,10 @@ class _CameraState extends State<Camera> {
       ),
 
       floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
+        buttonSize: 72,
+        childrenButtonSize: 72,
+        icon: Icons.add,
+        activeIcon: Icons.close,
         animatedIconTheme: IconThemeData(size: 30),
         backgroundColor: Colors.orange[400],
         visible: true,
@@ -349,10 +354,10 @@ class _CameraState extends State<Camera> {
               backgroundColor: Colors.white,
               onTap: getImageFromCamera,
               label: 'Camera',
-              labelStyle: GoogleFonts.ibmPlexSans(
+              labelStyle: TextStyle(
                   fontWeight: FontWeight.w400,
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 30,
                   letterSpacing: .5,
                   // fontStyle: FontStyle.italic,
               ),
@@ -364,10 +369,10 @@ class _CameraState extends State<Camera> {
               backgroundColor: Colors.white,
               onTap: getImageFromGallery,
               label: 'Gallery',
-              labelStyle: GoogleFonts.ibmPlexSans(
+              labelStyle: TextStyle(
                   fontWeight: FontWeight.w400,
                   color: Colors.white,
-                  fontSize: 24,
+                  fontSize: 30,
                   letterSpacing: .5,
                   // fontStyle: FontStyle.italic,
               ),

@@ -28,9 +28,9 @@ class _ImageQuizState extends State<ImageQuiz> {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Image Quiz',
-        style: GoogleFonts.ibmPlexSans(
+        style: TextStyle(
           //textStyle: Theme.of(context).textTheme.headline4,
-          fontSize: 26,
+          fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
           //fontStyle: FontStyle.italic,
@@ -58,7 +58,7 @@ class _ImageQuizState extends State<ImageQuiz> {
                   : value.vocabularyError ? Text('Oops. \n${value.vocabularyErrorMessage}',
                   //Error message when vocabularyError == true
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.ibmPlexSans(
+                  style: TextStyle(
                     //textStyle: Theme.of(context).textTheme.headline4,
                     fontSize: 24,
                     fontWeight: FontWeight.w400,

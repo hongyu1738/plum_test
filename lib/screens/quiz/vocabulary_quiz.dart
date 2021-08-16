@@ -28,9 +28,9 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Vocabulary Quiz',
-        style: GoogleFonts.ibmPlexSans(
+        style: TextStyle(
           //textStyle: Theme.of(context).textTheme.headline4,
-          fontSize: 26,
+          fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
           //fontStyle: FontStyle.italic,
@@ -62,7 +62,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     : value.vocabularyError ? Text('Oops. \n${value.vocabularyErrorMessage}',
                     //Error message when vocabularyError == true
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.ibmPlexSans(
+                    style: TextStyle(
                       //textStyle: Theme.of(context).textTheme.headline4,
                       fontSize: 24,
                       fontWeight: FontWeight.w400,
@@ -72,7 +72,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     : value.choiceError ? Text('Oops. \n${value.choiceErrorMessage}',
                     //Error message when choiceError == true
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.ibmPlexSans(
+                    style: TextStyle(
                       //textStyle: Theme.of(context).textTheme.headline4,
                       fontSize: 24,
                       fontWeight: FontWeight.w400,

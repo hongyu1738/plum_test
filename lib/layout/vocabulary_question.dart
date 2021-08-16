@@ -67,7 +67,7 @@ class VocabularyQuestion extends StatelessWidget {
       children: [
         Text(choice, 
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 30,
           //fontWeight: FontWeight.bold,
         ),)
       ],

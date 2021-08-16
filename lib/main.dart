@@ -3,7 +3,6 @@ import 'package:plum_test/layout/drag_result_success.dart';
 import 'package:plum_test/layout/image_result_failure.dart';
 import 'package:plum_test/layout/image_result_success.dart';
 import 'package:plum_test/models/image_model.dart';
-import 'package:plum_test/models/settings_model.dart';
 import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/screens/learn/camera.dart';
 import 'package:plum_test/screens/quiz/drag_n_drop.dart';
@@ -28,6 +27,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Home(),
+      theme: ThemeData(fontFamily: 'CrayonKids'),
       routes: {
         '/home' : (context) => Home(),
         '/camera' : (context) => ChangeNotifierProvider(

@@ -12,9 +12,9 @@ class VocabularyResultSuccess extends StatelessWidget {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Success',
-        style: GoogleFonts.ibmPlexSans(
+        style: TextStyle(
           //textStyle: Theme.of(context).textTheme.headline4,
-          fontSize: 26,
+          fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
           //fontStyle: FontStyle.italic,
@@ -35,7 +35,8 @@ class VocabularyResultSuccess extends StatelessWidget {
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
                 icon: Icon(Icons.home_rounded),
-                label: Text('Back to Main Menu'),
+                label: Text('Back to Main Menu',
+                style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
                 style: ElevatedButton.styleFrom(
                   // background color
                   primary: Colors.orange,
@@ -55,8 +56,9 @@ class VocabularyResultSuccess extends StatelessWidget {
                 onPressed: (){
                   Navigator.of(context).pushReplacementNamed('/vocabularyQuiz');
                 },
-                icon: Icon(Icons.home_rounded),
-                label: Text('Try Another?'),
+                icon: Icon(Icons.autorenew_rounded),
+                label: Text('Try Another?',
+                style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
                 style: ElevatedButton.styleFrom(
                   // background color
                   primary: Colors.orange,

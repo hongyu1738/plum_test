@@ -33,9 +33,9 @@ class _DragAndDropState extends State<DragAndDrop> {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Drag and Drop',
-        style: GoogleFonts.ibmPlexSans(
+        style: TextStyle(
           //textStyle: Theme.of(context).textTheme.headline4,
-          fontSize: 26,
+          fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
           //fontStyle: FontStyle.italic,
@@ -68,7 +68,7 @@ class _DragAndDropState extends State<DragAndDrop> {
               : value.dragError ? Text('Oops. \n${value.dragErrorMessage}',
               //Error message when dragError == true
               textAlign: TextAlign.center,
-              style: GoogleFonts.ibmPlexSans(
+              style: TextStyle(
                 //textStyle: Theme.of(context).textTheme.headline4,
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
@@ -110,8 +110,8 @@ class _DragAndDropState extends State<DragAndDrop> {
       if (score[label] == true) {
         return Container(
           child: Text('Correct', 
-          style: GoogleFonts.ibmPlexSans(
-            fontSize: 26,
+          style: TextStyle(
+            fontSize: 32,
             fontWeight: FontWeight.w400)
           ),
           alignment: Alignment.center,

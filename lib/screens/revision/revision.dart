@@ -32,9 +32,9 @@ class _RevisionState extends State<Revision> {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Revision',
-        style: GoogleFonts.ibmPlexSans(
-          fontSize: 26,
-          fontWeight: FontWeight.w400,
+        style: TextStyle(
+          fontSize: 30,
+          //fontWeight: FontWeight.w400,
           letterSpacing: .5,
         )),
       ),
@@ -60,16 +60,16 @@ class _RevisionState extends State<Revision> {
                 : value.classError ? Text('Oops. ${value.classErrorMessage}',
                 //Error message when classError == true
                 textAlign: TextAlign.center,
-                style: GoogleFonts.ibmPlexSans(
+                style: TextStyle(
                   fontSize: 24,
-                  fontWeight: FontWeight.w400,
+                  //fontWeight: FontWeight.w400,
                 ), )
                 : value.imageError ? Text('Oops. ${value.imageErrorMessage}',
                 //Error message when imageError == true
                 textAlign: TextAlign.center,
-                style: GoogleFonts.ibmPlexSans(
+                style: TextStyle(
                   fontSize: 24,
-                  fontWeight: FontWeight.w400,
+                  //fontWeight: FontWeight.w400,
                 ), )
                 : value.classMap.length == 0 && value.imageMap.length != 0
                 //Load circular progress indicator when fetching data for classMap
