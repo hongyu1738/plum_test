@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:plum_test/layout/vocabulary_question.dart';
 import 'package:plum_test/models/image_model.dart';
 import 'package:provider/provider.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class VocabularyQuiz extends StatefulWidget {
   const VocabularyQuiz({ Key key }) : super(key: key);
@@ -19,6 +19,8 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
     super.initState();
     context.read<ImageData>().fetchRandomAnswer;
   }
+
+  final vocabularyPlayer = AudioCache(prefix: 'assets/audio/');
 
   @override
   Widget build(BuildContext context) {
@@ -59,16 +61,21 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     return (value.vocabularyImageLabel == '' && value.vocabularyImageUrl == '' && !value.vocabularyError)
                     && (value.choiceResults.length == 0 && value.answerChoices.length == 0 && !value.choiceError)
                     ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator())) 
-                    : value.vocabularyError ? Text('Oops. \n${value.vocabularyErrorMessage}',
-                    //Error message when vocabularyError == true
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      //textStyle: Theme.of(context).textTheme.headline4,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400,
-                      //fontStyle: FontStyle.italic,
-                      //letterSpacing: .5,
-                    ), )
+                    : value.vocabularyError ? SizedBox(
+                      height: 500,
+                      child: Center(
+                        child: Text('Oops. \n${value.vocabularyErrorMessage}',
+                        //Error message when vocabularyError == true
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          //textStyle: Theme.of(context).textTheme.headline4,
+                          fontSize: 32,
+                          fontWeight: FontWeight.w400,
+                          //fontStyle: FontStyle.italic,
+                          //letterSpacing: .5,
+                        ), ),
+                      ),
+                    )
                     : value.choiceError ? Text('Oops. \n${value.choiceErrorMessage}',
                     //Error message when choiceError == true
                     textAlign: TextAlign.center,
@@ -92,7 +99,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     //Load circular progress indicator when fetching data for vocabularyImageUrl
                     ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                     : VocabularyQuestion(vocabularyLabel: value.vocabularyImageLabel, vocabularyUrl: value.vocabularyImageUrl,
-                    choicesList: value.answerChoices);
+                    choicesList: value.answerChoices, vocabularyPlayer: vocabularyPlayer);
                   },
                 )
             ),

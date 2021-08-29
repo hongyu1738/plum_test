@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Settings extends StatefulWidget {
   const Settings({ Key key }) : super(key: key);
@@ -11,36 +10,49 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
 
-  double volume = 0.0;
-  double rate = 0.0;
+  double ttsVolume = 0.0;
+  double ttsRate = 0.0;
+  double backgroundVolume = 0.0;
 
-  Future <void> getVolume() async {
+  Future <void> getTtsVolume() async {
     DocumentSnapshot volumeSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('volume').get();
     setState(() {
-      volume = volumeSnapshot['volume'];
+      ttsVolume = volumeSnapshot['volume'];
     });
   }
 
-  Future updateVolume(double volume) async {
+  Future updateTtsVolume(double volume) async {
     await FirebaseFirestore.instance.collection('Tts').doc('volume').set({ 'volume': volume });
   }
 
-  Future <void> getRate() async {
+  Future <void> getTtsRate() async {
     DocumentSnapshot rateSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('rate').get();
     setState(() {
-      rate = rateSnapshot['rate'];
+      ttsRate = rateSnapshot['rate'];
     });
   }
 
-  Future updateRate(double rate) async {
+  Future updateTtsRate(double rate) async {
     await FirebaseFirestore.instance.collection('Tts').doc('rate').set({ 'rate': rate });
+  }
+
+  Future <void> getBackgroundVolume() async {
+    DocumentSnapshot backgroundSnapshot = await FirebaseFirestore.instance.collection('Background').doc('volume').get();
+    setState(() {
+      backgroundVolume = backgroundSnapshot['volume'];   
+    });
+  }
+
+  Future updateBackgroundVolume(double bgVolume) async {
+    await FirebaseFirestore.instance.collection('Background').doc('volume').set({ 'volume': bgVolume });
   }
 
   @override
   void initState() {
     super.initState();
-    getVolume();
-    getRate();
+    getTtsVolume();
+    getTtsRate();
+    getBackgroundVolume();
   }
 
   @override
@@ -88,11 +100,11 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           _volume(),
-          Divider(
-            thickness: 5,
-            indent: 20,
-            endIndent: 20,
-          ),
+          // Divider(
+          //   thickness: 5,
+          //   indent: 20,
+          //   endIndent: 20,
+          // ),
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
             child: Text("Speech Rate",
@@ -103,6 +115,30 @@ class _SettingsState extends State<Settings> {
             ),
           ),
           _rate(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
+            child: Text("Background Music",
+            style: TextStyle(
+              fontSize: 34,
+              fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          Divider(
+            thickness: 5,
+            indent: 20,
+            endIndent: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+            child: Text("Volume",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          _backgroundVolume(),
         ],
       ),
 
@@ -132,34 +168,51 @@ class _SettingsState extends State<Settings> {
 
   Widget _volume() {
     return Slider(
-      value: volume,
+      value: ttsVolume,
       onChanged: (newVolume) {
         setState((){
-          volume = newVolume;
-          updateVolume(newVolume);
+          ttsVolume = newVolume;
+          updateTtsVolume(newVolume);
         });
       },
       min: 0.0,
       max: 1.0,
       divisions: 10,
-      label: "Volume: $volume",
+      label: "Volume: $ttsVolume",
       activeColor: Colors.orange[300],
     );
   }
 
   Widget _rate() {
     return Slider(
-      value: rate,
+      value: ttsRate,
       onChanged: (newRate) {
         setState(() {
-          rate = newRate;
-          updateRate(newRate);
+          ttsRate = newRate;
+          updateTtsRate(newRate);
         });
       },
       min: 0.0,
       max: 1.0,
       divisions: 10,
-      label: "Rate: $rate",
+      label: "Rate: $ttsRate",
+      activeColor: Colors.orange[300],
+    );
+  }
+
+  Widget _backgroundVolume(){
+    return Slider(
+      value: backgroundVolume,
+      onChanged: (newVolume) {
+        setState(() {
+          backgroundVolume = newVolume;
+          updateBackgroundVolume(newVolume);
+        });
+      },
+      min: 0.0,
+      max: 1.0,
+      divisions: 10,
+      label: "Rate: $backgroundVolume",
       activeColor: Colors.orange[300],
     );
   }

@@ -1,5 +1,5 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:plum_test/models/image_model.dart';
 import 'package:plum_test/layout/drag_item.dart';
@@ -18,11 +18,13 @@ class _DragAndDropState extends State<DragAndDrop> {
   final Map<String, bool> score = {};
   Random random = new Random();
   int randomNum;
+  final dragPlayer = AudioCache(prefix: 'assets/audio/');
 
   void initState() {
     super.initState();
     context.read<ImageData>().fetchDragData;
     randomNum = random.nextInt(10);
+    dragPlayer.loadAll(["single_correct.wav", "win.wav"]);
   }
 
   @override
@@ -65,16 +67,18 @@ class _DragAndDropState extends State<DragAndDrop> {
             builder: (context, value, child){
               return (value.dragMap.length == 0 && !value.dragError)
               ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
-              : value.dragError ? Text('Oops. \n${value.dragErrorMessage}',
-              //Error message when dragError == true
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                //textStyle: Theme.of(context).textTheme.headline4,
-                fontSize: 24,
-                fontWeight: FontWeight.w400,
-                //fontStyle: FontStyle.italic,
-                //letterSpacing: .5,
-              ), )
+              : value.dragError ? Center(
+                child: Text('Oops. \n${value.dragErrorMessage}',
+                //Error message when dragError == true
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  //textStyle: Theme.of(context).textTheme.headline4,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w400,
+                  //fontStyle: FontStyle.italic,
+                  //letterSpacing: .5,
+                ), ),
+              )
               : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -141,12 +145,14 @@ class _DragAndDropState extends State<DragAndDrop> {
         score[label] = true;
       });
       compareResult(context, score);
+      dragPlayer.play("single_correct.wav");
     },
     onLeave: (data){},
   );
 
   void compareResult(BuildContext context, Map score){
     if (score.length == 3){
+      dragPlayer.play("win.wav");
       Navigator.of(context).pushReplacementNamed('/dragResultSuccess');
     }
   }

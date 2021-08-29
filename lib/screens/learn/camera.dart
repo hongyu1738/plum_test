@@ -2,16 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:plum_test/layout/camera_speech.dart';
 import 'package:plum_test/models/image_model.dart';
 //import 'package:path_provider/path_provider.dart';
 //import 'package:meta/meta.dart';
 import 'package:tflite/tflite.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+//import 'package:flutter_tts/flutter_tts.dart';
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class _CameraState extends State<Camera> {
   final ImagePicker imagePicker = ImagePicker();
 
   //Instantiate classification model
-  final FlutterTts flutterTts = FlutterTts();
+  //final FlutterTts flutterTts = FlutterTts();
 
   //Instantiate Firebase Storage
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -122,6 +123,36 @@ class _CameraState extends State<Camera> {
     } else {
       //print("Gallery permission not granted. Please try again.");
       Toast.show("Gallery permission not granted. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
+  }
+
+  Future cropImage() async {
+
+    File croppedFile = await ImageCropper.cropImage(
+      sourcePath: _image.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.original,
+      ],
+      androidUiSettings: AndroidUiSettings(
+        toolbarTitle: 'Crop',
+        toolbarColor: Colors.orange[400],
+        backgroundColor: Colors.white,
+        toolbarWidgetColor: Colors.white,
+        initAspectRatio: CropAspectRatioPreset.original,
+        lockAspectRatio: false,
+      )
+    );
+
+    if (croppedFile != null){
+
+      setState(() {
+        _image = croppedFile;
+      });
+
+      await runModel(_image);
+
+      addImageToStorage(_image);
+      
     }
   }
 
@@ -224,14 +255,10 @@ class _CameraState extends State<Camera> {
     });
   }
 
-  getSpeech() async { //Function for text to speech without customization
-    await flutterTts.setVolume(ImageData().ttsVolume);
-    await flutterTts.setSpeechRate(ImageData().ttsRate);
-    await flutterTts.speak(_label);
-  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange[400],
@@ -283,13 +310,17 @@ class _CameraState extends State<Camera> {
                 SizedBox(height: 30),
 
                 Center(
-                  child: Container(
-                    height: 350,
-                    width: 350,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: FileImage(_image), //Load image if image is selected
-                        fit: BoxFit.scaleDown,
+                  child: GestureDetector(
+                    onTap: cropImage,
+                    child: Container(
+                      height: 350,
+                      width: 350,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                          image: FileImage(_image), //Load image if image is selected
+                          fit: BoxFit.scaleDown,
+                        ),
                       ),
                     ),
                   ),
@@ -318,16 +349,19 @@ class _CameraState extends State<Camera> {
 
                     Spacer(),
 
-                    Expanded(
-                      flex: 2,
-                      child: IconButton(
-                        onPressed: getSpeech,
-                        icon: Icon(Icons.volume_up_rounded),
-                        color: Colors.grey[800],
-                        iconSize: 38,
-                        tooltip: "Press for pronounciation",
-                      ),
-                    ),
+                    // Expanded(
+                    //   flex: 2,
+                    //   child: IconButton(
+                    //     onPressed: getSpeech,
+                    //     icon: Icon(Icons.volume_up_rounded),
+                    //     color: Colors.grey[800],
+                    //     iconSize: 38,
+                    //     tooltip: "Press for pronounciation",
+                    //   ),
+                    // ),
+                    Consumer<ImageData>(builder: (context, value, child){
+                      return CameraSpeech(volume: value.ttsVolume, rate: value.ttsRate, label: _label);
+                    }),
 
                     Spacer(flex: 2),
                   ],

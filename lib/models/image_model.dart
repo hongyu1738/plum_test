@@ -46,6 +46,10 @@ class ImageData with ChangeNotifier {
   bool _ttsError = false;
   String _ttsErrorMessage = "";
 
+  double _bgVolume = 0.0;
+  bool _bgError = false;
+  String _bgErrorMessage = "";
+
   //Getter functions for variables
 
   List <dynamic> get classResults => _classResults;
@@ -81,6 +85,10 @@ class ImageData with ChangeNotifier {
   double get ttsRate => _ttsRate;
   bool get ttsError => _ttsError;
   String get ttsErrorMessage => _ttsErrorMessage;
+
+  double get bgVolume => _bgVolume;
+  bool get bgError => _bgError;
+  String get bgErrorMessage => _bgErrorMessage;
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
@@ -146,7 +154,8 @@ class ImageData with ChangeNotifier {
     //print(_classResults);
   }
 
-  Future<void> get fetchChoicesData async { //Function to fetch all possible choices of answer from Cloud Firestore
+  Future<void> get fetchChoicesData async { 
+    //Function to fetch all possible choices of answer from Cloud Firestore
     QuerySnapshot choiceSnapshot = await FirebaseFirestore.instance.collection('Answer').get();
     List<DocumentSnapshot<Object>> choiceDocuments = choiceSnapshot.docs;
     _choiceResults.clear();
@@ -174,160 +183,178 @@ class ImageData with ChangeNotifier {
     //print(_answerResults);
   }
 
-  Future<void> get fetchRandomAnswer async { //Function to fetch randomized answer chocies for Vocabulary Quiz
+  Future<void> get fetchRandomAnswer async { 
+    //Function to fetch randomized answer choices for Vocabulary Quiz
 
-    await fetchChoicesData;
-    await fetchVocabularyImage;
+    await fetchChoicesData; //Fetch data for choiceResults
+    await fetchVocabularyImage; //Fetch data for vocabularyImageLabel and vocabularyImageUrl
 
-    _answerChoices.clear();
-    _answerChoices.add(_vocabularyImageLabel);
+    _answerChoices.clear(); //Clear pre-existing image labels in answerChoices
+    _answerChoices.add(_vocabularyImageLabel); //Add vocabularyImageLabel as answer
 
-    for (var i = 1; i < 4; i++){
-      generateRandomNumber(50);
+    for (var i = 1; i < 4; i++){ //Loop four times for four different answers
+      //Generate random number with a max value of 29
+      generateRandomNumber(30);
+      //Acquire random answer from choiceResults
       String ans = _choiceResults[_randomNum];
 
+      //If random answer is already in answerChoices, then rerun the loop
       if (_answerChoices.contains(ans)){
         i--;
       } else {
+        // If not, add the answer to the answerChoices list
         _answerChoices.add(ans);
       }
     }
-    _answerChoices.shuffle();
+    _answerChoices.shuffle(); //Shuffle the list for randomization
 
     notifyListeners();
     //print(_answerChoices);
   }
 
-  Future<void> get fetchVocabularyImage async { //Function to fetch a random image as question for Vocabulary Quiz
+  Future<void> get fetchVocabularyImage async { 
+    //Function to fetch a random image and label as the question and answer
 
     await fetchImageData;
-    //await fetchClassData;
 
-    generateRandomNumber(_imageCounter);
-    String rand = _randomNum.toString();
-    DocumentSnapshot vocabularySnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
+    if (_imageResults.keys.length < 2) {
+      _vocabularyError = true;
+      _vocabularyErrorMessage = "Unlock more classes to play the game! Classes required: ${(2 - _imageResults.keys.length)}";
+      _vocabularyImageLabel = '';
+      _vocabularyImageUrl = '';
 
-    if (vocabularySnapshot.exists){
-      try {
-        _vocabularyImageLabel = vocabularySnapshot['label'];
-        _vocabularyImageUrl = vocabularySnapshot['url'];
-        _vocabularyError = false;
-      } catch (e) {
+    } else {
+      //Generate a random number for random image label and url
+      generateRandomNumber(_imageCounter);
+      String rand = _randomNum.toString();
+      DocumentSnapshot vocabularySnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
+
+      if (vocabularySnapshot.exists){
+        try {
+          _vocabularyImageLabel = vocabularySnapshot['label'];
+          _vocabularyImageUrl = vocabularySnapshot['url'];
+          _vocabularyError = false;
+        } catch (e) {
+          _vocabularyError = true;
+          _vocabularyErrorMessage = e.toString();
+          _vocabularyImageLabel = '';
+          _vocabularyImageUrl = '';
+        }
+      } else {
         _vocabularyError = true;
-        _vocabularyErrorMessage = e.toString();
+        _vocabularyErrorMessage = "There are no images found. Take an image to get started!";
         _vocabularyImageLabel = '';
         _vocabularyImageUrl = '';
       }
-    } else {
-      _vocabularyError = true;
-      _vocabularyErrorMessage = "There are no images found. Take an image to get started!";
-      _vocabularyImageLabel = '';
-      _vocabularyImageUrl = '';
     }
 
     notifyListeners();
-    print(_vocabularyImageUrl);
-    print(_vocabularyImageLabel);
+    //print(_vocabularyImageUrl);
+    //print(_vocabularyImageLabel);
   }
 
   Future<void> get fetchDragData async {
+    //Function to fetch data for Drag and Drop Quiz
 
-    await fetchImageData;
-    _dragMap.clear();
-    //_dragList.clear();
+    await fetchImageData; //Fetch data from Images
+    _dragMap.clear(); //Clear pre-existing data from dragMap
 
-    for (var i = 1; i < 4; i++){
-      generateRandomNumber(_imageCounter);
-      String rand = _randomNum.toString();
-      DocumentSnapshot dragSnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
+    if (_imageResults.keys.length < 6) {
+      _dragError = true;
+      _dragErrorMessage = "Unlock more classes to play the game! Classes required: ${(6 - _imageResults.keys.length)}";
+      _dragMap = {};
+    } else {
+      for (var i = 1; i < 4; i++){ //Run the loop three times for three image labels and url
+        //Generate random number based on imageCounter
+        generateRandomNumber(_imageCounter); 
+        String rand = _randomNum.toString();
+        DocumentSnapshot dragSnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
 
-      if (dragSnapshot.exists){
-        try {
-          String tempLabel = dragSnapshot['label'];
-          String tempUrl = dragSnapshot['url'];
+        if (dragSnapshot.exists){
+          try {
+            String tempLabel = dragSnapshot['label'];
+            String tempUrl = dragSnapshot['url'];
 
-          if (dragMap.containsKey(tempLabel)){
-            dragMap.update(tempLabel, (value) => tempUrl, ifAbsent: () => tempUrl);
-            i--;
-          } else {
-            dragMap[tempLabel] = tempUrl;
+            if (dragMap.containsKey(tempLabel)){
+              dragMap.update(tempLabel, (value) => tempUrl, ifAbsent: () => tempUrl);
+              i--;
+            } else {
+              dragMap[tempLabel] = tempUrl;
+            }
+            _dragError = false;
+
+          } catch (e) {
+            _dragError = true;
+            _dragErrorMessage = "Something went wrong.\n" + e.toString();
+            _dragMap = {};
           }
-          _dragError = false;
-
-        } catch (e) {
+        } else {
           _dragError = true;
-          _dragErrorMessage = "Something went wrong.\n" + e.toString();
+          _dragErrorMessage = "There are no images found. Take an image to get started!";
           _dragMap = {};
         }
-      } else {
-        _dragError = true;
-        _dragErrorMessage = "There are no images found. Take an image to get started!";
-        _dragMap = {};
       }
     }
 
     notifyListeners();
-    print(_dragMap);
+    //print(_dragMap);
   }
 
-  Future<void> get fetchImageQuizData async { //Correction needed to change logic to prevent image of 
-  //same class from appearing
+  Future<void> get fetchImageQuizData async { 
+    //Function to fetch image data for Image Quiz
 
-    await fetchVocabularyImage;
-    await fetchClassData;
+    await fetchVocabularyImage; //Fetch data for vocabularyImageLabel and vocabularyImageUrl
+    await fetchClassData; //Fetch data from Class collection
     
-    _urlChoices.clear();
-    _urlChoices.add(vocabularyImageUrl);
+    _urlChoices.clear(); //Clear pre-existing url from urlChoices
+    _urlChoices.add(vocabularyImageUrl); //Add fetched vocabularyImageUrl to urlChoices as answer
 
-    for (var i = 1; i < 2; i++){
-      // generateRandomNumber(_imageCounter);
+    if (_classResults.length < 4) {
+      _vocabularyError = true;
+      _vocabularyErrorMessage = "Unlock more classes to play the game! Classes required: ${(4 - _classResults.length)}";
+      _vocabularyImageLabel = '';
+      _vocabularyImageUrl = '';
+      
+    } else {
+      for (var i = 1; i < 2; i++){
 
-      // imageResults.entries.map((results) {
-      //   if (results.key != vocabularyImageLabel){
-      //     int tempLength = e.value.length;
-      //     generateRandomNumber(tempLength);
-      //     _tempUrl = e.value[_randomNum];
-      //   } else {
-      //     i--;
-      //   }
-      // });
-
-      generateRandomNumber(_classResults.length);
-      String tempClass = _classResults[_randomNum];
-
-      if (tempClass == vocabularyImageLabel){
-        i--;
-      } else {
-        List <dynamic> tempList = _imageResults[tempClass];
-        generateRandomNumber(tempList.length);
-        _tempUrl = tempList[_randomNum];
-        _urlChoices.add(_tempUrl);
+        //Generate random number based on length of classResults
+        generateRandomNumber(_classResults.length);
+        //Generate a random temporary class with random number 
+        String tempClass = _classResults[_randomNum];
+        
+        if (tempClass == vocabularyImageLabel){
+          //Check if random temporary class is same to vocabularyImageLabel
+          //If yes, then rerun the loop as the images belong to the same class
+          i--;
+        } else {
+          //If no, then fetch image url from imageResults using the tempClass generated as key
+          List <dynamic> tempList = _imageResults[tempClass];
+          //Generate another random number to pick a random image url from the list value of imageResults
+          generateRandomNumber(tempList.length);
+          //Pick random image url from the list value of imageResults
+          _tempUrl = tempList[_randomNum];
+          //Add the image url as the second choice to urlChoices
+          _urlChoices.add(_tempUrl);
+        }
       }
-
-
-      //String url = _urlList[_randomNum];
-
-      // if (urlChoices.contains(_tempUrl)){
-      //   i--;
-      // } else {
-      //   _urlChoices.add(_tempUrl);
-      // }
+      _urlChoices.shuffle(); // Shuffle the list for randomization
+      _vocabularyError = false;
     }
 
-    _urlChoices.shuffle();
     notifyListeners();
-    print(_urlChoices);
+    //print(_urlChoices);
   }
 
   Future <void> get fetchVolumeData async {
+    // Function to fetch data on pronunciation volume
     DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('volume').get();
 
     if (ttsSnapshot.exists){
       try {
         _ttsVolume = ttsSnapshot['volume'];
-         _ttsError = false;
-        // double volume = double.parse(volumeString);
-        // _ttsVolume = volume;
+        _ttsError = false;
+        _ttsErrorMessage = 'No error';
 
       } catch(e) {
         _ttsError = true;
@@ -344,6 +371,7 @@ class ImageData with ChangeNotifier {
   }
 
   Future <void> get fetchRateData async {
+    // Function to fetch data on speech rate
     DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('rate').get();
 
     if (ttsSnapshot.exists){
@@ -361,6 +389,28 @@ class ImageData with ChangeNotifier {
       _ttsErrorMessage = "There is no specified rate. Please try again.";
       _ttsRate = 0.0;
     } 
+
+    notifyListeners();
+  }
+
+  Future <void> get fetchBackgroundVolume async {
+    DocumentSnapshot backgroundSnapshot = await FirebaseFirestore.instance.collection('Background').doc('volume').get();
+
+    if (backgroundSnapshot.exists){
+      try {
+        _bgVolume = backgroundSnapshot['volume'];
+        _bgError = false;
+
+      } catch(e) {
+        _bgError = true;
+        _bgErrorMessage = e.toString();
+        _bgVolume = 0.0;
+      }
+    } else {
+      _bgError = true;
+      _bgErrorMessage = "There is no specified volume. Please try again.";
+      _bgVolume = 0.0;
+    }
 
     notifyListeners();
   }

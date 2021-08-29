@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:plum_test/layout/revision_horizontal.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 //import 'package:plum_test/models/image_model.dart';

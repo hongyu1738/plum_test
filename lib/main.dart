@@ -23,13 +23,19 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
-      home: Home(),
       theme: ThemeData(fontFamily: 'CrayonKids'),
       routes: {
-        '/home' : (context) => Home(),
+        '/' : (context) => ChangeNotifierProvider(
+          create: (context) => ImageData(),
+          builder: (context,child){
+            return Home();
+          }
+        ),
         '/camera' : (context) => ChangeNotifierProvider(
           create: (context) => ImageData(), 
           builder: (context, child){ 

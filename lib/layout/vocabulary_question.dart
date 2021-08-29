@@ -1,15 +1,20 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 class VocabularyQuestion extends StatelessWidget {
-  const VocabularyQuestion({ Key key, this.vocabularyLabel, this.vocabularyUrl, this.choicesList }) : super(key: key);
+  const VocabularyQuestion({ Key key, this.vocabularyLabel, this.vocabularyUrl, this.choicesList, this.vocabularyPlayer }) : super(key: key);
 
   final String vocabularyLabel;
   final String vocabularyUrl;
   final List<String> choicesList;
+  final AudioCache vocabularyPlayer;
 
   @override
   Widget build(BuildContext context) {
+
+    vocabularyPlayer.loadAll(["win.wav", "lose.wav"]);
+
     return Column(
       children: [
         showQuestionImage(context, vocabularyUrl),
@@ -75,18 +80,22 @@ class VocabularyQuestion extends StatelessWidget {
   );
 
 
-  void compareResult(BuildContext context, int index){ 
+  void compareResult(BuildContext context, int index){
 
     if(vocabularyLabel == choicesList[index]){
-      Timer(Duration(milliseconds: 600), () {
-        Navigator.of(context).pushReplacementNamed('/vocabularyResultSuccess');
-      });
+      // Timer(Duration(milliseconds: 600), () {
+        
+      // });
+      vocabularyPlayer.play("win.wav");
+      Navigator.of(context).pushReplacementNamed('/vocabularyResultSuccess');
       //Navigator.of(context).popAndPushNamed('/vocabularyResultSuccess');
     } else {
       //Navigator.of(context).pushNamed('/vocabularyResultFailure');
-      Timer(Duration(milliseconds: 600), () {
-        Navigator.of(context).pushNamed('/vocabularyResultFailure');
-      });
+      // Timer(Duration(milliseconds: 600), () {
+        
+      // });
+      vocabularyPlayer.play("lose.wav");
+      Navigator.of(context).pushNamed('/vocabularyResultFailure');
     }
   }
 }

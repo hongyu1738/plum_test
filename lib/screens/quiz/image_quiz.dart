@@ -1,5 +1,5 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:plum_test/layout/image_question.dart';
 import 'package:provider/provider.dart';
 import 'package:plum_test/models/image_model.dart';
@@ -18,7 +18,11 @@ class _ImageQuizState extends State<ImageQuiz> {
   void initState() {
     super.initState();
     context.read<ImageData>().fetchImageQuizData;
+    context.read<ImageData>().fetchVolumeData;
+    context.read<ImageData>().fetchRateData;
   }
+
+  final imagePlayer = AudioCache(prefix: 'assets/audio/');
 
   @override
   Widget build(BuildContext context) {
@@ -55,23 +59,31 @@ class _ImageQuizState extends State<ImageQuiz> {
                 builder: (context, value, child){
                   return (value.vocabularyImageLabel == '' && value.vocabularyImageUrl == '' && !value.vocabularyError) 
                   ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
-                  : value.vocabularyError ? Text('Oops. \n${value.vocabularyErrorMessage}',
-                  //Error message when vocabularyError == true
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    //textStyle: Theme.of(context).textTheme.headline4,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                    //fontStyle: FontStyle.italic,
-                    //letterSpacing: .5,
-                  ), )
+                  : value.vocabularyError ? 
+                  SizedBox(
+                    height: 500,
+                    child: Center(
+                      child: Text('Oops. \n${value.vocabularyErrorMessage}',
+                      //Error message when vocabularyError == true
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        //textStyle: Theme.of(context).textTheme.headline4,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w400,
+                        //fontStyle: FontStyle.italic,
+                        //letterSpacing: .5,
+                      ), )
+                    )
+                  )
                   : value.vocabularyImageLabel == '' && value.vocabularyImageUrl != ''
                   //Load circular progress indicator when fetching data for vocabularyImageLabel
                   ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                   : value.vocabularyImageLabel != '' && value.vocabularyImageUrl == ''
                   //Load circular progress indicator when fetching data for vocabularyImageUrl
                   ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
-                  : ImageQuestion(imageLabel: value.vocabularyImageLabel, imageUrl: value.vocabularyImageUrl, urlChoices: value.urlChoices);
+                  : ImageQuestion(imageLabel: value.vocabularyImageLabel, imageUrl: value.vocabularyImageUrl, 
+                  urlChoices: value.urlChoices, imagePlayer: imagePlayer,
+                  volume: value.ttsVolume, rate: value.ttsRate);
                 }
               )
             ),
