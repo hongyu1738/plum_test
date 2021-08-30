@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:plum_test/screens/settings/settings.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({ Key key, this.volume }) : super(key: key);
@@ -18,7 +19,7 @@ class _HomeViewState extends State<HomeView> {
   AudioPlayer backgroundPlayer;
 
   void playBackground() async {
-    backgroundPlayer = await backgroundCache.play("bensound-ukulele.mp3", volume: widget.volume);
+    backgroundPlayer = await backgroundCache.loop("bensound-ukulele.mp3", volume: widget.volume);
     print(widget.volume);
   }
 
@@ -33,6 +34,10 @@ class _HomeViewState extends State<HomeView> {
 
   void stopBackground(){
     backgroundPlayer.stop();
+  }
+
+  void changeVolume(double value){
+    backgroundPlayer.setVolume(value);
   }
 
   // void resetVolume(){
@@ -237,7 +242,13 @@ class _HomeViewState extends State<HomeView> {
               BounceInDown(
                 child: ElevatedButton.icon(
                     onPressed: (){
-                      Navigator.pushNamed(context, '/settings');
+                      //Navigator.pushNamed(context, '/settings');
+                      // Settings();
+                      Navigator.of(context).push(
+                        new MaterialPageRoute(builder: (context){
+                          return new Settings(resetVolume: changeVolume);
+                        })
+                      );
                     },
                     icon: Icon(Icons.settings),
                     label: Text('Settings',

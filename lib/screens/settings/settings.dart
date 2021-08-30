@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:plum_test/layout/home_view.dart';
 
 class Settings extends StatefulWidget {
-  const Settings({ Key key }) : super(key: key);
+  const Settings({ Key key, this.resetVolume }) : super(key: key);
+
+  final Function resetVolume;
 
   @override
   _SettingsState createState() => _SettingsState();
@@ -55,93 +58,105 @@ class _SettingsState extends State<Settings> {
     getBackgroundVolume();
   }
 
+  void onBackPressed(){
+    widget.resetVolume(backgroundVolume);
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange[400],
-        centerTitle: true,
-        title: Text('Settings',
-        // titleTextStyle: TextStyle(
-        //   fontSize: 30,
-        // ),
-        style: TextStyle(
-          fontSize: 30,
-          //fontWeight: FontWeight.w400,
-          letterSpacing: .5,
-        )),
-      ),
-
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
-            child: Text("Pronunciation",
-            style: TextStyle(
-              fontSize: 34,
-              fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          Divider(
-            thickness: 5,
-            indent: 20,
-            endIndent: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-            child: Text("Volume",
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          _volume(),
-          // Divider(
-          //   thickness: 5,
-          //   indent: 20,
-          //   endIndent: 20,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pop();
+        onBackPressed();
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.orange[400],
+          centerTitle: true,
+          title: Text('Settings',
+          // titleTextStyle: TextStyle(
+          //   fontSize: 30,
           // ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-            child: Text("Speech Rate",
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          _rate(),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
-            child: Text("Background Music",
-            style: TextStyle(
-              fontSize: 34,
-              fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          Divider(
-            thickness: 5,
-            indent: 20,
-            endIndent: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-            child: Text("Volume",
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          _backgroundVolume(),
-        ],
-      ),
+          style: TextStyle(
+            fontSize: 30,
+            //fontWeight: FontWeight.w400,
+            letterSpacing: .5,
+          )),
+        ),
 
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
+              child: Text("Pronunciation",
+              style: TextStyle(
+                fontSize: 34,
+                fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            Divider(
+              thickness: 5,
+              indent: 20,
+              endIndent: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+              child: Text("Volume",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            _volume(),
+            // Divider(
+            //   thickness: 5,
+            //   indent: 20,
+            //   endIndent: 20,
+            // ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+              child: Text("Speech Rate",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            _rate(),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
+              child: Text("Background Music",
+              style: TextStyle(
+                fontSize: 34,
+                fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            Divider(
+              thickness: 5,
+              indent: 20,
+              endIndent: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+              child: Text("Volume",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            _backgroundVolume(),
+          ],
+        ),
+
+      ),
     );
   }
 
