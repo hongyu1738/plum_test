@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:plum_test/layout/home_view.dart';
 
 class Settings extends StatefulWidget {
   const Settings({ Key key, this.resetVolume }) : super(key: key);
@@ -16,6 +15,7 @@ class _SettingsState extends State<Settings> {
   double ttsVolume = 0.0;
   double ttsRate = 0.0;
   double backgroundVolume = 0.0;
+  double sfxVolume = 0.0;
 
   Future <void> getTtsVolume() async {
     DocumentSnapshot volumeSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('volume').get();
@@ -50,12 +50,24 @@ class _SettingsState extends State<Settings> {
     await FirebaseFirestore.instance.collection('Background').doc('volume').set({ 'volume': bgVolume });
   }
 
+  Future <void> getSfxVolume() async {
+    DocumentSnapshot sfxSnapshot = await FirebaseFirestore.instance.collection('Sfx').doc('volume').get();
+    setState(() {
+      sfxVolume = sfxSnapshot['volume'];
+    });
+  }
+
+  Future updateSfxVolume(double volume) async {
+    await FirebaseFirestore.instance.collection('Sfx').doc('volume').set({ 'volume': volume });
+  }
+
   @override
   void initState() {
     super.initState();
     getTtsVolume();
     getTtsRate();
     getBackgroundVolume();
+    getSfxVolume();
   }
 
   void onBackPressed(){
@@ -66,120 +78,40 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
 
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pop();
-        onBackPressed();
-        return false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.orange[400],
-          centerTitle: true,
-          title: Text('Settings',
-          // titleTextStyle: TextStyle(
-          //   fontSize: 30,
-          // ),
-          style: TextStyle(
-            fontSize: 30,
-            //fontWeight: FontWeight.w400,
-            letterSpacing: .5,
-          )),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange[400],
+        centerTitle: true,
+        title: Text('Settings',
+        style: TextStyle(
+          fontSize: 30,
+          letterSpacing: .5,
+        )),
+      ),
 
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
-              child: Text("Pronunciation",
-              style: TextStyle(
-                fontSize: 34,
-                fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Divider(
-              thickness: 5,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-              child: Text("Volume",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            _volume(),
-            // Divider(
-            //   thickness: 5,
-            //   indent: 20,
-            //   endIndent: 20,
-            // ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-              child: Text("Speech Rate",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            _rate(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
-              child: Text("Background Music",
-              style: TextStyle(
-                fontSize: 34,
-                fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            Divider(
-              thickness: 5,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
-              child: Text("Volume",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            _backgroundVolume(),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _settingsHeading("Pronunciation"),
+          _divider(),
+          _settingsSubheading("Volume"),
+          _volume(),
+          _settingsSubheading("Speech Rate"),
+          _rate(),
 
+          _settingsHeading("Background Music"),
+          _divider(),
+          _settingsSubheading("Volume"),
+          _backgroundVolume(),
+
+          _settingsHeading("Sound Effects"),
+          _divider(),
+          _settingsSubheading("Volume"),
+          _sfxVolume(),
+        ],
       ),
     );
   }
-
-  // Widget buildCheckBox() => ListTile(
-  //   onTap: (){
-  //     setState(() {
-  //       this.value = !value;
-  //     });
-  //   },
-  //     trailing: Checkbox(
-  //     value: value,
-  //     activeColor: Colors.orange[400],
-  //     onChanged: (value){
-  //       setState(() {
-  //         this.value = value;
-  //       });
-  //     },
-  //   ),
-  //   title: Text('Save image to gallery', 
-  //   style: TextStyle(
-  //     fontSize: 20)
-  //     ),
-  // );
 
   Widget _volume() {
     return Slider(
@@ -222,6 +154,7 @@ class _SettingsState extends State<Settings> {
         setState(() {
           backgroundVolume = newVolume;
           updateBackgroundVolume(newVolume);
+          widget.resetVolume(newVolume);
         });
       },
       min: 0.0,
@@ -232,5 +165,52 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  Widget _sfxVolume(){
+    return Slider(
+      value: sfxVolume,
+      onChanged: (newVolume){
+        setState(() {
+          sfxVolume = newVolume;
+          updateSfxVolume(newVolume);
+        });
+      },
+      min: 0.0,
+      max: 1.0,
+      divisions: 10,
+      label: "Rate: $sfxVolume",
+      activeColor: Colors.orange[300],
+    );
+  }
 
+  Widget _settingsHeading(String text){
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
+        child: Text("$text",
+        style: TextStyle(
+          fontSize: 34,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+    );
+  }
+
+  Widget _settingsSubheading(String text){
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
+      child: Text("$text",
+      style: TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w400,
+        ),
+      ),
+    );
+  }
+
+  Widget _divider(){
+    return Divider(
+      thickness: 5,
+      indent: 20,
+      endIndent: 20,
+    );
+  }
 }

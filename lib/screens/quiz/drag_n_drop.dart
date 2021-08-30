@@ -23,6 +23,7 @@ class _DragAndDropState extends State<DragAndDrop> {
   void initState() {
     super.initState();
     context.read<ImageData>().fetchDragData;
+    context.read<ImageData>().fetchSfxVolume;
     randomNum = random.nextInt(10);
     dragPlayer.loadAll(["single_correct.wav", "win.wav"]);
   }
@@ -36,17 +37,16 @@ class _DragAndDropState extends State<DragAndDrop> {
         centerTitle: true,
         title: Text('Drag and Drop',
         style: TextStyle(
-          //textStyle: Theme.of(context).textTheme.headline4,
           fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
-          //fontStyle: FontStyle.italic,
         )),
         actions: [
           Padding(padding: EdgeInsets.only(right: 16),
             child: GestureDetector(
               onTap: () async {
                 await context.read<ImageData>().fetchDragData;
+                await context.read<ImageData>().fetchSfxVolume;
                 setState(() {
                   score.clear();          
                 });
@@ -56,9 +56,6 @@ class _DragAndDropState extends State<DragAndDrop> {
           )
 
         ],
-        // titleTextStyle: TextStyle(
-        //   fontSize: 24.0,
-        // ),
       ),
 
       body: BounceInDown(
@@ -72,11 +69,8 @@ class _DragAndDropState extends State<DragAndDrop> {
                 //Error message when dragError == true
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  //textStyle: Theme.of(context).textTheme.headline4,
                   fontSize: 32,
                   fontWeight: FontWeight.w400,
-                  //fontStyle: FontStyle.italic,
-                  //letterSpacing: .5,
                 ), ),
               )
               : Row(
@@ -98,7 +92,7 @@ class _DragAndDropState extends State<DragAndDrop> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: value.dragMap.entries.map((e) => dropItem(e.key, e.value)).toList()..shuffle(Random(randomNum)),
+                    children: value.dragMap.entries.map((e) => dropItem(e.key, e.value, value.sfxVolume)).toList()..shuffle(Random(randomNum)),
                   )
                 ],
               );
@@ -109,7 +103,7 @@ class _DragAndDropState extends State<DragAndDrop> {
     );
   }
 
-  Widget dropItem(String label, String url) => DragTarget<String>(
+  Widget dropItem(String label, String url, double volume) => DragTarget<String>(
     builder: (BuildContext context, List<String> accepted, List rejected){
       if (score[label] == true) {
         return Container(
@@ -126,8 +120,6 @@ class _DragAndDropState extends State<DragAndDrop> {
         return Container(
           height: MediaQuery.of(context).size.height * 0.25,
           width: MediaQuery.of(context).size.width * 0.35,
-          // height: 200,
-          // width: 150,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(15),
@@ -144,15 +136,15 @@ class _DragAndDropState extends State<DragAndDrop> {
       setState(() {
         score[label] = true;
       });
-      compareResult(context, score);
-      dragPlayer.play("single_correct.wav");
+      compareResult(context, score, volume);
+      dragPlayer.play("single_correct.wav", volume: volume);
     },
     onLeave: (data){},
   );
 
-  void compareResult(BuildContext context, Map score){
+  void compareResult(BuildContext context, Map score, double volume){
     if (score.length == 3){
-      dragPlayer.play("win.wav");
+      dragPlayer.play("win.wav", volume: volume);
       Navigator.of(context).pushReplacementNamed('/dragResultSuccess');
     }
   }

@@ -18,6 +18,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
   void initState() {
     super.initState();
     context.read<ImageData>().fetchRandomAnswer;
+    context.read<ImageData>().fetchSfxVolume;
   }
 
   final vocabularyPlayer = AudioCache(prefix: 'assets/audio/');
@@ -31,15 +32,10 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
         centerTitle: true,
         title: Text('Vocabulary Quiz',
         style: TextStyle(
-          //textStyle: Theme.of(context).textTheme.headline4,
           fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
-          //fontStyle: FontStyle.italic,
         )),
-        // titleTextStyle: TextStyle(
-        //   fontSize: 24.0,
-        // ),
       ),
 
       body: BounceInDown(
@@ -50,6 +46,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
           color: Colors.orangeAccent,
           onRefresh: () async {
             await context.read<ImageData>().fetchRandomAnswer;
+            await context.read<ImageData>().fetchSfxVolume;
           },
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(
@@ -68,11 +65,8 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                         //Error message when vocabularyError == true
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          //textStyle: Theme.of(context).textTheme.headline4,
                           fontSize: 32,
                           fontWeight: FontWeight.w400,
-                          //fontStyle: FontStyle.italic,
-                          //letterSpacing: .5,
                         ), ),
                       ),
                     )
@@ -80,11 +74,8 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     //Error message when choiceError == true
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      //textStyle: Theme.of(context).textTheme.headline4,
                       fontSize: 24,
                       fontWeight: FontWeight.w400,
-                      //fontStyle: FontStyle.italic,
-                      //letterSpacing: .5,
                     ), )
                     : value.choiceResults.length != 0 && value.answerChoices.length == 0
                     //Load circular progress indicator when fetching data for answerChocies
@@ -99,7 +90,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     //Load circular progress indicator when fetching data for vocabularyImageUrl
                     ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                     : VocabularyQuestion(vocabularyLabel: value.vocabularyImageLabel, vocabularyUrl: value.vocabularyImageUrl,
-                    choicesList: value.answerChoices, vocabularyPlayer: vocabularyPlayer);
+                    choicesList: value.answerChoices, vocabularyPlayer: vocabularyPlayer, volume: value.sfxVolume);
                   },
                 )
             ),

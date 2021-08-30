@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:animate_do/animate_do.dart';
 
 class VocabularyResultFailure extends StatelessWidget {
@@ -13,21 +12,15 @@ class VocabularyResultFailure extends StatelessWidget {
         centerTitle: true,
         title: Text('Fail',
         style: TextStyle(
-          //textStyle: Theme.of(context).textTheme.headline4,
           fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
-          //fontStyle: FontStyle.italic,
         )),
-        // titleTextStyle: TextStyle(
-        //   fontSize: 24.0,
-        // ),
       ),
 
       body: Center(
         child: Column(
           children: [
-            //Text("Vocabulary result failure page"),
 
             SizedBox(height: 50),
 
@@ -40,7 +33,6 @@ class VocabularyResultFailure extends StatelessWidget {
                 label: Text('Back to Main Menu',
                 style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
                 style: ElevatedButton.styleFrom(
-                  // background color
                   primary: Colors.orange,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
@@ -75,7 +67,6 @@ class VocabularyResultFailure extends StatelessWidget {
           ],
         )
       ),
-      
     );
   }
 }

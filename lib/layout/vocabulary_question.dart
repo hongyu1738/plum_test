@@ -1,14 +1,14 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 class VocabularyQuestion extends StatelessWidget {
-  const VocabularyQuestion({ Key key, this.vocabularyLabel, this.vocabularyUrl, this.choicesList, this.vocabularyPlayer }) : super(key: key);
+  const VocabularyQuestion({ Key key, this.vocabularyLabel, this.vocabularyUrl, this.choicesList, this.vocabularyPlayer, this.volume }) : super(key: key);
 
   final String vocabularyLabel;
   final String vocabularyUrl;
   final List<String> choicesList;
   final AudioCache vocabularyPlayer;
+  final double volume;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class VocabularyQuestion extends StatelessWidget {
     return Column(
       children: [
         showQuestionImage(context, vocabularyUrl),
-        buildGrid(context, choicesList),
+        buildGrid(context, choicesList, volume),
       ],
     );
   }
@@ -39,7 +39,7 @@ class VocabularyQuestion extends StatelessWidget {
     ),
   );
 
-  Widget buildGrid(BuildContext context, List choices) => Padding(
+  Widget buildGrid(BuildContext context, List choices, double volume) => Padding(
     padding: const EdgeInsets.all(12),
     child: Container(
       height: 300,
@@ -52,7 +52,7 @@ class VocabularyQuestion extends StatelessWidget {
         itemCount: choices.length,
         itemBuilder: (context, index){
           return InkWell(
-              onTap: () => [compareResult(context, index)],
+              onTap: () => [compareResult(context, index, volume)],
               splashColor: Colors.orangeAccent,
               child: showQuestionChoices(choices[index])
           );
@@ -73,28 +73,18 @@ class VocabularyQuestion extends StatelessWidget {
         Text(choice, 
         style: TextStyle(
           fontSize: 30,
-          //fontWeight: FontWeight.bold,
         ),)
       ],
     ),
   );
 
-
-  void compareResult(BuildContext context, int index){
+  void compareResult(BuildContext context, int index, double volume){
 
     if(vocabularyLabel == choicesList[index]){
-      // Timer(Duration(milliseconds: 600), () {
-        
-      // });
-      vocabularyPlayer.play("win.wav");
+      vocabularyPlayer.play("win.wav", volume: volume);
       Navigator.of(context).pushReplacementNamed('/vocabularyResultSuccess');
-      //Navigator.of(context).popAndPushNamed('/vocabularyResultSuccess');
     } else {
-      //Navigator.of(context).pushNamed('/vocabularyResultFailure');
-      // Timer(Duration(milliseconds: 600), () {
-        
-      // });
-      vocabularyPlayer.play("lose.wav");
+      vocabularyPlayer.play("lose.wav", volume: volume);
       Navigator.of(context).pushNamed('/vocabularyResultFailure');
     }
   }

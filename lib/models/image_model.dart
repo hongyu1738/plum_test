@@ -50,6 +50,10 @@ class ImageData with ChangeNotifier {
   bool _bgError = false;
   String _bgErrorMessage = "";
 
+  double _sfxVolume = 0.0;
+  bool _sfxError = false;
+  String _sfxErrorMessage = "";
+
   //Getter functions for variables
 
   List <dynamic> get classResults => _classResults;
@@ -89,6 +93,10 @@ class ImageData with ChangeNotifier {
   double get bgVolume => _bgVolume;
   bool get bgError => _bgError;
   String get bgErrorMessage => _bgErrorMessage;
+
+  double get sfxVolume => _sfxVolume;
+  bool get sfxError => _sfxError;
+  String get sfxErrorMessage => _sfxErrorMessage;
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
@@ -410,6 +418,28 @@ class ImageData with ChangeNotifier {
       _bgError = true;
       _bgErrorMessage = "There is no specified volume. Please try again.";
       _bgVolume = 0.0;
+    }
+
+    notifyListeners();
+  }
+
+  Future <void> get fetchSfxVolume async {
+    DocumentSnapshot sfxSnapshot = await FirebaseFirestore.instance.collection('Sfx').doc('volume').get();
+
+    if (sfxSnapshot.exists){
+      try {
+        _sfxVolume = sfxSnapshot['volume'];
+        _sfxError = false;
+
+      } catch(e) {
+        _sfxError = true;
+        _sfxErrorMessage = e.toString();
+        _sfxVolume = 0.0;
+      }
+    } else {
+      _sfxError = true;
+      _sfxErrorMessage = "There is no specified volume. Please try again.";
+      _sfxVolume = 0.0;
     }
 
     notifyListeners();

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:plum_test/layout/revision_horizontal.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-//import 'package:plum_test/models/image_model.dart';
 
 class VerticalView extends StatefulWidget {
   const VerticalView({ Key key, this.classResult, this.imageResult, this.volume, this.rate}) : super(key: key);
@@ -39,7 +38,6 @@ class _VerticalViewState extends State<VerticalView> {
               Text('${widget.classResult}',
                 style: TextStyle(
                   fontSize: 36,
-                  //fontWeight: FontWeight.w400,
                   letterSpacing: .5,
                 ),
               ),

@@ -20,6 +20,7 @@ class _ImageQuizState extends State<ImageQuiz> {
     context.read<ImageData>().fetchImageQuizData;
     context.read<ImageData>().fetchVolumeData;
     context.read<ImageData>().fetchRateData;
+    context.read<ImageData>().fetchSfxVolume;
   }
 
   final imagePlayer = AudioCache(prefix: 'assets/audio/');
@@ -33,15 +34,10 @@ class _ImageQuizState extends State<ImageQuiz> {
         centerTitle: true,
         title: Text('Image Quiz',
         style: TextStyle(
-          //textStyle: Theme.of(context).textTheme.headline4,
           fontSize: 30,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
-          //fontStyle: FontStyle.italic,
         )),
-        // titleTextStyle: TextStyle(
-        //   fontSize: 24.0,
-        // ),
       ),
 
       body: BounceInDown(
@@ -52,6 +48,9 @@ class _ImageQuizState extends State<ImageQuiz> {
           color: Colors.orangeAccent,
           onRefresh: () async {
             await context.read<ImageData>().fetchImageQuizData;
+            await context.read<ImageData>().fetchVolumeData;
+            await context.read<ImageData>().fetchRateData;
+            await context.read<ImageData>().fetchSfxVolume;
           },
           child: SingleChildScrollView(
             child: Center(
@@ -67,11 +66,8 @@ class _ImageQuizState extends State<ImageQuiz> {
                       //Error message when vocabularyError == true
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        //textStyle: Theme.of(context).textTheme.headline4,
                         fontSize: 32,
                         fontWeight: FontWeight.w400,
-                        //fontStyle: FontStyle.italic,
-                        //letterSpacing: .5,
                       ), )
                     )
                   )
@@ -83,7 +79,7 @@ class _ImageQuizState extends State<ImageQuiz> {
                   ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                   : ImageQuestion(imageLabel: value.vocabularyImageLabel, imageUrl: value.vocabularyImageUrl, 
                   urlChoices: value.urlChoices, imagePlayer: imagePlayer,
-                  volume: value.ttsVolume, rate: value.ttsRate);
+                  volume: value.ttsVolume, rate: value.ttsRate, sfxVolume: value.sfxVolume);
                 }
               )
             ),

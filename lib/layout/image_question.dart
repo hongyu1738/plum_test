@@ -1,11 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-//import 'dart:async';
-
 import 'package:flutter_tts/flutter_tts.dart';
 
 class ImageQuestion extends StatefulWidget {
-  const ImageQuestion({ Key key, this.imageLabel, this.imageUrl, this.urlChoices, this.imagePlayer, this.volume, this.rate }) : super(key: key);
+  const ImageQuestion({ Key key, this.imageLabel, this.imageUrl, this.urlChoices, this.imagePlayer, this.volume, this.rate, this.sfxVolume }) : super(key: key);
 
   final String imageLabel;
   final String imageUrl;
@@ -13,6 +11,7 @@ class ImageQuestion extends StatefulWidget {
   final AudioCache imagePlayer;
   final double volume;
   final double rate;
+  final double sfxVolume;
 
   @override
   _ImageQuestionState createState() => _ImageQuestionState();
@@ -52,12 +51,12 @@ class _ImageQuestionState extends State<ImageQuestion> {
               ),
           ],
         ),
-        showQuizImage(context, widget.urlChoices),
+        showQuizImage(context, widget.urlChoices, widget.sfxVolume),
       ],
     );
   }
 
-  Widget showQuizImage(BuildContext context, List<String> urlChoices) => Padding(
+  Widget showQuizImage(BuildContext context, List<String> urlChoices, double volume) => Padding(
     padding: const EdgeInsets.all(12),
     child: Container(
       height: MediaQuery.of(context).size.height * 0.68,
@@ -66,7 +65,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
         itemCount: urlChoices.length,
         itemBuilder: (context, index){
           return InkWell(
-            onTap: () => [compareResult(context, index)],
+            onTap: () => [compareResult(context, index, volume)],
             splashColor: Colors.orangeAccent,
             child: showIndividualImage(context, urlChoices[index]));
       }),
@@ -76,7 +75,6 @@ class _ImageQuestionState extends State<ImageQuestion> {
   Widget showIndividualImage(BuildContext context, String url) => Padding(
     padding: const EdgeInsets.all(12.0),
     child: Container(
-      //padding: const EdgeInsets.all(12),
       height: MediaQuery.of(context).size.height * 0.30,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -96,26 +94,17 @@ class _ImageQuestionState extends State<ImageQuestion> {
         style: TextStyle(
         fontSize: 36,
         fontWeight: FontWeight.w400,
-        //fontStyle: FontStyle.italic,
         letterSpacing: .5,
       ),),
     );
 
-  void compareResult(BuildContext context, int index){
+  void compareResult(BuildContext context, int index, double volume){
 
     if(widget.imageUrl == widget.urlChoices[index]){
-      // Timer(Duration(milliseconds: 600), () {
-        
-      // });
-      widget.imagePlayer.play("win.wav");
+      widget.imagePlayer.play("win.wav", volume: volume);
       Navigator.of(context).pushReplacementNamed('/imageResultSuccess');
-      //Navigator.of(context).popAndPushNamed('/vocabularyResultSuccess');
     } else {
-      //Navigator.of(context).pushNamed('/vocabularyResultFailure');
-      // Timer(Duration(milliseconds: 600), () {
-        
-      // });
-      widget.imagePlayer.play("lose.wav");
+      widget.imagePlayer.play("lose.wav", volume: volume);
       Navigator.of(context).pushNamed('/imageResultFailure');
     }
   }
