@@ -16,7 +16,7 @@ class ImageQuiz extends StatefulWidget {
 class _ImageQuizState extends State<ImageQuiz> {
 
   void initState() {
-    super.initState();
+    super.initState(); //Fetch required data from Cloud Firestore
     context.read<ImageData>().fetchImageQuizData;
     context.read<ImageData>().fetchVolumeData;
     context.read<ImageData>().fetchRateData;
@@ -46,13 +46,16 @@ class _ImageQuizState extends State<ImageQuiz> {
           showChildOpacityTransition: false,
           animSpeedFactor: 1.5,
           color: Colors.orangeAccent,
-          onRefresh: () async {
+          onRefresh: () async { //Refetch required data from Cloud Firestore on refresh
             await context.read<ImageData>().fetchImageQuizData;
             await context.read<ImageData>().fetchVolumeData;
             await context.read<ImageData>().fetchRateData;
             await context.read<ImageData>().fetchSfxVolume;
           },
           child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics()
+            ),
             child: Center(
               child: Consumer<ImageData>(
                 builder: (context, value, child){

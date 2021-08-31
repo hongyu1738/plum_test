@@ -24,8 +24,8 @@ class _DragAndDropState extends State<DragAndDrop> {
     super.initState();
     context.read<ImageData>().fetchDragData;
     context.read<ImageData>().fetchSfxVolume;
-    randomNum = random.nextInt(10);
-    dragPlayer.loadAll(["single_correct.wav", "win.wav"]);
+    randomNum = random.nextInt(10); //Random number generator to randomize order of answers
+    dragPlayer.loadAll(["single_correct.wav", "win.wav"]); //Preload sound effects for smoother plays
   }
 
   @override
@@ -44,7 +44,7 @@ class _DragAndDropState extends State<DragAndDrop> {
         actions: [
           Padding(padding: EdgeInsets.only(right: 16),
             child: GestureDetector(
-              onTap: () async {
+              onTap: () async { //Clear score and refetch DragData and SfxVolume on refresh
                 await context.read<ImageData>().fetchDragData;
                 await context.read<ImageData>().fetchSfxVolume;
                 setState(() {
@@ -131,17 +131,20 @@ class _DragAndDropState extends State<DragAndDrop> {
         );
       }
     },
-    onWillAccept: (data) => data == label,
+    onWillAccept: (data) => data == label, //Only accept draggable if the draggable data is equivalent to label
     onAccept: (data) {
       setState(() {
-        score[label] = true;
+        score[label] = true; //Add true to score map if draggable data is equivalent to label
       });
       compareResult(context, score, volume);
-      dragPlayer.play("single_correct.wav", volume: volume);
+      dragPlayer.play("single_correct.wav", volume: volume); 
+      //Play sound effects on each successful match
     },
     onLeave: (data){},
   );
 
+  //Function to compare results 
+  //Play sound effects and navigate to next page based on results
   void compareResult(BuildContext context, Map score, double volume){
     if (score.length == 3){
       dragPlayer.play("win.wav", volume: volume);

@@ -54,7 +54,6 @@ class VocabularyResultFailure extends StatelessWidget {
                 label: Text('Try Again?',
                 style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
                 style: ElevatedButton.styleFrom(
-                  // background color
                   primary: Colors.orange,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(

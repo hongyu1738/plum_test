@@ -11,16 +11,12 @@ class DragResultSuccess extends StatelessWidget {
         backgroundColor: Colors.orange[400],
         centerTitle: true,
         title: Text('Success',
-        style: TextStyle(
-          //textStyle: Theme.of(context).textTheme.headline4,
-          fontSize: 30,
-          fontWeight: FontWeight.w400,
-          letterSpacing: .5,
-          //fontStyle: FontStyle.italic,
-        )),
-        // titleTextStyle: TextStyle(
-        //   fontSize: 24.0,
-        // ),
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w400,
+            letterSpacing: .5,
+          )
+        ),
       ),
 
       body: Center(
@@ -37,7 +33,6 @@ class DragResultSuccess extends StatelessWidget {
                 label: Text('Back to Main Menu',
                 style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
                 style: ElevatedButton.styleFrom(
-                  // background color
                   primary: Colors.orange,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
@@ -59,7 +54,6 @@ class DragResultSuccess extends StatelessWidget {
                 label: Text('Try Another?',
                 style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
                 style: ElevatedButton.styleFrom(
-                  // background color
                   primary: Colors.orange,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
@@ -71,8 +65,7 @@ class DragResultSuccess extends StatelessWidget {
             ),
           ],
         )
-      ),
-      
+      ),  
     );
   }
 }

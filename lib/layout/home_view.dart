@@ -28,7 +28,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void resumeBackground(){
-    //backgroundPlayer.setVolume(Settings().);
     backgroundPlayer.resume();
   }
 
@@ -39,16 +38,6 @@ class _HomeViewState extends State<HomeView> {
   void changeVolume(double value){
     backgroundPlayer.setVolume(value);
   }
-
-  // void resetVolume(){
-  //   stopBackground();
-  //   resumeBackground();
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,29 +50,9 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: GestureDetector(
-              onTap: resumeBackground,
-              child: Icon(Icons.play_arrow, color: Colors.black45),
-            ),
-          ),
-
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: GestureDetector(
-              onTap: pauseBackground,
-              child: Icon(Icons.pause, color: Colors.black45),
-            ),
-          ),
-
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: GestureDetector(
-              onTap: stopBackground,
-              child: Icon(Icons.stop, color: Colors.black45),
-            ),
-          ),
+          appBarButtons(resumeBackground, Icons.play_arrow),
+          appBarButtons(pauseBackground, Icons.pause),
+          appBarButtons(stopBackground, Icons.stop),
         ],
       ),
 
@@ -92,148 +61,59 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
+              menuButtons('/camera', 'Learn'),
+              SizedBox(height: 20),
+              menuButtons('/revision', 'Revision'),
+              SizedBox(height: 20),
               BounceInDown(
                 child: ElevatedButton.icon(
-                    onPressed: (){
-                      Navigator.pushNamed(context, '/camera');
-                    },
-                    icon: Icon(Icons.camera_alt_rounded),
-                    label: Text('Learn', 
-                    style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
-                      
+                  icon: Icon(Icons.games_rounded),
                   style: ElevatedButton.styleFrom(
-                    // background color
                     primary: Colors.orange,
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     textStyle: TextStyle(
                       fontSize: 24,
-                      //fontWeight: FontWeight.w500,
                     ),
-                  )
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              BounceInDown(
-                child: ElevatedButton.icon(
-                    onPressed: (){
-                      Navigator.pushNamed(context, '/revision');
-                    },
-                    icon: Icon(Icons.photo_album_rounded),
-                    label: Text('Revision',
-                    style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
-
-                  style: ElevatedButton.styleFrom(
-                    // background color
-                    primary: Colors.orange,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    textStyle: TextStyle(
-                      fontSize: 24,
-                      //fontWeight: FontWeight.w500,
-                    ),
-                  )
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              BounceInDown(
-                child: ElevatedButton.icon(
-                    onPressed: (){
-                      showMaterialModalBottomSheet(
-                        context: context, 
-                        builder: (context){
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(16, 20, 16, 8),
-                                child: Text("Games",
+                  ),
+                  label: Text('Games',
+                    style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)
+                  ),
+                  onPressed: (){
+                    showMaterialModalBottomSheet(
+                      context: context, 
+                      builder: (context){
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(16, 20, 16, 8),
+                              child: Text("Games",
                                 style: TextStyle(
-                                  //textStyle: Theme.of(context).textTheme.headline4,
                                   fontSize: 36,
-                                  //fontWeight: FontWeight.w500,
-                                  //fontStyle: FontStyle.italic,
-                                )),
+                                )
                               ),
+                            ),
 
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(16, 8, 16, 20),
-                                child: Text("Test your skills!",
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(16, 8, 16, 20),
+                              child: Text("Test your skills!",
                                 style: TextStyle(
-                                  //textStyle: Theme.of(context).textTheme.headline4,
                                   fontSize: 22,
-                                  //fontWeight: FontWeight.w600,
-                                  //fontStyle: FontStyle.italic,
-                                )),
+                                )
                               ),
+                            ),
                                 
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 25),
-                                title: Text('Vocabulary Quiz',
-                                style: TextStyle(
-                                  //textStyle: Theme.of(context).textTheme.headline4,
-                                  fontSize: 30,
-                                  //fontWeight: FontWeight.w600,
-                                  //fontStyle: FontStyle.italic,
-                                )),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(context, '/vocabularyQuiz');
-                                },
-                              ),
+                            gameButtons('/vocabularyQuiz', 'Vocabulary Games'),
+                            gameButtons('/imageQuiz', 'Image Picker'),
+                            gameButtons('/dragQuiz', 'Drag and Drop'),
 
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 25),
-                                title: Text('Image Quiz',
-                                style: TextStyle(
-                                  //textStyle: Theme.of(context).textTheme.headline4,
-                                  fontSize: 30,
-                                  //fontWeight: FontWeight.w600,
-                                  //fontStyle: FontStyle.italic,
-                                )),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(context, '/imageQuiz');
-                                },
-                              ),
-
-                              ListTile(
-                                contentPadding: EdgeInsets.only(left: 25),
-                                title: Text('Drag and Drop',
-                                style: TextStyle(
-                                  //textStyle: Theme.of(context).textTheme.headline4,
-                                  fontSize: 30,
-                                  //fontWeight: FontWeight.w600,
-                                  //fontStyle: FontStyle.italic,
-                                )),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.pushNamed(context, '/dragQuiz');
-                                },
-                              ),
-
-                              SizedBox(height: 30),
-                            ],
-                          );
-                        }
-                      );
-                    },
-
-                    icon: Icon(Icons.games_rounded),
-                    label: Text('Games',
-                    style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
-
-                  style: ElevatedButton.styleFrom(
-                    // background color
-                    primary: Colors.orange,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    textStyle: TextStyle(
-                      fontSize: 24,
-                      //fontWeight: FontWeight.w500,
-                    ),
-                  )
+                            SizedBox(height: 30),
+                          ],
+                        );
+                      }
+                    );
+                  },
                 ),
               ),
 
@@ -242,8 +122,6 @@ class _HomeViewState extends State<HomeView> {
               BounceInDown(
                 child: ElevatedButton.icon(
                     onPressed: (){
-                      //Navigator.pushNamed(context, '/settings');
-                      // Settings();
                       Navigator.of(context).push(
                         new MaterialPageRoute(builder: (context){
                           return new Settings(resetVolume: changeVolume);
@@ -255,12 +133,10 @@ class _HomeViewState extends State<HomeView> {
                     style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
 
                   style: ElevatedButton.styleFrom(
-                    // background color
                     primary: Colors.orange,
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     textStyle: TextStyle(
                       fontSize: 24,
-                      //fontWeight: FontWeight.w500,
                     ),
                   )
                 ),
@@ -268,6 +144,52 @@ class _HomeViewState extends State<HomeView> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget menuButtons(String menuRoute, String menuLabel){
+    return BounceInDown(
+      child: ElevatedButton.icon(
+          onPressed: (){
+            Navigator.pushNamed(context, menuRoute);
+          },
+          icon: Icon(Icons.photo_album_rounded),
+          label: Text(menuLabel,
+          style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
+
+        style: ElevatedButton.styleFrom(
+          primary: Colors.orange,
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+          textStyle: TextStyle(
+            fontSize: 24,
+          ),
+        )
+      ),
+    );
+  }
+
+  Widget gameButtons(String gameRoute, String gameLabel){
+    return ListTile(
+      contentPadding: EdgeInsets.only(left: 25),
+      title: Text(gameLabel,
+        style: TextStyle(
+        fontSize: 30,
+        )
+      ),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, gameRoute);
+      },
+    );
+  }
+
+  Widget appBarButtons(Function appBarFunction, IconData iconName){
+    return Padding(
+      padding: EdgeInsets.only(right: 16),
+      child: GestureDetector(
+        onTap: appBarFunction,
+        child: Icon(iconName, color: Colors.black45),
       ),
     );
   }

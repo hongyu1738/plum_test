@@ -60,14 +60,12 @@ class _RevisionState extends State<Revision> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
-                  //fontWeight: FontWeight.w400,
                 ), )
                 : value.imageError ? Text('Oops. ${value.imageErrorMessage}',
                 //Error message when imageError == true
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 24,
-                  //fontWeight: FontWeight.w400,
                 ), )
                 : value.classMap.length == 0 && value.imageMap.length != 0
                 //Load circular progress indicator when fetching data for classMap
@@ -76,9 +74,6 @@ class _RevisionState extends State<Revision> {
                 //Load circular progress indicator when fetching data for imageMap
                 ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                 : ListView.builder(
-                  //   physics: BouncingScrollPhysics(
-                  //   parent: AlwaysScrollableScrollPhysics()
-                  // ),
                   itemCount: value.classResults.length, //Determine number of rows/total number of classes
                   itemBuilder: (context, index){
                     return VerticalView(classResult: value.classResults[index], imageResult: value.imageResults, 

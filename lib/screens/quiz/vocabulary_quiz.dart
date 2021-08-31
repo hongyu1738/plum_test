@@ -16,7 +16,7 @@ class VocabularyQuiz extends StatefulWidget {
 class _VocabularyQuizState extends State<VocabularyQuiz> {
 
   void initState() {
-    super.initState();
+    super.initState(); //Fetch required data from Cloud Firestore
     context.read<ImageData>().fetchRandomAnswer;
     context.read<ImageData>().fetchSfxVolume;
   }
@@ -44,11 +44,11 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
           showChildOpacityTransition: false,
           animSpeedFactor: 1.5,
           color: Colors.orangeAccent,
-          onRefresh: () async {
+          onRefresh: () async { //Refetch required data from Cloud Firestore on refresh
             await context.read<ImageData>().fetchRandomAnswer;
             await context.read<ImageData>().fetchSfxVolume;
           },
-          child: SingleChildScrollView(
+          child: SingleChildScrollView( //Enable screen to refresh with preset physics
             physics: BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics()
             ),

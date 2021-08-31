@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
             return Camera(); 
           }
         ),
-        '/settings' : (context) => Settings(),
         '/revision' : (context) => ChangeNotifierProvider(
           create: (context) => ImageData(),
           builder: (context, child){

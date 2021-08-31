@@ -9,10 +9,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:plum_test/layout/camera_speech.dart';
 import 'package:plum_test/models/image_model.dart';
-//import 'package:path_provider/path_provider.dart';
-//import 'package:meta/meta.dart';
 import 'package:tflite/tflite.dart';
-//import 'package:flutter_tts/flutter_tts.dart';
 import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 
@@ -28,9 +25,6 @@ class _CameraState extends State<Camera> {
   //Instantiate image object
   final ImagePicker imagePicker = ImagePicker();
 
-  //Instantiate classification model
-  //final FlutterTts flutterTts = FlutterTts();
-
   //Instantiate Firebase Storage
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -42,6 +36,9 @@ class _CameraState extends State<Camera> {
 
   //String to indicate class label of the image
   String _label;
+
+  //Double to store confidence level of class labels
+  double _confidence;
 
   //Load image classification model on screen initialization
   @override
@@ -74,18 +71,21 @@ class _CameraState extends State<Camera> {
 
         await runModel(_image); //Classify image from camera
 
-        GallerySaver.saveImage(image.path); //Save image to gallery
+        if (_confidence > 0.9){ 
 
-        addImageToStorage(_image);
+        //Add image to Cloud Firestore and Gallery only when confidence level of class label > 0.9
+          
+          GallerySaver.saveImage(image.path); //Save image to gallery
+
+          addImageToStorage(_image);
+        }
 
       } else {
         _image = null;
-        //print("No image");
         Toast.show("No image taken. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
 
     } else {
-      //print ("Camera permission not granted. Please try again.");
       Toast.show("Camera permission not granted. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
@@ -112,21 +112,24 @@ class _CameraState extends State<Camera> {
 
         await runModel(_image); //Classify image from gallery
 
-        addImageToStorage(_image);
+        if (_confidence > 0.9){
+
+        //Add image to Cloud Firestore only when confidence level of class label > 0.9
+
+          addImageToStorage(_image);
+        }
 
       } else {
         _image = null;
-        //print("No image");
         Toast.show("No image selected. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
 
     } else {
-      //print("Gallery permission not granted. Please try again.");
       Toast.show("Gallery permission not granted. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
     }
   }
 
-  Future cropImage() async {
+  Future cropImage() async { //Function to manage cropping of image
 
     File croppedFile = await ImageCropper.cropImage(
       sourcePath: _image.path,
@@ -151,8 +154,9 @@ class _CameraState extends State<Camera> {
 
       await runModel(_image);
 
-      addImageToStorage(_image);
-      
+      if (_confidence > 0.9){
+        addImageToStorage(_image);
+      }
     }
   }
 
@@ -193,11 +197,9 @@ class _CameraState extends State<Camera> {
 
     if (urlList.contains(locationString)){
       Toast.show("The image already exists.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      //print("URL exists.");
     } else {
 
       //Upload download URL of images to Cloud Firestore
-      //await FirebaseFirestore.instance.collection("$_label").doc("$imagePath").set({'url' : locationString, 'label' : _label});
 
       int imageSnapshotSize = imageSnapshot.size;
       await FirebaseFirestore.instance.collection("Images").doc(imageSnapshotSize.toString()).set({ 'url' : locationString, 'label' : _label});
@@ -212,13 +214,10 @@ class _CameraState extends State<Camera> {
       labelList.add(label);
     }
 
-    if (labelList.contains('$_label')){
-      print("Element exists");
-      //Toast.show("No image selected", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-    } else {
+    if (!labelList.contains('$_label')){
       int classSnapshotSize = classSnapshot.size;
       await FirebaseFirestore.instance.collection("Class").doc(classSnapshotSize.toString()).set({'label' : _label});
-    }
+    } 
   }
 
   //Function for default loading of image classification model
@@ -240,7 +239,7 @@ class _CameraState extends State<Camera> {
       //Customization for display on threshold and number of results
       path: file.path,
       numResults: 50,
-      threshold: 0.8,
+      threshold: 0.1,
       imageMean: 127.5,
       imageStd: 127.5,
     );
@@ -248,10 +247,17 @@ class _CameraState extends State<Camera> {
     setState(() {
       _result = runModelResult; //Assign results to _result list variable
 
-      String labels = _result[0]["label"];
-      //Assign class labels to labels variable
+      String labels = _result[0]["label"]; //Assign class labels to labels variable
       _label = labels.substring(3); //Assign class labels to _label variable 
-      print(_label);
+
+      //Set confidence level of image to 0.2, if image classification is below passing thresholds
+      _confidence = _result != null ? (_result[0]["confidence"]) : 0.2 ;
+
+      //Show alert dialog if confidence level is below passing thresholds
+      if (_confidence < 0.9){
+        _alertDialog();
+      }
+
     });
   }
 
@@ -265,15 +271,9 @@ class _CameraState extends State<Camera> {
         centerTitle: true,
         title: Text('Learn',
         style: TextStyle(
-          //textStyle: Theme.of(context).textTheme.headline4,
           fontSize: 30,
-          //fontWeight: FontWeight.w400,
           letterSpacing: .5,
-          //fontStyle: FontStyle.italic,
         )),
-        // titleTextStyle: TextStyle(
-        //   fontSize: 24.0,
-        // ),
       ),
 
       body: Container(
@@ -281,7 +281,7 @@ class _CameraState extends State<Camera> {
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-            _image == null ? Column(
+            _image == null || _confidence < 0.9 ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 
@@ -295,8 +295,6 @@ class _CameraState extends State<Camera> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 32,
-                      //fontWeight: FontWeight.w400,
-                      //fontStyle: FontStyle.italic,
                       letterSpacing: .5,
                     ), 
                     ), 
@@ -304,7 +302,7 @@ class _CameraState extends State<Camera> {
                 ),
               ],
             )
-
+            
             : Column(
               children: [
                 SizedBox(height: 30),
@@ -337,10 +335,8 @@ class _CameraState extends State<Camera> {
                       child: Center(
                         child: Text("$_label",
                         style: TextStyle(
-                          //textStyle: Theme.of(context).textTheme.headline4,
                           fontSize: 40,
                           fontWeight: FontWeight.w400,
-                          //fontStyle: FontStyle.italic,
                           letterSpacing: .5,
                         ), 
                         ),
@@ -349,16 +345,6 @@ class _CameraState extends State<Camera> {
 
                     Spacer(),
 
-                    // Expanded(
-                    //   flex: 2,
-                    //   child: IconButton(
-                    //     onPressed: getSpeech,
-                    //     icon: Icon(Icons.volume_up_rounded),
-                    //     color: Colors.grey[800],
-                    //     iconSize: 38,
-                    //     tooltip: "Press for pronounciation",
-                    //   ),
-                    // ),
                     Consumer<ImageData>(builder: (context, value, child){
                       return CameraSpeech(volume: value.ttsVolume, rate: value.ttsRate, label: _label);
                     }),
@@ -389,13 +375,12 @@ class _CameraState extends State<Camera> {
               onTap: getImageFromCamera,
               label: 'Camera',
               labelStyle: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                  fontSize: 30,
-                  letterSpacing: .5,
-                  // fontStyle: FontStyle.italic,
-              ),
-              labelBackgroundColor: Colors.orange[400]
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+                fontSize: 30,
+                letterSpacing: .5,
+            ),
+            labelBackgroundColor: Colors.orange[400]
           ),
 
           SpeedDialChild(
@@ -404,16 +389,54 @@ class _CameraState extends State<Camera> {
               onTap: getImageFromGallery,
               label: 'Gallery',
               labelStyle: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                  fontSize: 30,
-                  letterSpacing: .5,
-                  // fontStyle: FontStyle.italic,
-              ),
-              labelBackgroundColor: Colors.orange[400]
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+                fontSize: 30,
+                letterSpacing: .5,
+            ),
+            labelBackgroundColor: Colors.orange[400]
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _alertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(':(',
+            style: TextStyle(
+              fontSize: 30,
+            )
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('No classes found for the image.\nTry again?', 
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK',
+                style: TextStyle(
+                  fontSize: 30,
+                )
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
