@@ -46,7 +46,7 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.0
   image_cropper: ^1.4.1
   audioplayers: ^0.19.1
-
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:

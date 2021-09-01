@@ -10,8 +10,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:plum_test/layout/camera_speech.dart';
 import 'package:plum_test/models/image_model.dart';
 import 'package:tflite/tflite.dart';
-import 'package:toast/toast.dart';
+//import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Camera extends StatefulWidget {
   const Camera({ Key key }) : super(key: key);
@@ -82,11 +83,28 @@ class _CameraState extends State<Camera> {
 
       } else {
         _image = null;
-        Toast.show("No image taken. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
+        Fluttertoast.showToast(
+          msg: "No image taken.\nPlease try again.", 
+          toastLength: Toast.LENGTH_LONG, 
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 22.0,
+          backgroundColor: Colors.black54,
+          textColor: Colors.white
+        );
       }
 
     } else {
-      Toast.show("Camera permission not granted. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
+      Fluttertoast.showToast(
+        msg: "Camera permission not granted.\nPlease try again.", 
+        toastLength: Toast.LENGTH_LONG, 
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 22.0,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white
+      );
+
     }
   }
 
@@ -121,11 +139,29 @@ class _CameraState extends State<Camera> {
 
       } else {
         _image = null;
-        Toast.show("No image selected. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
+        Fluttertoast.showToast(
+          msg: "No image selected.\nPlease try again.", 
+          toastLength: Toast.LENGTH_LONG, 
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 22.0,
+          backgroundColor: Colors.black54,
+          textColor: Colors.white
+        );
+
       }
 
     } else {
-      Toast.show("Gallery permission not granted. Please try again.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
+      Fluttertoast.showToast(
+        msg: "Gallery permission not granted.\nPlease try again.", 
+        toastLength: Toast.LENGTH_LONG, 
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 22.0,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white
+      );
+
     }
   }
 
@@ -196,7 +232,16 @@ class _CameraState extends State<Camera> {
     }
 
     if (urlList.contains(locationString)){
-      Toast.show("The image already exists.", context, duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+
+      Fluttertoast.showToast(
+        msg: "The image already exists.", 
+        toastLength: Toast.LENGTH_LONG, 
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 22.0,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white
+      );
+
     } else {
 
       //Upload download URL of images to Cloud Firestore
@@ -251,7 +296,7 @@ class _CameraState extends State<Camera> {
       _label = labels.substring(3); //Assign class labels to _label variable 
 
       //Set confidence level of image to 0.2, if image classification is below passing thresholds
-      _confidence = _result != null ? (_result[0]["confidence"]) : 0.2 ;
+      _confidence = _result != null ? (_result[0]["confidence"]) : 0.1 ;
 
       //Show alert dialog if confidence level is below passing thresholds
       if (_confidence < 0.9){
@@ -281,7 +326,7 @@ class _CameraState extends State<Camera> {
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-            _image == null || _confidence < 0.9 ? Column(
+            _image == null ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 
@@ -326,7 +371,15 @@ class _CameraState extends State<Camera> {
 
                 SizedBox(height: 40),
 
-                Row(
+                _confidence < 0.9 ? Text('No classes found :(',
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w400,
+                    //letterSpacing: .5,
+                  ), 
+                )
+
+                : Row(
                   children: [
                     Spacer(flex: 2),
 
@@ -334,11 +387,11 @@ class _CameraState extends State<Camera> {
                       flex: 7,
                       child: Center(
                         child: Text("$_label",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: .5,
-                        ), 
+                          style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.w400,
+                            letterSpacing: .5,
+                          ), 
                         ),
                       ),
                     ),
