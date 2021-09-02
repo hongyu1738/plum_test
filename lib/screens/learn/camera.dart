@@ -10,7 +10,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:plum_test/layout/camera_speech.dart';
 import 'package:plum_test/models/image_model.dart';
 import 'package:tflite/tflite.dart';
-//import 'package:toast/toast.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

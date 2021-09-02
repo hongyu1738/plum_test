@@ -1,5 +1,7 @@
+import 'package:animated_background/animated_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class Settings extends StatefulWidget {
   const Settings({ Key key, this.resetVolume }) : super(key: key);
@@ -10,7 +12,7 @@ class Settings extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsState extends State<Settings> with SingleTickerProviderStateMixin{
 
   double ttsVolume = 0.0;
   double ttsRate = 0.0;
@@ -79,36 +81,49 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.orange[400],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
         title: Text('Settings',
         style: TextStyle(
-          fontSize: 30,
+          fontSize: 34,
+          color: Colors.white,
           letterSpacing: .5,
         )),
       ),
 
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _settingsHeading("Pronunciation"),
-          _divider(),
-          _settingsSubheading("Volume"),
-          _volume(),
-          _settingsSubheading("Speech Rate"),
-          _rate(),
+      body: Container(
+        color: Colors.black,
+        child: AnimatedBackground(
+          behaviour: RacingLinesBehaviour(
+            numLines: 50,
+          ),
+          vsync: this,
 
-          _settingsHeading("Background Music"),
-          _divider(),
-          _settingsSubheading("Volume"),
-          _backgroundVolume(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _settingsHeading("Pronunciation", Ionicons.md_volume_high),
+              _divider(),
+              _settingsSubheading("Volume"),
+              _volume(),
+              _settingsSubheading("Speech Rate"),
+              _rate(),
 
-          _settingsHeading("Sound Effects"),
-          _divider(),
-          _settingsSubheading("Volume"),
-          _sfxVolume(),
-        ],
+              _settingsHeading("Background Music", Foundation.sound),
+              _divider(),
+              _settingsSubheading("Volume"),
+              _backgroundVolume(),
+
+              _settingsHeading("Sound Effects", Entypo.sound_mix),
+              _divider(),
+              _settingsSubheading("Volume"),
+              _sfxVolume(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -126,7 +141,8 @@ class _SettingsState extends State<Settings> {
       max: 1.0,
       divisions: 10,
       label: "Volume: $ttsVolume",
-      activeColor: Colors.orange[300],
+      inactiveColor: hexColors('#f8f5f2'),
+      activeColor: hexColors('#375e97'),
     );
   }
 
@@ -143,7 +159,8 @@ class _SettingsState extends State<Settings> {
       max: 1.0,
       divisions: 10,
       label: "Rate: $ttsRate",
-      activeColor: Colors.orange[300],
+      inactiveColor: hexColors('#f8f5f2'),
+      activeColor: hexColors('#fb6542'),
     );
   }
 
@@ -161,7 +178,8 @@ class _SettingsState extends State<Settings> {
       max: 1.0,
       divisions: 10,
       label: "Rate: $backgroundVolume",
-      activeColor: Colors.orange[300],
+      inactiveColor: hexColors('#f8f5f2'),
+      activeColor: hexColors('#ffbb00'),
     );
   }
 
@@ -178,19 +196,27 @@ class _SettingsState extends State<Settings> {
       max: 1.0,
       divisions: 10,
       label: "Rate: $sfxVolume",
-      activeColor: Colors.orange[300],
+      inactiveColor: hexColors('#f8f5f2'),
+      activeColor: hexColors('#3f681c'),
     );
   }
 
-  Widget _settingsHeading(String text){
+  Widget _settingsHeading(String text, IconData iconName){
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
-        child: Text("$text",
-        style: TextStyle(
-          fontSize: 34,
-          fontWeight: FontWeight.w400,
-        ),
+        child: Row(
+          children: [
+            Icon(iconName, color: Colors.white, size: 34),
+            SizedBox(width: 20),
+            Text("$text",
+            style: TextStyle(
+              fontSize: 34,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
       ),
+          ],
+        ),
     );
   }
 
@@ -201,6 +227,7 @@ class _SettingsState extends State<Settings> {
       style: TextStyle(
         fontSize: 30,
         fontWeight: FontWeight.w400,
+        color: Colors.white,
         ),
       ),
     );
@@ -212,5 +239,9 @@ class _SettingsState extends State<Settings> {
       indent: 20,
       endIndent: 20,
     );
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }
