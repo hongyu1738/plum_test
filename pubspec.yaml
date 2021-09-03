@@ -48,6 +48,7 @@ dependencies:
   fluttertoast: ^8.0.8
   animated_background: ^2.0.0
   flutter_icons: ^1.1.0
+  popover: ^0.2.6+2
 
 dev_dependencies:
   flutter_test:

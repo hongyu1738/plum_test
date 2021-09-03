@@ -12,7 +12,7 @@ class Settings extends StatefulWidget {
   _SettingsState createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> with SingleTickerProviderStateMixin{
+class _SettingsState extends State<Settings>{
 
   double ttsVolume = 0.0;
   double ttsRate = 0.0;
@@ -72,57 +72,53 @@ class _SettingsState extends State<Settings> with SingleTickerProviderStateMixin
     getSfxVolume();
   }
 
-  void onBackPressed(){
-    widget.resetVolume(backgroundVolume);
-  }
-
-
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: hexColors('#3f681c'),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text('Settings',
-        style: TextStyle(
-          fontSize: 34,
-          color: Colors.white,
-          letterSpacing: .5,
-        )),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Spacer(),
+            Icon(SimpleLineIcons.settings, color: Colors.white, size: 45),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+            Text('Settings',
+            style: TextStyle(
+              fontSize: 33,
+              color: Colors.white,
+              letterSpacing: .5,
+            )),
+            Spacer(flex: 2),
+          ],
+        ),
       ),
 
       body: Container(
-        color: Colors.black,
-        child: AnimatedBackground(
-          behaviour: RacingLinesBehaviour(
-            numLines: 50,
-          ),
-          vsync: this,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _settingsHeading("Pronunciation", Ionicons.md_volume_high),
+            _divider(),
+            _settingsSubheading("Volume"),
+            _volume(),
+            _settingsSubheading("Speech Rate"),
+            _rate(),
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _settingsHeading("Pronunciation", Ionicons.md_volume_high),
-              _divider(),
-              _settingsSubheading("Volume"),
-              _volume(),
-              _settingsSubheading("Speech Rate"),
-              _rate(),
+            _settingsHeading("Background Music", Foundation.sound),
+            _divider(),
+            _settingsSubheading("Volume"),
+            _backgroundVolume(),
 
-              _settingsHeading("Background Music", Foundation.sound),
-              _divider(),
-              _settingsSubheading("Volume"),
-              _backgroundVolume(),
-
-              _settingsHeading("Sound Effects", Entypo.sound_mix),
-              _divider(),
-              _settingsSubheading("Volume"),
-              _sfxVolume(),
-            ],
-          ),
+            _settingsHeading("Sound Effects", Entypo.sound_mix),
+            _divider(),
+            _settingsSubheading("Volume"),
+            _sfxVolume(),
+          ],
         ),
       ),
     );
@@ -142,7 +138,7 @@ class _SettingsState extends State<Settings> with SingleTickerProviderStateMixin
       divisions: 10,
       label: "Volume: $ttsVolume",
       inactiveColor: hexColors('#f8f5f2'),
-      activeColor: hexColors('#375e97'),
+      activeColor: hexColors('#ffbb00'),
     );
   }
 
@@ -160,7 +156,7 @@ class _SettingsState extends State<Settings> with SingleTickerProviderStateMixin
       divisions: 10,
       label: "Rate: $ttsRate",
       inactiveColor: hexColors('#f8f5f2'),
-      activeColor: hexColors('#fb6542'),
+      activeColor: hexColors('#ffbb00'),
     );
   }
 
@@ -197,7 +193,7 @@ class _SettingsState extends State<Settings> with SingleTickerProviderStateMixin
       divisions: 10,
       label: "Rate: $sfxVolume",
       inactiveColor: hexColors('#f8f5f2'),
-      activeColor: hexColors('#3f681c'),
+      activeColor: hexColors('#ffbb00'),
     );
   }
 
@@ -207,7 +203,7 @@ class _SettingsState extends State<Settings> with SingleTickerProviderStateMixin
         child: Row(
           children: [
             Icon(iconName, color: Colors.white, size: 34),
-            SizedBox(width: 20),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
             Text("$text",
             style: TextStyle(
               fontSize: 34,

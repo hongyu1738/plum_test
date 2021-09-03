@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -310,14 +311,26 @@ class _CameraState extends State<Camera> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: hexColors('#375e97'),
       appBar: AppBar(
-        backgroundColor: Colors.orange[400],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
-        title: Text('Learn',
-        style: TextStyle(
-          fontSize: 30,
-          letterSpacing: .5,
-        )),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Spacer(),
+            Icon(SimpleLineIcons.camera, color: Colors.white, size: 45),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
+            Text('Learn',
+            style: TextStyle(
+              fontSize: 33,
+              color: Colors.white,
+              letterSpacing: .5,
+            )),
+            Spacer(flex: 2),
+          ],
+        ),
       ),
 
       body: Container(
@@ -329,17 +342,18 @@ class _CameraState extends State<Camera> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 
-               SizedBox(height: 200),
+               SizedBox(height: MediaQuery.of(context).size.height * 0.3),
 
                 Center(
                   child: Container(
-                    height: 300,
-                    width: 300,
+                    height: MediaQuery.of(context).size.height * 0.45,
+                    width: MediaQuery.of(context).size.width * 0.6,
                     child: Text('Select an image from the right bottom corner',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 32,
                       letterSpacing: .5,
+                      color: Colors.white,
                     ), 
                     ), 
                   ),
@@ -349,31 +363,32 @@ class _CameraState extends State<Camera> {
             
             : Column(
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                 Center(
                   child: GestureDetector(
                     onTap: cropImage,
                     child: Container(
-                      height: 350,
-                      width: 350,
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      width: MediaQuery.of(context).size.width * 0.8,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         image: DecorationImage(
                           image: FileImage(_image), //Load image if image is selected
-                          fit: BoxFit.scaleDown,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
                   ),
                 ),
 
-                SizedBox(height: 40),
+                SizedBox(height: MediaQuery.of(context).size.height * (1/9)),
 
                 _confidence < 0.9 ? Text('No classes found :(',
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w400,
+                    color: Colors.white,
                     //letterSpacing: .5,
                   ), 
                 )
@@ -390,6 +405,7 @@ class _CameraState extends State<Camera> {
                             fontSize: 40,
                             fontWeight: FontWeight.w400,
                             letterSpacing: .5,
+                            color: Colors.white,
                           ), 
                         ),
                       ),
@@ -411,42 +427,46 @@ class _CameraState extends State<Camera> {
       ),
 
       floatingActionButton: SpeedDial(
+        overlayColor: Colors.black54,
         buttonSize: 72,
         childrenButtonSize: 72,
         icon: Icons.add,
         activeIcon: Icons.close,
         animatedIconTheme: IconThemeData(size: 30),
-        backgroundColor: Colors.orange[400],
+        backgroundColor: Colors.white,
+        foregroundColor: hexColors('#375e97'),
         visible: true,
         curve: Curves.bounceIn,
         spaceBetweenChildren: 10.0,
         children: [
           SpeedDialChild(
-              child: Icon(Icons.camera_alt),
-              backgroundColor: Colors.white,
-              onTap: getImageFromCamera,
-              label: 'Camera',
+            child: Icon(Icons.camera_alt),
+            backgroundColor: Colors.white,
+            onTap: getImageFromCamera,
+            label: 'Camera',
               labelStyle: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.white,
                 fontSize: 30,
                 letterSpacing: .5,
             ),
-            labelBackgroundColor: Colors.orange[400]
+            labelBackgroundColor: hexColors('#375e97'),
+            foregroundColor: hexColors('#375e97'),
           ),
 
           SpeedDialChild(
-              child: Icon(Icons.photo),
-              backgroundColor: Colors.white,
-              onTap: getImageFromGallery,
-              label: 'Gallery',
+            child: Icon(Icons.photo),
+            backgroundColor: Colors.white,
+            onTap: getImageFromGallery,
+            label: 'Gallery',
               labelStyle: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.white,
                 fontSize: 30,
                 letterSpacing: .5,
-            ),
-            labelBackgroundColor: Colors.orange[400]
+              ),
+            labelBackgroundColor: hexColors('#375e97'),
+            foregroundColor: hexColors('#375e97'),
           ),
         ],
       ),
@@ -459,17 +479,20 @@ class _CameraState extends State<Camera> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(':(',
+          backgroundColor: hexColors('#e29930'),
+          title: Text(':(',
             style: TextStyle(
               fontSize: 30,
+              color: Colors.white,
             )
           ),
           content: SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children: <Widget>[
                 Text('No classes found for the image.\nTry again?', 
                   style: TextStyle(
                     fontSize: 30,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -480,6 +503,7 @@ class _CameraState extends State<Camera> {
               child: Text('OK',
                 style: TextStyle(
                   fontSize: 30,
+                  color: Colors.white,
                 )
               ),
               onPressed: () {
@@ -490,5 +514,9 @@ class _CameraState extends State<Camera> {
         );
       },
     );
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }

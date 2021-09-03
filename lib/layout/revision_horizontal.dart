@@ -9,14 +9,13 @@ class HorizontalView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
-        width: 300,
-        height: 300,
+        width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.black),
+          border: Border.all(color: Colors.white, width: 0.1),
           image: DecorationImage(
             image: NetworkImage(imageUrl),
-            fit: BoxFit.contain,
+            fit: BoxFit.fill,
           )
         ),
       )

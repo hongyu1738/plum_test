@@ -42,10 +42,13 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   }
 
   @override
-  Widget build(BuildContext context) {
-
+  void initState() {
+    super.initState();
     playBackground();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -76,12 +79,14 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                   )
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height * (1/36)),
 
                 menuButtons('/camera', 'Learn', hexColors('#375e97'), SimpleLineIcons.camera),
-                SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height * (1/36)),
+
                 menuButtons('/revision', 'Revision', hexColors('#fb6542'), AntDesign.book),
-                SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height * (1/36)),
+
                 BounceInDown(
                   child: ElevatedButton(
                     child: Row(
@@ -89,7 +94,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(SimpleLineIcons.game_controller, color: Colors.white, size: 45), 
-                        SizedBox(width: 15),
+                        SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
                         Text('Games',
                           style: TextStyle(
                             fontFamily: 'CrayonKids',
@@ -109,24 +114,41 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                     onPressed: (){
                       showMaterialModalBottomSheet(
                         bounce: true,
-                        backgroundColor: hexColors('#1e1f26'),
+                        backgroundColor: hexColors('#ffbb00'),
                         context: context, 
                         builder: (context){
                           return Column(
                             mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding: EdgeInsets.fromLTRB(16, 20, 16, 8),
-                                child: Text("Games",
-                                  style: TextStyle(
-                                    fontSize: 40,
-                                    color: Colors.white,
-                                  )
+                                child: Row(
+                                  children: [
+                                    SizedBox(width: MediaQuery.of(context).size.width * (1/72)),
+                                    Icon(SimpleLineIcons.game_controller, color: Colors.white, size: 45),
+                                    SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+                                    Text("Games",
+                                      style: TextStyle(
+                                        fontSize: 40,
+                                        color: Colors.white,
+                                      )
+                                    ),
+                                    Spacer(),
+                                    Container(
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          Navigator.pop(context);
+                                        },
+                                        child: Icon(Icons.close, color: Colors.white, size: 45),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
 
                               Padding(
-                                padding: EdgeInsets.fromLTRB(16, 8, 16, 20),
+                                padding: EdgeInsets.fromLTRB(25, 10, 0, 15),
                                 child: Text("Test your skills!",
                                   style: TextStyle(
                                     fontSize: 24,
@@ -138,8 +160,6 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                               gameButtons('/vocabularyQuiz', 'Vocabulary Games', Entypo.language),
                               gameButtons('/imageQuiz', 'Image Picker', Feather.image),
                               gameButtons('/dragQuiz', 'Drag and Drop', MaterialCommunityIcons.arrow_expand_all),
-
-                              SizedBox(height: 30),
                             ],
                           );
                         }
@@ -148,7 +168,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                   ),
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height * (1/36)),
 
                 BounceInDown(
                   child: ElevatedButton(
@@ -165,7 +185,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(SimpleLineIcons.settings, color: Colors.white, size: 45), 
-                          SizedBox(width: 15),
+                          SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
                           Text('Settings',
                             style: TextStyle(
                               fontFamily: 'CrayonKids',
@@ -202,7 +222,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(iconName, color: Colors.white, size: 45), 
-              SizedBox(width: 15),
+              SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
               Text(menuLabel,
                 style: TextStyle(
                   fontFamily: 'CrayonKids', 
@@ -222,21 +242,47 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget gameButtons(String gameRoute, String gameLabel, IconData iconName){
-    return ListTile(
-      horizontalTitleGap: 25,
-      leading: Icon(iconName, color: Colors.white, size: 45),
-      contentPadding: EdgeInsets.only(left: 25),
-      title: Text(gameLabel,
-        style: TextStyle(
-        fontSize: 28,
-        color: Colors.white,
-        )
-      ),
-      onTap: () {
+  Widget gameButtons(String gameRoute, String gameName, IconData iconName){
+    return GestureDetector(
+      onTap:(){
         Navigator.pop(context);
         Navigator.pushNamed(context, gameRoute);
       },
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 24.0,
+          vertical: 16.0,
+        ),
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Colors.white,
+              width: 0.1,
+            ),
+            bottom: BorderSide(
+              color: Colors.white,
+              width: 0.1,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Icon(iconName, color: Colors.white, size: 45),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+              ),
+              child: Text(gameName,
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.white,
+                )
+              )
+            ),
+          ],
+        ),
+      ),
     );
   }
 

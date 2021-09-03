@@ -29,11 +29,11 @@ class VocabularyQuestion extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.35,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
+        border: Border.all(color: Colors.white, width: 0.1),
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
           image: NetworkImage(url), //Load image if image is selected
-            fit: BoxFit.contain,
+            fit: BoxFit.fill,
         ),
       ),
     ),
@@ -42,7 +42,7 @@ class VocabularyQuestion extends StatelessWidget {
   Widget buildGrid(BuildContext context, List choices, double volume) => Padding(
     padding: const EdgeInsets.all(12),
     child: Container(
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.5,
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -64,7 +64,8 @@ class VocabularyQuestion extends StatelessWidget {
   Widget showQuestionChoices(String choice) => Container(
     padding: EdgeInsets.all(12),
     decoration: BoxDecoration(
-      border: Border.all(color: Colors.black),
+      color: hexColors('#f9a603'),
+      border: Border.all(color: Colors.white, width: 0.1),
       borderRadius: BorderRadius.circular(15)
     ),
     child: Column(
@@ -73,6 +74,7 @@ class VocabularyQuestion extends StatelessWidget {
         Text(choice, 
         style: TextStyle(
           fontSize: 30,
+          color: Colors.white,
         ),)
       ],
     ),
@@ -87,5 +89,9 @@ class VocabularyQuestion extends StatelessWidget {
       vocabularyPlayer.play("lose.wav", volume: volume);
       Navigator.of(context).pushNamed('/vocabularyResultFailure');
     }
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }

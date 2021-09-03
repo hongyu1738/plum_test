@@ -27,8 +27,10 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
-        backgroundColor: Colors.orange[400],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
         title: Text('Vocabulary Quiz',
         style: TextStyle(
@@ -59,7 +61,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     && (value.choiceResults.length == 0 && value.answerChoices.length == 0 && !value.choiceError)
                     ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator())) 
                     : value.vocabularyError ? SizedBox(
-                      height: 500,
+                      height: MediaQuery.of(context).size.height * 0.75,
                       child: Center(
                         child: Text('Oops. \n${value.vocabularyErrorMessage}',
                         //Error message when vocabularyError == true
@@ -98,6 +100,10 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
         ),
       ),
     );
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }
 

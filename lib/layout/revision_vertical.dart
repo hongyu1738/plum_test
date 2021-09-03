@@ -32,13 +32,14 @@ class _VerticalViewState extends State<VerticalView> {
 
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
           child: Row(
             children: [
               Text('${widget.classResult}',
                 style: TextStyle(
-                  fontSize: 36,
+                  fontSize: 34,
                   letterSpacing: .5,
+                  color: Colors.white,
                 ),
               ),
               Padding(
@@ -46,7 +47,7 @@ class _VerticalViewState extends State<VerticalView> {
                 child: IconButton(
                   onPressed: getSpeech,
                   icon: Icon(Icons.volume_up_rounded),
-                  color: Colors.grey[800],
+                  color: Colors.white,
                   iconSize: 38,
                   tooltip: "Press for pronounciation",
                 ),
@@ -55,10 +56,13 @@ class _VerticalViewState extends State<VerticalView> {
           ),
         ),
 
+        _divider(),
+
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
           child: SizedBox(
-            height: 200,
+            height: MediaQuery.of(context).size.height * 0.4,
+            
             child: AnimationLimiter(
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -79,6 +83,14 @@ class _VerticalViewState extends State<VerticalView> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _divider(){
+    return Divider(
+      thickness: 5,
+      indent: 20,
+      endIndent: 20,
     );
   }
 }

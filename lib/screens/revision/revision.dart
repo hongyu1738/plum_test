@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:plum_test/models/image_model.dart';
 import 'package:plum_test/layout/revision_vertical.dart';
@@ -20,21 +21,32 @@ class _RevisionState extends State<Revision> {
     context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
     context.read<ImageData>().fetchVolumeData;
     context.read<ImageData>().fetchRateData;
-
   }
 
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
+      backgroundColor: hexColors('#fb6542'),
       appBar: AppBar(
-        backgroundColor: Colors.orange[400],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
-        title: Text('Revision',
-        style: TextStyle(
-          fontSize: 30,
-          letterSpacing: .5,
-        )),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Spacer(),
+            Icon(AntDesign.book, color: Colors.white, size: 45),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+            Text('Revision',
+            style: TextStyle(
+              fontSize: 33,
+              color: Colors.white,
+              letterSpacing: .5,
+            )),
+            Spacer(flex: 2),
+          ],
+        ),
       ),
 
       body: BounceInDown(
@@ -42,7 +54,8 @@ class _RevisionState extends State<Revision> {
           springAnimationDurationInMilliseconds: 500,
           showChildOpacityTransition: false,
           animSpeedFactor: 1.5,
-          color: Colors.orangeAccent,
+          color: Colors.white,
+          backgroundColor: hexColors('#fb6542'),
           onRefresh: () async {
             await context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
             await context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
@@ -86,5 +99,9 @@ class _RevisionState extends State<Revision> {
         ),
       )
     );
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }

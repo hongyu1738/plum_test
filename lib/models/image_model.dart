@@ -41,16 +41,16 @@ class ImageData with ChangeNotifier {
    bool _dragError = false;
    String _dragErrorMessage = '';
 
-  double _ttsVolume = 0.0;
-  double _ttsRate = 0.0;
+  double _ttsVolume = 0.5;
+  double _ttsRate = 1.0;
   bool _ttsError = false;
   String _ttsErrorMessage = "";
 
-  double _bgVolume = 0.0;
+  double _bgVolume = 0.2;
   bool _bgError = false;
   String _bgErrorMessage = "";
 
-  double _sfxVolume = 0.0;
+  double _sfxVolume = 0.5;
   bool _sfxError = false;
   String _sfxErrorMessage = "";
 
