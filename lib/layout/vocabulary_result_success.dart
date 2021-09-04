@@ -10,14 +10,28 @@ class VocabularyResultSuccess extends StatelessWidget {
     return Scaffold(
       backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text('Success',
-        style: TextStyle(
-          fontSize: 33,
-          letterSpacing: .5,
-        )),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Spacer(),
+            Icon(AntDesign.checkcircleo, color: Colors.white, size: 40),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/27)),
+            Text('Correct',
+            style: TextStyle(
+              fontSize: 28,
+              color: Colors.white,
+              letterSpacing: .5,
+            )),
+            Spacer(flex: 2),
+          ],
+        ),
       ),
 
       body: Center(
@@ -43,7 +57,7 @@ class VocabularyResultSuccess extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(SimpleLineIcons.home, color: Colors.white, size: 45), 
+                    Icon(SimpleLineIcons.home, color: Colors.white, size: 40), 
                     SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
                     Text('Main Menu',
                       style: TextStyle(fontFamily: 'CrayonKids', fontSize: 28)
@@ -52,7 +66,7 @@ class VocabularyResultSuccess extends StatelessWidget {
                 ),
 
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
+                  primary: hexColors('#f9a603'),
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
                     fontFamily: 'CrayonKids',
@@ -73,7 +87,7 @@ class VocabularyResultSuccess extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Feather.repeat, color: Colors.white, size: 45), 
+                    Icon(MaterialCommunityIcons.skip_next_outline, color: Colors.white, size: 40), 
                     SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
                     Text('Try Another?', 
                       style: TextStyle(fontFamily: 'CrayonKids', fontSize: 28),
@@ -82,7 +96,7 @@ class VocabularyResultSuccess extends StatelessWidget {
                 ),
 
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
+                  primary: hexColors('#f9a603'),
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
                     fontFamily: 'CrayonKids',

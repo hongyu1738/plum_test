@@ -44,7 +44,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
                 child: IconButton(
                   onPressed: getSpeech,
                   icon: Icon(Icons.volume_up_rounded),
-                  color: Colors.grey[800],
+                  color: Colors.white,
                   iconSize: 38,
                   tooltip: "Press for pronounciation",
                 ),
@@ -59,7 +59,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
   Widget showQuizImage(BuildContext context, List<String> urlChoices, double volume) => Padding(
     padding: const EdgeInsets.all(12),
     child: Container(
-      height: MediaQuery.of(context).size.height * 0.68,
+      height: MediaQuery.of(context).size.height * 0.72,
       width: MediaQuery.of(context).size.width,
       child: ListView.builder(
         itemCount: urlChoices.length,
@@ -73,29 +73,31 @@ class _ImageQuestionState extends State<ImageQuestion> {
   );
 
   Widget showIndividualImage(BuildContext context, String url) => Padding(
-    padding: const EdgeInsets.all(12.0),
+    padding: EdgeInsets.fromLTRB(8, 0, 8, 15),
     child: Container(
-      height: MediaQuery.of(context).size.height * 0.30,
+      height: MediaQuery.of(context).size.height * 0.33,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
+        border: Border.all(color: Colors.white, width: 0.1),
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
           image: NetworkImage(url), //Load image if image is selected
-            fit: BoxFit.contain,
+            fit: BoxFit.fill,
         ),
       ),
     ),
   );
 
   Widget showQuizLabel(String label) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 0.0),
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
       child: Text("$label", 
         style: TextStyle(
-        fontSize: 36,
-        fontWeight: FontWeight.w400,
-        letterSpacing: .5,
-      ),),
+          fontSize: 34,
+          fontWeight: FontWeight.w400,
+          letterSpacing: .5,
+          color: Colors.white,
+        ),
+      ),
     );
 
   void compareResult(BuildContext context, int index, double volume){

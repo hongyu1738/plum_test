@@ -29,6 +29,10 @@ class _RevisionState extends State<Revision> {
     return Scaffold(
       backgroundColor: hexColors('#fb6542'),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -36,11 +40,11 @@ class _RevisionState extends State<Revision> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(AntDesign.book, color: Colors.white, size: 45),
+            Icon(AntDesign.book, color: Colors.white, size: 40),
             SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             Text('Revision',
             style: TextStyle(
-              fontSize: 33,
+              fontSize: 28,
               color: Colors.white,
               letterSpacing: .5,
             )),

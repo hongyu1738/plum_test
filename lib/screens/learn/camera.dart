@@ -313,6 +313,10 @@ class _CameraState extends State<Camera> {
     return Scaffold(
       backgroundColor: hexColors('#375e97'),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ), 
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -320,11 +324,11 @@ class _CameraState extends State<Camera> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(SimpleLineIcons.camera, color: Colors.white, size: 45),
+            Icon(SimpleLineIcons.camera, color: Colors.white, size: 40),
             SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
             Text('Learn',
             style: TextStyle(
-              fontSize: 33,
+              fontSize: 28,
               color: Colors.white,
               letterSpacing: .5,
             )),
@@ -384,13 +388,19 @@ class _CameraState extends State<Camera> {
 
                 SizedBox(height: MediaQuery.of(context).size.height * (1/9)),
 
-                _confidence < 0.9 ? Text('No classes found :(',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
-                    //letterSpacing: .5,
-                  ), 
+                _confidence < 0.9 ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('No classes found. ',
+                      style: TextStyle(
+                        fontSize: 34,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                        //letterSpacing: .5,
+                      ), 
+                    ),
+                    Icon(AntDesign.frowno, color: Colors.white, size: 40),
+                  ],
                 )
 
                 : Row(
@@ -479,13 +489,8 @@ class _CameraState extends State<Camera> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: hexColors('#e29930'),
-          title: Text(':(',
-            style: TextStyle(
-              fontSize: 30,
-              color: Colors.white,
-            )
-          ),
+          backgroundColor: hexColors('#f9a603'),
+          title: Icon(AntDesign.frowno, color: Colors.white, size: 40),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[

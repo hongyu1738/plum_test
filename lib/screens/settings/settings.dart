@@ -78,6 +78,10 @@ class _SettingsState extends State<Settings>{
     return Scaffold(
       backgroundColor: hexColors('#3f681c'),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -85,11 +89,11 @@ class _SettingsState extends State<Settings>{
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(SimpleLineIcons.settings, color: Colors.white, size: 45),
+            Icon(SimpleLineIcons.settings, color: Colors.white, size: 40),
             SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             Text('Settings',
             style: TextStyle(
-              fontSize: 33,
+              fontSize: 28,
               color: Colors.white,
               letterSpacing: .5,
             )),
@@ -138,7 +142,7 @@ class _SettingsState extends State<Settings>{
       divisions: 10,
       label: "Volume: $ttsVolume",
       inactiveColor: hexColors('#f8f5f2'),
-      activeColor: hexColors('#ffbb00'),
+      activeColor: hexColors('#f9a603'),
     );
   }
 
@@ -156,7 +160,7 @@ class _SettingsState extends State<Settings>{
       divisions: 10,
       label: "Rate: $ttsRate",
       inactiveColor: hexColors('#f8f5f2'),
-      activeColor: hexColors('#ffbb00'),
+      activeColor: hexColors('#f9a603'),
     );
   }
 
@@ -175,7 +179,7 @@ class _SettingsState extends State<Settings>{
       divisions: 10,
       label: "Rate: $backgroundVolume",
       inactiveColor: hexColors('#f8f5f2'),
-      activeColor: hexColors('#ffbb00'),
+      activeColor: hexColors('#f9a603'),
     );
   }
 
@@ -193,7 +197,7 @@ class _SettingsState extends State<Settings>{
       divisions: 10,
       label: "Rate: $sfxVolume",
       inactiveColor: hexColors('#f8f5f2'),
-      activeColor: hexColors('#ffbb00'),
+      activeColor: hexColors('#f9a603'),
     );
   }
 

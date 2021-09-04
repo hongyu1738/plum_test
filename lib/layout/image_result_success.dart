@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class ImageResultSuccess extends StatelessWidget {
   const ImageResultSuccess({ Key key }) : super(key: key);
@@ -7,57 +8,98 @@ class ImageResultSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
-        backgroundColor: Colors.orange[400],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
-        title: Text('Success',
-        style: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.w400,
-          letterSpacing: .5,
-        )),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Spacer(),
+            Icon(AntDesign.checkcircleo, color: Colors.white, size: 40),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/27)),
+            Text('Correct',
+            style: TextStyle(
+              fontSize: 28,
+              color: Colors.white,
+              letterSpacing: .5,
+            )),
+            Spacer(flex: 2),
+          ],
+        ),
       ),
 
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 50),
+            SizedBox(height: MediaQuery.of(context).size.height * (3/40)),
+
+            Icon(AntDesign.smileo, color: Colors.white, size: 180),
+
+            SizedBox(height: MediaQuery.of(context).size.height * (1/18)),
+
+            Text('Nice!', style: TextStyle(fontSize: 34, color: Colors.white)),
+
+            SizedBox(height: MediaQuery.of(context).size.height * (1/18)),
 
             BounceInDown(
-              child: ElevatedButton.icon(
+              child: ElevatedButton(
                 onPressed: (){
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
-                icon: Icon(Icons.home_rounded),
-                label: Text('Back to Main Menu',
-                style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(SimpleLineIcons.home, color: Colors.white, size: 40), 
+                    SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
+                    Text('Main Menu',
+                      style: TextStyle(fontFamily: 'CrayonKids', fontSize: 28)
+                    ),
+                  ],
+                ),
+
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
+                  primary: hexColors('#f9a603'),
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    fontFamily: 'CrayonKids',
                   ),
                 )
               ),
             ),
 
-            SizedBox(height: 50),
+            SizedBox(height: MediaQuery.of(context).size.height * (1/18)),
 
             BounceInDown(
-              child: ElevatedButton.icon(
+              child: ElevatedButton(
                 onPressed: (){
                   Navigator.of(context).pushReplacementNamed('/imageQuiz');
                 },
-                icon: Icon(Icons.autorenew_rounded),
-                label: Text('Try Another?',
-                style: TextStyle(fontFamily: 'CrayonKids', fontSize: 30)),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(MaterialCommunityIcons.skip_next_outline, color: Colors.white, size: 40), 
+                    SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
+                    Text('Try Another?', 
+                      style: TextStyle(fontFamily: 'CrayonKids', fontSize: 28),
+                    ),
+                  ],
+                ),
+
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
+                  primary: hexColors('#f9a603'),
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
+                    fontFamily: 'CrayonKids',
                   ),
                 )
               ),
@@ -66,5 +108,9 @@ class ImageResultSuccess extends StatelessWidget {
         )
       ),
     );
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }

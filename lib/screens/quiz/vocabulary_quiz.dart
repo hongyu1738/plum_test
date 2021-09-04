@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:plum_test/layout/vocabulary_question.dart';
 import 'package:plum_test/models/image_model.dart';
 import 'package:provider/provider.dart';
@@ -29,15 +30,39 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
     return Scaffold(
       backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: Text('Vocabulary Quiz',
-        style: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.w400,
-          letterSpacing: .5,
-        )),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Spacer(),
+            Icon(Entypo.language, color: Colors.white, size: 40),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+            Text('Vocab Games',
+            style: TextStyle(
+              fontSize: 28,
+              color: Colors.white,
+              letterSpacing: .5,
+            )),
+            Spacer(),
+          ],
+        ),
+        actions: [
+          Padding(padding: EdgeInsets.only(right: 16),
+            child: GestureDetector(
+              onTap: () async { 
+                await context.read<ImageData>().fetchRandomAnswer;
+                await context.read<ImageData>().fetchSfxVolume;
+              },
+              child: Icon(Icons.refresh_rounded, size: 30),
+            ),
+          )
+        ],
       ),
 
       body: BounceInDown(
@@ -45,7 +70,8 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
           springAnimationDurationInMilliseconds: 500,
           showChildOpacityTransition: false,
           animSpeedFactor: 1.5,
-          color: Colors.orangeAccent,
+          color: Colors.white,
+          backgroundColor: hexColors('#f9a603'),
           onRefresh: () async { //Refetch required data from Cloud Firestore on refresh
             await context.read<ImageData>().fetchRandomAnswer;
             await context.read<ImageData>().fetchSfxVolume;

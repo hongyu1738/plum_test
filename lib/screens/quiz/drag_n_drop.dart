@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:plum_test/models/image_model.dart';
 import 'package:plum_test/layout/drag_item.dart';
@@ -32,15 +33,29 @@ class _DragAndDropState extends State<DragAndDrop> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
-        backgroundColor: Colors.orange[400],
-        centerTitle: true,
-        title: Text('Drag and Drop',
-        style: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.w400,
-          letterSpacing: .5,
-        )),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Spacer(),
+            Icon(MaterialCommunityIcons.arrow_expand_all, color: Colors.white, size: 40),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+            Text('Drag and Drop',
+            style: TextStyle(
+              fontSize: 28,
+              color: Colors.white,
+              letterSpacing: .5,
+            )),
+            Spacer(),
+          ],
+        ),
         actions: [
           Padding(padding: EdgeInsets.only(right: 16),
             child: GestureDetector(
@@ -51,10 +66,9 @@ class _DragAndDropState extends State<DragAndDrop> {
                   score.clear();          
                 });
               },
-              child: Icon(Icons.refresh_rounded, size: 26),
+              child: Icon(Icons.refresh_rounded, size: 30),
             ),
           )
-
         ],
       ),
 
@@ -107,11 +121,7 @@ class _DragAndDropState extends State<DragAndDrop> {
     builder: (BuildContext context, List<String> accepted, List rejected){
       if (score[label] == true) {
         return Container(
-          child: Text('Correct', 
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.w400)
-          ),
+          child: Icon(AntDesign.checkcircleo, color: Colors.white, size: 40),
           alignment: Alignment.center,
           height: MediaQuery.of(context).size.height * 0.25,
           width: MediaQuery.of(context).size.width * 0.35,
@@ -121,7 +131,7 @@ class _DragAndDropState extends State<DragAndDrop> {
           height: MediaQuery.of(context).size.height * 0.25,
           width: MediaQuery.of(context).size.width * 0.35,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Colors.white, width: 0.5),
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
               image: NetworkImage(url), //Load image if image is selected
@@ -150,5 +160,9 @@ class _DragAndDropState extends State<DragAndDrop> {
       dragPlayer.play("win.wav", volume: volume);
       Navigator.of(context).pushReplacementNamed('/dragResultSuccess');
     }
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }

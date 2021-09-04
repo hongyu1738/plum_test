@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:plum_test/layout/image_question.dart';
 import 'package:provider/provider.dart';
 import 'package:plum_test/models/image_model.dart';
@@ -29,15 +30,43 @@ class _ImageQuizState extends State<ImageQuiz> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
-        backgroundColor: Colors.orange[400],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
-        title: Text('Image Quiz',
-        style: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.w400,
-          letterSpacing: .5,
-        )),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Spacer(),
+            Icon(Feather.image, color: Colors.white, size: 40),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+            Text('Image Picker',
+            style: TextStyle(
+              fontSize: 28,
+              color: Colors.white,
+              letterSpacing: .5,
+            )),
+            Spacer(),
+          ],
+        ),
+        actions: [
+          Padding(padding: EdgeInsets.only(right: 16),
+            child: GestureDetector(
+              onTap: () async { 
+                await context.read<ImageData>().fetchImageQuizData;
+                await context.read<ImageData>().fetchVolumeData;
+                await context.read<ImageData>().fetchRateData;
+                await context.read<ImageData>().fetchSfxVolume;
+              },
+              child: Icon(Icons.refresh_rounded, size: 30),
+            ),
+          )
+        ],
       ),
 
       body: BounceInDown(
@@ -45,7 +74,8 @@ class _ImageQuizState extends State<ImageQuiz> {
           springAnimationDurationInMilliseconds: 500,
           showChildOpacityTransition: false,
           animSpeedFactor: 1.5,
-          color: Colors.orangeAccent,
+          color: Colors.white,
+          backgroundColor: hexColors('#f9a603'),
           onRefresh: () async { //Refetch required data from Cloud Firestore on refresh
             await context.read<ImageData>().fetchImageQuizData;
             await context.read<ImageData>().fetchVolumeData;
@@ -63,7 +93,7 @@ class _ImageQuizState extends State<ImageQuiz> {
                   ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                   : value.vocabularyError ? 
                   SizedBox(
-                    height: 500,
+                    height: MediaQuery.of(context).size.height * 0.75,
                     child: Center(
                       child: Text('Oops. \n${value.vocabularyErrorMessage}',
                       //Error message when vocabularyError == true
@@ -90,5 +120,9 @@ class _ImageQuizState extends State<ImageQuiz> {
         ),
       ),
     );
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }

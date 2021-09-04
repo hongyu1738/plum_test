@@ -127,7 +127,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                                   children: [
                                     SizedBox(width: MediaQuery.of(context).size.width * (1/72)),
                                     Icon(SimpleLineIcons.game_controller, color: Colors.white, size: 45),
-                                    SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+                                    SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
                                     Text("Games",
                                       style: TextStyle(
                                         fontSize: 40,
@@ -151,13 +151,13 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                                 padding: EdgeInsets.fromLTRB(25, 10, 0, 15),
                                 child: Text("Test your skills!",
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 28,
                                     color: Colors.white,
                                   )
                                 ),
                               ),
                                   
-                              gameButtons('/vocabularyQuiz', 'Vocabulary Games', Entypo.language),
+                              gameButtons('/vocabularyQuiz', 'Vocab Games', Entypo.language),
                               gameButtons('/imageQuiz', 'Image Picker', Feather.image),
                               gameButtons('/dragQuiz', 'Drag and Drop', MaterialCommunityIcons.arrow_expand_all),
                             ],
