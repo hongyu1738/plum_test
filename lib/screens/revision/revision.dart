@@ -1,3 +1,4 @@
+import 'package:cool_ui/cool_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
@@ -48,9 +49,40 @@ class _RevisionState extends State<Revision> {
               color: Colors.white,
               letterSpacing: .5,
             )),
-            Spacer(flex: 2),
+            Spacer(),
           ],
         ),
+        actions: [
+          Padding(padding: EdgeInsets.only(right: 8),
+            child: CupertinoPopoverButton(
+              child: Padding(padding: EdgeInsets.only(right: 8),
+                child: Icon(Icons.info_outline, size: 35),
+              ),
+              popoverHeight: MediaQuery.of(context).size.height * 0.43,
+              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              popoverBuild: (BuildContext context){
+                return CupertinoPopoverMenuList(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Center(
+                        child: Text("Instructions", 
+                          style: TextStyle(
+                            fontSize: 34
+                          )
+                        ),
+                      ),
+                    ),
+                    popoverItem("Tap for Pronunciation", Icons.volume_up_rounded),
+                    popoverItem("Swipe Left/Right for More Images", Icons.swipe),
+                    popoverItem("Scroll Down for More Classes", MaterialCommunityIcons.gesture_swipe_up),
+                    popoverItem("Swipe Down to Refresh", MaterialCommunityIcons.gesture_swipe_down),
+                  ],
+                );
+              },
+            )
+          )
+        ],
       ),
 
       body: BounceInDown(
@@ -107,5 +139,22 @@ class _RevisionState extends State<Revision> {
 
   Color hexColors(String hexColor){
     return Color(int.parse(hexColor.replaceAll('#', '0xff')));
+  }
+
+  Widget popoverItem(String text, IconData iconData){
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
+      child: Row(
+        children: [
+          Icon(iconData, size: 40),
+          SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+          Text(text,
+            style: TextStyle(
+              fontSize: 20,
+            )
+          ),
+        ],
+      ),
+    );
   }
 }

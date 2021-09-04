@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cool_ui/cool_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -280,6 +281,89 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                 )
               )
             ),
+            Spacer(),
+            
+            gameName == 'Vocab Games' ?
+
+            CupertinoPopoverButton(
+              child: Icon(Icons.info_outline, size: 40, color: Colors.white),
+              popoverHeight: MediaQuery.of(context).size.height * 0.27,
+              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              direction: CupertinoPopoverDirection.top,
+              popoverBuild: (BuildContext context){
+                return CupertinoPopoverMenuList(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Center(
+                        child: Text("Instructions", 
+                          style: TextStyle(
+                            fontSize: 34
+                          )
+                        ),
+                      ),
+                    ),
+                    popoverItem("Tap to Select Answer", AntDesign.select1),
+                    popoverItem("Swipe Down to Refresh", MaterialCommunityIcons.gesture_swipe_down),
+                  ],
+                );
+              },
+            )
+
+            : gameName == 'Image Picker' ?
+
+            CupertinoPopoverButton(
+              child: Icon(Icons.info_outline, size: 40, color: Colors.white),
+              popoverHeight: MediaQuery.of(context).size.height * 0.35,
+              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              direction: CupertinoPopoverDirection.top,
+              popoverBuild: (BuildContext context){
+                return CupertinoPopoverMenuList(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Center(
+                        child: Text("Instructions", 
+                          style: TextStyle(
+                            fontSize: 34
+                          )
+                        ),
+                      ),
+                    ),
+                    popoverItem("Tap for Pronunciation", Icons.volume_up_rounded),
+                    popoverItem("Tap to Select Answer", AntDesign.select1),
+                    popoverItem("Swipe Down to Refresh", MaterialCommunityIcons.gesture_swipe_down),
+                  ],
+                );
+              },
+            )
+
+            : 
+            
+            CupertinoPopoverButton(
+              child: Icon(Icons.info_outline, size: 40, color: Colors.white),
+              popoverHeight: MediaQuery.of(context).size.height * 0.27,
+              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              direction: CupertinoPopoverDirection.top,
+              popoverBuild: (BuildContext context){
+                return CupertinoPopoverMenuList(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Center(
+                        child: Text("Instructions", 
+                          style: TextStyle(
+                            fontSize: 34
+                          )
+                        ),
+                      ),
+                    ),
+                    popoverItem("Tap to Select Item", AntDesign.select1),
+                    popoverItem("Drag Item to Answer", MaterialCommunityIcons.select_drag),
+                  ],
+                );
+              },
+            )
           ],
         ),
       ),
@@ -292,6 +376,23 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
       child: GestureDetector(
         onTap: appBarFunction,
         child: Icon(iconName, color: Colors.white, size: 30),
+      ),
+    );
+  }
+
+  Widget popoverItem(String text, IconData iconData){
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
+      child: Row(
+        children: [
+          Icon(iconData, size: 40),
+          SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+          Text(text,
+            style: TextStyle(
+              fontSize: 20,
+            )
+          ),
+        ],
       ),
     );
   }

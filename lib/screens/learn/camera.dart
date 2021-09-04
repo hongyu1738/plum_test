@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_ui/cool_ui.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -309,7 +310,6 @@ class _CameraState extends State<Camera> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: hexColors('#375e97'),
       appBar: AppBar(
@@ -335,6 +335,36 @@ class _CameraState extends State<Camera> {
             Spacer(flex: 2),
           ],
         ),
+        actions: [
+          Padding(padding: EdgeInsets.only(right: 8),
+            child: CupertinoPopoverButton(
+              child: Padding(padding: EdgeInsets.only(right: 8),
+                child: Icon(Icons.info_outline, size: 35),
+              ),
+              popoverHeight: MediaQuery.of(context).size.height * 0.35,
+              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              popoverBuild: (BuildContext context){
+                return CupertinoPopoverMenuList(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Center(
+                        child: Text("Instructions", 
+                          style: TextStyle(
+                            fontSize: 34
+                          )
+                        ),
+                      ),
+                    ),
+                    popoverItem("Tap to Select Image", SimpleLineIcons.plus),
+                    popoverItem("Tap to Crop Image", AntDesign.select1),
+                    popoverItem("Tap for Pronunciation", Icons.volume_up_rounded),
+                  ],
+                );
+              },
+            )
+          )
+        ],
       ),
 
       body: Container(
@@ -523,5 +553,22 @@ class _CameraState extends State<Camera> {
 
   Color hexColors(String hexColor){
     return Color(int.parse(hexColor.replaceAll('#', '0xff')));
+  }
+
+  Widget popoverItem(String text, IconData iconData){
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
+      child: Row(
+        children: [
+          Icon(iconData, size: 40),
+          SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+          Text(text,
+            style: TextStyle(
+              fontSize: 20,
+            )
+          ),
+        ],
+      ),
+    );
   }
 }
