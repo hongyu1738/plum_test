@@ -25,7 +25,7 @@ class _CameraSpeechState extends State<CameraSpeech> {
         onPressed: getSpeech,
         icon: Icon(Icons.volume_up_rounded),
         color: Colors.white,
-        iconSize: 38,
+        iconSize: 45,
         tooltip: "Press for pronounciation",
       ),
     );

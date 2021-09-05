@@ -41,11 +41,11 @@ class _RevisionState extends State<Revision> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(AntDesign.book, color: Colors.white, size: 40),
+            Icon(AntDesign.book, color: Colors.white, size: 45),
             SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             Text('Revision',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 35,
               color: Colors.white,
               letterSpacing: .5,
             )),
@@ -58,7 +58,7 @@ class _RevisionState extends State<Revision> {
               child: Padding(padding: EdgeInsets.only(right: 8),
                 child: Icon(Icons.info_outline, size: 35),
               ),
-              popoverHeight: MediaQuery.of(context).size.height * 0.43,
+              popoverHeight: MediaQuery.of(context).size.height * 0.48,
               popoverWidth: MediaQuery.of(context).size.width * 0.95,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
@@ -68,7 +68,7 @@ class _RevisionState extends State<Revision> {
                       child: Center(
                         child: Text("Instructions", 
                           style: TextStyle(
-                            fontSize: 34
+                            fontSize: 40
                           )
                         ),
                       ),
@@ -146,11 +146,11 @@ class _RevisionState extends State<Revision> {
       padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
       child: Row(
         children: [
-          Icon(iconData, size: 40),
+          Icon(iconData, size: 45),
           SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
           Text(text,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 30,
             )
           ),
         ],

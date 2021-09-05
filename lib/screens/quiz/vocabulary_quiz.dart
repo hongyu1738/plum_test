@@ -41,11 +41,11 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(Entypo.language, color: Colors.white, size: 40),
+            Icon(Entypo.language, color: Colors.white, size: 45),
             SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             Text('Vocab Games',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 35,
               color: Colors.white,
               letterSpacing: .5,
             )),

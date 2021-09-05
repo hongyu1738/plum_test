@@ -76,7 +76,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                 Text('PLUM', 
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 60,
+                    fontSize: 80,
                   )
                 ),
 
@@ -95,10 +95,10 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(SimpleLineIcons.game_controller, color: Colors.white, size: 45), 
-                        SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+                        SizedBox(width: MediaQuery.of(context).size.width * (1/27)),
                         Text('Games',
                           style: TextStyle(
-                            fontFamily: 'CrayonKids',
+                            fontFamily: 'MouseMemoirs',
                           )
                         ),
                       ],
@@ -108,7 +108,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       primary: hexColors('#ffbb00'),
                       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(
-                        fontSize: 28,
+                        fontSize: 35,
                       ),
                     ),
                     
@@ -152,7 +152,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                                 padding: EdgeInsets.fromLTRB(25, 10, 0, 15),
                                 child: Text("Test your skills!",
                                   style: TextStyle(
-                                    fontSize: 28,
+                                    fontSize: 33,
                                     color: Colors.white,
                                   )
                                 ),
@@ -186,10 +186,10 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(SimpleLineIcons.settings, color: Colors.white, size: 45), 
-                          SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+                          SizedBox(width: MediaQuery.of(context).size.width * (1/27)),
                           Text('Settings',
                             style: TextStyle(
-                              fontFamily: 'CrayonKids',
+                              fontFamily: 'MouseMemoirs',
                             )
                           ),
                         ],
@@ -199,7 +199,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       primary: hexColors('#3f681c'),
                       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(
-                        fontSize: 28,
+                        fontSize: 35,
                       ),
                     )
                   ),
@@ -223,10 +223,10 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(iconName, color: Colors.white, size: 45), 
-              SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+              SizedBox(width: MediaQuery.of(context).size.width * (1/27)),
               Text(menuLabel,
                 style: TextStyle(
-                  fontFamily: 'CrayonKids', 
+                  fontFamily: 'MouseMemoirs', 
                 )
               ),
             ],
@@ -236,7 +236,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
           primary: hexColor,
           padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
           textStyle: TextStyle(
-            fontSize: 28,
+            fontSize: 35,
           ),
         )
       ),
@@ -251,8 +251,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
       },
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: 24.0,
-          vertical: 16.0,
+          horizontal: 24,
+          vertical: 16,
         ),
         decoration: BoxDecoration(
           border: Border(
@@ -271,12 +271,12 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
           children: [
             Icon(iconName, color: Colors.white, size: 45),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
               ),
               child: Text(gameName,
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 35,
                   color: Colors.white,
                 )
               )

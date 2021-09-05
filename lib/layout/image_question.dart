@@ -39,16 +39,14 @@ class _ImageQuestionState extends State<ImageQuestion> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             showQuizLabel(widget.imageLabel),
-            Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: IconButton(
-                  onPressed: getSpeech,
-                  icon: Icon(Icons.volume_up_rounded),
-                  color: Colors.white,
-                  iconSize: 38,
-                  tooltip: "Press for pronounciation",
-                ),
-              ),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+            IconButton(
+              onPressed: getSpeech,
+              icon: Icon(Icons.volume_up_rounded),
+              color: Colors.white,
+              iconSize: 45,
+              tooltip: "Press for pronounciation",
+            ),
           ],
         ),
         showQuizImage(context, widget.urlChoices, widget.sfxVolume),
@@ -92,7 +90,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
       padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
       child: Text("$label", 
         style: TextStyle(
-          fontSize: 34,
+          fontSize: 40,
           fontWeight: FontWeight.w400,
           letterSpacing: .5,
           color: Colors.white,

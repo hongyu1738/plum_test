@@ -43,11 +43,11 @@ class _ImageQuizState extends State<ImageQuiz> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(Feather.image, color: Colors.white, size: 40),
+            Icon(Feather.image, color: Colors.white, size: 45),
             SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             Text('Image Picker',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 35,
               color: Colors.white,
               letterSpacing: .5,
             )),

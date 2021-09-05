@@ -1,4 +1,3 @@
-import 'package:animated_background/animated_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -74,7 +73,6 @@ class _SettingsState extends State<Settings>{
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: hexColors('#3f681c'),
       appBar: AppBar(
@@ -89,11 +87,11 @@ class _SettingsState extends State<Settings>{
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(SimpleLineIcons.settings, color: Colors.white, size: 40),
+            Icon(SimpleLineIcons.settings, color: Colors.white, size: 45),
             SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             Text('Settings',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 35,
               color: Colors.white,
               letterSpacing: .5,
             )),
@@ -206,11 +204,11 @@ class _SettingsState extends State<Settings>{
       padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
         child: Row(
           children: [
-            Icon(iconName, color: Colors.white, size: 34),
+            Icon(iconName, color: Colors.white, size: 40),
             SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
             Text("$text",
             style: TextStyle(
-              fontSize: 34,
+              fontSize: 35,
               fontWeight: FontWeight.w400,
               color: Colors.white,
             ),

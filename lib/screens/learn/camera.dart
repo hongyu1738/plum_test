@@ -324,15 +324,15 @@ class _CameraState extends State<Camera> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(SimpleLineIcons.camera, color: Colors.white, size: 40),
+            Icon(SimpleLineIcons.camera, color: Colors.white, size: 45),
             SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
             Text('Learn',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 35,
               color: Colors.white,
               letterSpacing: .5,
             )),
-            Spacer(flex: 2),
+            Spacer(),
           ],
         ),
         actions: [
@@ -341,7 +341,7 @@ class _CameraState extends State<Camera> {
               child: Padding(padding: EdgeInsets.only(right: 8),
                 child: Icon(Icons.info_outline, size: 35),
               ),
-              popoverHeight: MediaQuery.of(context).size.height * 0.35,
+              popoverHeight: MediaQuery.of(context).size.height * 0.39,
               popoverWidth: MediaQuery.of(context).size.width * 0.95,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
@@ -351,7 +351,7 @@ class _CameraState extends State<Camera> {
                       child: Center(
                         child: Text("Instructions", 
                           style: TextStyle(
-                            fontSize: 34
+                            fontSize: 40
                           )
                         ),
                       ),
@@ -385,7 +385,7 @@ class _CameraState extends State<Camera> {
                     child: Text('Select an image from the right bottom corner',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 40,
                       letterSpacing: .5,
                       color: Colors.white,
                     ), 
@@ -421,15 +421,15 @@ class _CameraState extends State<Camera> {
                 _confidence < 0.9 ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('No classes found. ',
+                    Text('No classes found.   ',
                       style: TextStyle(
-                        fontSize: 34,
+                        fontSize: 40,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
                         //letterSpacing: .5,
                       ), 
                     ),
-                    Icon(AntDesign.frowno, color: Colors.white, size: 40),
+                    Icon(AntDesign.frowno, color: Colors.white, size: 45),
                   ],
                 )
 
@@ -442,7 +442,7 @@ class _CameraState extends State<Camera> {
                       child: Center(
                         child: Text("$_label",
                           style: TextStyle(
-                            fontSize: 40,
+                            fontSize: 45,
                             fontWeight: FontWeight.w400,
                             letterSpacing: .5,
                             color: Colors.white,
@@ -468,8 +468,8 @@ class _CameraState extends State<Camera> {
 
       floatingActionButton: SpeedDial(
         overlayColor: Colors.black54,
-        buttonSize: 72,
-        childrenButtonSize: 72,
+        buttonSize: 84,
+        childrenButtonSize: 84,
         icon: Icons.add,
         activeIcon: Icons.close,
         animatedIconTheme: IconThemeData(size: 30),
@@ -480,14 +480,14 @@ class _CameraState extends State<Camera> {
         spaceBetweenChildren: 10.0,
         children: [
           SpeedDialChild(
-            child: Icon(Icons.camera_alt),
+            child: Icon(Icons.camera_alt, size: 40),
             backgroundColor: Colors.white,
             onTap: getImageFromCamera,
             label: 'Camera',
               labelStyle: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.white,
-                fontSize: 30,
+                fontSize: 35,
                 letterSpacing: .5,
             ),
             labelBackgroundColor: hexColors('#375e97'),
@@ -495,14 +495,14 @@ class _CameraState extends State<Camera> {
           ),
 
           SpeedDialChild(
-            child: Icon(Icons.photo),
+            child: Icon(Icons.photo, size: 40),
             backgroundColor: Colors.white,
             onTap: getImageFromGallery,
             label: 'Gallery',
               labelStyle: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.white,
-                fontSize: 30,
+                fontSize: 35,
                 letterSpacing: .5,
               ),
             labelBackgroundColor: hexColors('#375e97'),
@@ -520,13 +520,13 @@ class _CameraState extends State<Camera> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: hexColors('#f9a603'),
-          title: Icon(AntDesign.frowno, color: Colors.white, size: 40),
+          title: Icon(AntDesign.frowno, color: Colors.white, size: 45),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text('No classes found for the image.\nTry again?', 
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 35,
                     color: Colors.white,
                   ),
                 ),
@@ -537,7 +537,7 @@ class _CameraState extends State<Camera> {
             TextButton(
               child: Text('OK',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 35,
                   color: Colors.white,
                 )
               ),
@@ -560,11 +560,11 @@ class _CameraState extends State<Camera> {
       padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
       child: Row(
         children: [
-          Icon(iconData, size: 40),
+          Icon(iconData, size: 45),
           SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
           Text(text,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 30,
             )
           ),
         ],

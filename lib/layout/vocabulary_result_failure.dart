@@ -22,11 +22,11 @@ class VocabularyResultFailure extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(AntDesign.closecircleo, color: Colors.white, size: 40),
+            Icon(AntDesign.closecircleo, color: Colors.white, size: 45),
             SizedBox(width: MediaQuery.of(context).size.width * (1/27)),
             Text('Incorrect',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 35,
               color: Colors.white,
               letterSpacing: .5,
             )),
@@ -44,7 +44,7 @@ class VocabularyResultFailure extends StatelessWidget {
 
             SizedBox(height: MediaQuery.of(context).size.height * (1/18)),
 
-            Text('Oh No!', style: TextStyle(fontSize: 34, color: Colors.white)),
+            Text('Oh No!', style: TextStyle(fontSize: 40, color: Colors.white)),
 
             SizedBox(height: MediaQuery.of(context).size.height * (1/18)),
 
@@ -60,9 +60,7 @@ class VocabularyResultFailure extends StatelessWidget {
                   children: [
                     Icon(SimpleLineIcons.home, color: Colors.white, size: 40), 
                     SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
-                    Text('Main Menu',
-                      style: TextStyle(fontFamily: 'CrayonKids', fontSize: 28)
-                    ),
+                    Text('Main Menu'),
                   ],
                 ),
 
@@ -70,7 +68,8 @@ class VocabularyResultFailure extends StatelessWidget {
                   primary: hexColors('#f9a603'),
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
-                    fontFamily: 'CrayonKids',
+                    fontSize: 35,
+                    fontFamily: 'MouseMemoirs',
                   ),
                 )
               ),
@@ -90,9 +89,7 @@ class VocabularyResultFailure extends StatelessWidget {
                   children: [
                     Icon(Feather.repeat, color: Colors.white, size: 40), 
                     SizedBox(width: MediaQuery.of(context).size.width * (1/18)),
-                    Text('Try Again?', 
-                      style: TextStyle(fontFamily: 'CrayonKids', fontSize: 28),
-                    ),
+                    Text('Try Again?'),
                   ],
                 ),
 
@@ -100,7 +97,8 @@ class VocabularyResultFailure extends StatelessWidget {
                   primary: hexColors('#f9a603'),
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   textStyle: TextStyle(
-                    fontFamily: 'CrayonKids',
+                    fontSize: 35,
+                    fontFamily: 'MouseMemoirs',
                   ),
                 )
               ),

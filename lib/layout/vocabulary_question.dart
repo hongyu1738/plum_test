@@ -40,7 +40,7 @@ class VocabularyQuestion extends StatelessWidget {
   );
 
   Widget buildGrid(BuildContext context, List choices, double volume) => Padding(
-    padding: const EdgeInsets.all(12),
+    padding: EdgeInsets.all(12),
     child: Container(
       height: MediaQuery.of(context).size.height * 0.5,
       child: GridView.builder(
@@ -73,7 +73,7 @@ class VocabularyQuestion extends StatelessWidget {
       children: [
         Text(choice, 
         style: TextStyle(
-          fontSize: 30,
+          fontSize: 35,
           color: Colors.white,
         ),)
       ],

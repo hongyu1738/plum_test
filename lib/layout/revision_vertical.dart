@@ -37,18 +37,18 @@ class _VerticalViewState extends State<VerticalView> {
             children: [
               Text('${widget.classResult}',
                 style: TextStyle(
-                  fontSize: 34,
+                  fontSize: 40,
                   letterSpacing: .5,
                   color: Colors.white,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: EdgeInsets.only(left: 8.0),
                 child: IconButton(
                   onPressed: getSpeech,
                   icon: Icon(Icons.volume_up_rounded),
                   color: Colors.white,
-                  iconSize: 38,
+                  iconSize: 45,
                   tooltip: "Press for pronounciation",
                 ),
               ),

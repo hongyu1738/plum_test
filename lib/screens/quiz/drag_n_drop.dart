@@ -45,11 +45,11 @@ class _DragAndDropState extends State<DragAndDrop> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Spacer(),
-            Icon(MaterialCommunityIcons.arrow_expand_all, color: Colors.white, size: 40),
+            Icon(MaterialCommunityIcons.arrow_expand_all, color: Colors.white, size: 45),
             SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             Text('Drag and Drop',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 35,
               color: Colors.white,
               letterSpacing: .5,
             )),
@@ -95,9 +95,9 @@ class _DragAndDropState extends State<DragAndDrop> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: value.dragMap.keys.map((label){
                       return Draggable<String>(
-                        data: label,
+                        data: score[label] == true ? '' : label,
                         child: DragItem(label: score[label] == true ? '' : label), 
-                        feedback: DragItem(label: label),
+                        feedback: DragItem(label: score[label] == true ? '' : label),
                         childWhenDragging: DragItem(label: ''),
                       );
                     }).toList()

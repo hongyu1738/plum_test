@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'CrayonKids'),
+      theme: ThemeData(fontFamily: 'MouseMemoirs'),
       routes: {
         '/' : (context) => ChangeNotifierProvider(
           create: (context) => ImageData(),
