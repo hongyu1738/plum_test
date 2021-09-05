@@ -20,7 +20,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     return Consumer<ImageData>(
       builder: (context, value, child){
         return HomeView(volume: value.bgVolume);
