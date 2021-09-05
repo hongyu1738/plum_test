@@ -21,7 +21,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   AudioCache backgroundCache = AudioCache(prefix: 'assets/audio/');
   AudioPlayer backgroundPlayer;
 
-  void playBackground() async {
+  Future playBackground() async {
     backgroundPlayer = await backgroundCache.loop("bensound-ukulele.mp3");
     await backgroundPlayer.setVolume(widget.volume);
   }
