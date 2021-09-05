@@ -11,7 +11,6 @@ import 'package:plum_test/screens/quiz/vocabulary_quiz.dart';
 import 'package:plum_test/layout/vocabulary_result_failure.dart';
 import 'package:plum_test/layout/vocabulary_result_success.dart';
 import 'package:plum_test/screens/revision/revision.dart';
-import 'package:plum_test/screens/settings/settings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 

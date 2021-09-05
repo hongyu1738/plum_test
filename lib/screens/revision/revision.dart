@@ -58,8 +58,8 @@ class _RevisionState extends State<Revision> {
               child: Padding(padding: EdgeInsets.only(right: 8),
                 child: Icon(Icons.info_outline, size: 35),
               ),
-              popoverHeight: MediaQuery.of(context).size.height * 0.48,
-              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              popoverHeight: 325,
+              popoverWidth: 390,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
                   children: [
@@ -150,7 +150,7 @@ class _RevisionState extends State<Revision> {
           SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
           Text(text,
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 28,
             )
           ),
         ],

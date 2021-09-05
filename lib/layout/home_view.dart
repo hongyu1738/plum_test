@@ -22,8 +22,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   AudioPlayer backgroundPlayer;
 
   void playBackground() async {
-    backgroundPlayer = await backgroundCache.loop("bensound-ukulele.mp3", volume: widget.volume);
-    print(widget.volume);
+    backgroundPlayer = await backgroundCache.loop("bensound-ukulele.mp3");
+    backgroundPlayer.setVolume(widget.volume);
   }
 
   void pauseBackground(){
@@ -287,8 +287,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: MediaQuery.of(context).size.height * 0.30,
-              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              popoverHeight: 200,
+              popoverWidth: 390,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
@@ -314,8 +314,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: MediaQuery.of(context).size.height * 0.38,
-              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              popoverHeight: 260,
+              popoverWidth: 390,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
@@ -342,8 +342,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: MediaQuery.of(context).size.height * 0.30,
-              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              popoverHeight: 200,
+              popoverWidth: 390,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
@@ -382,14 +382,14 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
   Widget popoverItem(String text, IconData iconData){
     return Padding(
-      padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
+      padding: EdgeInsets.fromLTRB(10, 0, 0, 15),
       child: Row(
         children: [
           Icon(iconData, size: 45),
           SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
           Text(text,
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 28,
             )
           ),
         ],

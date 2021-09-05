@@ -341,8 +341,8 @@ class _CameraState extends State<Camera> {
               child: Padding(padding: EdgeInsets.only(right: 8),
                 child: Icon(Icons.info_outline, size: 35),
               ),
-              popoverHeight: MediaQuery.of(context).size.height * 0.39,
-              popoverWidth: MediaQuery.of(context).size.width * 0.95,
+              popoverHeight: 260,
+              popoverWidth: 390,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
                   children: [
@@ -564,7 +564,7 @@ class _CameraState extends State<Camera> {
           SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
           Text(text,
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 28,
             )
           ),
         ],
