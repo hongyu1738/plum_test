@@ -287,7 +287,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: MediaQuery.of(context).size.height * 0.27,
+              popoverHeight: MediaQuery.of(context).size.height * 0.30,
               popoverWidth: MediaQuery.of(context).size.width * 0.95,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
@@ -298,7 +298,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       child: Center(
                         child: Text("Instructions", 
                           style: TextStyle(
-                            fontSize: 34
+                            fontSize: 40
                           )
                         ),
                       ),
@@ -314,7 +314,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: MediaQuery.of(context).size.height * 0.35,
+              popoverHeight: MediaQuery.of(context).size.height * 0.38,
               popoverWidth: MediaQuery.of(context).size.width * 0.95,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
@@ -325,7 +325,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       child: Center(
                         child: Text("Instructions", 
                           style: TextStyle(
-                            fontSize: 34
+                            fontSize: 40
                           )
                         ),
                       ),
@@ -342,7 +342,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: MediaQuery.of(context).size.height * 0.27,
+              popoverHeight: MediaQuery.of(context).size.height * 0.30,
               popoverWidth: MediaQuery.of(context).size.width * 0.95,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
@@ -353,7 +353,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       child: Center(
                         child: Text("Instructions", 
                           style: TextStyle(
-                            fontSize: 34
+                            fontSize: 40
                           )
                         ),
                       ),
@@ -385,11 +385,11 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
       padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
       child: Row(
         children: [
-          Icon(iconData, size: 40),
+          Icon(iconData, size: 45),
           SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
           Text(text,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 30,
             )
           ),
         ],
