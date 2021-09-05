@@ -376,6 +376,7 @@ class ImageData with ChangeNotifier {
     } 
 
     notifyListeners();
+    print(_bgVolume);
   }
 
   Future <void> get fetchRateData async {

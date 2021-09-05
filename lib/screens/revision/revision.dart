@@ -75,7 +75,7 @@ class _RevisionState extends State<Revision> {
                     ),
                     popoverItem("Tap for Pronunciation", Icons.volume_up_rounded),
                     popoverItem("Swipe Left/Right for More Images", Icons.swipe),
-                    popoverItem("Scroll Down for More Classes", MaterialCommunityIcons.gesture_swipe_up),
+                    popoverItem("Swipe Up for More Classes", MaterialCommunityIcons.gesture_swipe_up),
                     popoverItem("Swipe Down to Refresh", MaterialCommunityIcons.gesture_swipe_down),
                   ],
                 );

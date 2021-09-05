@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
   void playBackground() async {
     backgroundPlayer = await backgroundCache.loop("bensound-ukulele.mp3");
-    backgroundPlayer.setVolume(widget.volume);
+    await backgroundPlayer.setVolume(widget.volume);
   }
 
   void pauseBackground(){
@@ -287,7 +287,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: 200,
+              popoverHeight: 260,
               popoverWidth: 390,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
@@ -305,6 +305,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                     ),
                     popoverItem("Tap to Select Answer", AntDesign.select1),
                     popoverItem("Swipe Down to Refresh", MaterialCommunityIcons.gesture_swipe_down),
+                    popoverItem("Tap to Refresh", Icons.refresh_rounded),
                   ],
                 );
               },
@@ -314,7 +315,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: 260,
+              popoverHeight: 325,
               popoverWidth: 390,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
@@ -333,6 +334,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                     popoverItem("Tap for Pronunciation", Icons.volume_up_rounded),
                     popoverItem("Tap to Select Answer", AntDesign.select1),
                     popoverItem("Swipe Down to Refresh", MaterialCommunityIcons.gesture_swipe_down),
+                    popoverItem("Tap to Refresh", Icons.refresh_rounded),
                   ],
                 );
               },
@@ -342,7 +344,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             
             CupertinoPopoverButton(
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
-              popoverHeight: 200,
+              popoverHeight: 260,
               popoverWidth: 390,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
@@ -360,6 +362,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                     ),
                     popoverItem("Tap to Select Item", AntDesign.select1),
                     popoverItem("Drag Item to Answer", MaterialCommunityIcons.select_drag),
+                    popoverItem("Tap to Refresh", Icons.refresh_rounded),
                   ],
                 );
               },
