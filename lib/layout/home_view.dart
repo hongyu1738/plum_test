@@ -16,10 +16,18 @@ class HomeView extends StatefulWidget {
   _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin{
+class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin, WidgetsBindingObserver{
 
   AudioCache backgroundCache = AudioCache(prefix: 'assets/audio/');
   AudioPlayer backgroundPlayer;
+
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      backgroundPlayer.resume();
+    } else {
+      backgroundPlayer.pause();
+    }
+  }
 
   Future playBackground() async {
     backgroundPlayer = await backgroundCache.loop("bensound-ukulele.mp3");
@@ -46,12 +54,14 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   void initState() {
     super.initState();
     playBackground();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     super.dispose();
     backgroundPlayer.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override

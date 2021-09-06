@@ -12,17 +12,38 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  bool proceed = false;
+
   @override
   void initState() {
     super.initState();
-    context.read<ImageData>().fetchBackgroundVolume;
+    fetchBackgroundData();
+  }
+
+  Future fetchBackgroundData() async {
+    await context.read<ImageData>().fetchBackgroundVolume;
+    setState(() {
+      proceed = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ImageData>(
       builder: (context, value, child){
-        return HomeView(volume: value.bgVolume);
-      });
+        return (!proceed && !value.bgError) 
+        ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
+        : value.bgError
+        ? Center(
+            child: Text('Oops. \n${value.bgErrorMessage}',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w400,
+            ), ),
+          )
+        : HomeView(volume: value.bgVolume);
+      }
+    );
   }
 }
