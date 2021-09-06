@@ -33,7 +33,10 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
       }
     } else {
       if (playerState == "play"){
-        pauseBackground();
+        backgroundPlayer.pause();
+        setState(() {
+          playerState = "play";
+        });
       } else if (playerState == "pause"){
         pauseBackground();
       } else if (playerState == "stop"){
