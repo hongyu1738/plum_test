@@ -20,30 +20,55 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
   AudioCache backgroundCache = AudioCache(prefix: 'assets/audio/');
   AudioPlayer backgroundPlayer;
+  String playerState;
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      backgroundPlayer.resume();
+      if (playerState == "play"){
+        resumeBackground();
+      } else if (playerState == "pause"){
+        pauseBackground();
+      } else if (playerState == "stop"){
+        stopBackground();
+      }
     } else {
-      backgroundPlayer.pause();
+      if (playerState == "play"){
+        pauseBackground();
+      } else if (playerState == "pause"){
+        pauseBackground();
+      } else if (playerState == "stop"){
+        stopBackground();
+      }
     }
   }
 
   Future playBackground() async {
     backgroundPlayer = await backgroundCache.loop("bensound-ukulele.mp3");
     await backgroundPlayer.setVolume(widget.volume);
+    setState(() {
+      playerState = "play";
+    });
   }
 
   void pauseBackground(){
     backgroundPlayer.pause();
+    setState(() {
+      playerState = "pause";
+    });
   }
 
   void resumeBackground(){
     backgroundPlayer.resume();
+    setState(() {
+      playerState = "play";
+    });
   }
 
   void stopBackground(){
     backgroundPlayer.stop();
+    setState(() {
+      playerState = "stop";
+    });
   }
 
   void changeVolume(double value){
