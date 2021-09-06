@@ -33,7 +33,7 @@ class VocabularyQuestion extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
           image: NetworkImage(url), //Load image if image is selected
-            fit: BoxFit.fill,
+            fit: BoxFit.contain,
         ),
       ),
     ),

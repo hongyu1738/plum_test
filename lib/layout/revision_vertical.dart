@@ -61,7 +61,7 @@ class _VerticalViewState extends State<VerticalView> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 30.0),
           child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.4,
+            height: MediaQuery.of(context).size.height * 0.35,
             
             child: AnimationLimiter(
               child: ListView.builder(
