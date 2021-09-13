@@ -5,6 +5,7 @@ import 'package:plum_test/layout/image_result_success.dart';
 import 'package:plum_test/models/image_model.dart';
 import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/screens/learn/camera.dart';
+import 'package:plum_test/screens/login/login.dart';
 import 'package:plum_test/screens/quiz/drag_n_drop.dart';
 import 'package:plum_test/screens/quiz/image_quiz.dart';
 import 'package:plum_test/screens/quiz/vocabulary_quiz.dart';
@@ -30,6 +31,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'MouseMemoirs'),
       routes: {
         '/' : (context) => ChangeNotifierProvider(
+          create: (context) => ImageData(),
+          builder: (context,child){
+            return LoginPage();
+          }
+        ),
+        '/home' : (context) => ChangeNotifierProvider(
           create: (context) => ImageData(),
           builder: (context,child){
             return Home();

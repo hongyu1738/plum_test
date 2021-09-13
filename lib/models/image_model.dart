@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plum_test/layout/login_view.dart';
 import 'dart:math';
 
 class ImageData with ChangeNotifier {
@@ -54,6 +55,12 @@ class ImageData with ChangeNotifier {
   bool _sfxError = false;
   String _sfxErrorMessage = "";
 
+  String _username = "";
+  String _password = "";
+  //String _uid = "";
+  bool _uidError = false;
+  String _uidErrorMessage = "";
+
   //Getter functions for variables
 
   List <dynamic> get classResults => _classResults;
@@ -97,6 +104,13 @@ class ImageData with ChangeNotifier {
   double get sfxVolume => _sfxVolume;
   bool get sfxError => _sfxError;
   String get sfxErrorMessage => _sfxErrorMessage;
+
+  String get username => _username;
+  String get password => _password;
+  //String get uid => _uid;
+  bool get uidError => _uidError;
+  String get uidErrorMessage => _uidErrorMessage;
+
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
@@ -443,6 +457,67 @@ class ImageData with ChangeNotifier {
       _sfxVolume = 0.0;
     }
 
+    notifyListeners();
+  }
+
+  Future <String> setRegisterData(String username, String password) async {
+    _username = username;
+    _password = password;
+
+    await fetchRegisterData;
+
+    return _uidErrorMessage;
+  }
+
+  Future <void> get fetchRegisterData async {
+    DocumentSnapshot registerSnapshot = await FirebaseFirestore.instance.collection('User').doc(_username).get();
+
+    if (registerSnapshot.exists){
+      try {
+        if (_password == registerSnapshot['password']){
+          _uidError = false;
+          _uidErrorMessage = "";
+        } else {
+          _uidError = true;
+          _uidErrorMessage = "Invalid username or password. Please try again.";
+        }
+      } catch(e) {
+        _uidError = true;
+        _uidErrorMessage = e.toString();
+      }
+    } else {
+      _uidError = true;
+      _uidErrorMessage = "Invalid username or password. Please try again.";
+    }
+    // CollectionReference registerCollection = FirebaseFirestore.instance.collection('User');
+    // QuerySnapshot querySnapshots = await registerCollection.get();
+
+    // for (QueryDocumentSnapshot registerSnapshot in querySnapshots.docs){
+    //   if (registerSnapshot.exists){
+    //     try {
+    //       if (registerSnapshot['username'] == _username && registerSnapshot['password'] == _password){
+    //         _uid = registerSnapshot.id;
+    //         _uidError = false;
+    //         break;
+    //       } else {
+    //         _uid = "";
+    //         _uidError = true;
+    //         _uidErrorMessage = "Invalid username or password. Please try again.";
+    //       }  
+    //     } catch(e) {
+    //       _uid = "";
+    //       _uidError = true;
+    //       _uidErrorMessage = e.toString();
+    //     }
+    //   } else {
+    //     _uid = "";
+    //     _uidError = true;
+    //     _uidErrorMessage = "Invalid username or password. Please try again.";
+    //   }
+    // }
+
+    // print(_uid);
+    // print(_uidErrorMessage);
     notifyListeners();
   }
   
