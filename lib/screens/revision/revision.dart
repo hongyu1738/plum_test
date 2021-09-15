@@ -19,14 +19,13 @@ class _RevisionState extends State<Revision> {
   void initState() {
     super.initState();
     context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
-    context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
-    context.read<ImageData>().fetchVolumeData;
-    context.read<ImageData>().fetchRateData;
+    context.read<ImageData>().fetchClassData; //Fetch class data of type ImageData
+    context.read<ImageData>().fetchVolumeData; //Fetch volume data for tts
+    context.read<ImageData>().fetchRateData; //Fetch rate data for tts
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: hexColors('#fb6542'),
       appBar: AppBar(
@@ -54,14 +53,14 @@ class _RevisionState extends State<Revision> {
         ),
         actions: [
           Padding(padding: EdgeInsets.only(right: 8),
-            child: CupertinoPopoverButton(
+            child: CupertinoPopoverButton( //Button to display popover list
               child: Padding(padding: EdgeInsets.only(right: 8),
                 child: Icon(Icons.info_outline, size: 35),
               ),
               popoverHeight: 325,
               popoverWidth: 390,
               popoverBuild: (BuildContext context){
-                return CupertinoPopoverMenuList(
+                return CupertinoPopoverMenuList( //Display popover list
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 15),
@@ -94,9 +93,9 @@ class _RevisionState extends State<Revision> {
           backgroundColor: hexColors('#fb6542'),
           onRefresh: () async {
             await context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
-            await context.read<ImageData>().fetchClassData; //Fetch class data of type ClassData
-            await context.read<ImageData>().fetchVolumeData;
-            await context.read<ImageData>().fetchRateData;
+            await context.read<ImageData>().fetchClassData; //Fetch class data of type ImageData
+            await context.read<ImageData>().fetchVolumeData; //Fetch volume data for tts
+            await context.read<ImageData>().fetchRateData; //Fetch rate data for tts
           },
           child: Center(
             child: Consumer<ImageData>(
@@ -141,7 +140,7 @@ class _RevisionState extends State<Revision> {
     return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 
-  Widget popoverItem(String text, IconData iconData){
+  Widget popoverItem(String text, IconData iconData){ //Items for popover
     return Padding(
       padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
       child: Row(

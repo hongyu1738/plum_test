@@ -345,14 +345,14 @@ class _CameraState extends State<Camera> {
         ),
         actions: [
           Padding(padding: EdgeInsets.only(right: 8),
-            child: CupertinoPopoverButton(
+            child: CupertinoPopoverButton( //Button to display popover list
               child: Padding(padding: EdgeInsets.only(right: 8),
                 child: Icon(Icons.info_outline, size: 35),
               ),
               popoverHeight: 260,
               popoverWidth: 390,
               popoverBuild: (BuildContext context){
-                return CupertinoPopoverMenuList(
+                return CupertinoPopoverMenuList( //Display popover list
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 15),
@@ -434,7 +434,6 @@ class _CameraState extends State<Camera> {
                         fontSize: 40,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
-                        //letterSpacing: .5,
                       ), 
                     ),
                     Icon(AntDesign.frowno, color: Colors.white, size: 45),
@@ -461,7 +460,7 @@ class _CameraState extends State<Camera> {
 
                     Spacer(),
 
-                    Consumer<ImageData>(builder: (context, value, child){
+                    Consumer<ImageData>(builder: (context, value, child){ //Camera speech class for pronunciation
                       return CameraSpeech(volume: value.ttsVolume, rate: value.ttsRate, label: _label);
                     }),
 
@@ -521,7 +520,7 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  Future<void> _alertDialog() async {
+  Future<void> _alertDialog() async { //Function to display alert dialog
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -563,7 +562,7 @@ class _CameraState extends State<Camera> {
     return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 
-  Widget popoverItem(String text, IconData iconData){
+  Widget popoverItem(String text, IconData iconData){ //Function to display popover item
     return Padding(
       padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
       child: Row(

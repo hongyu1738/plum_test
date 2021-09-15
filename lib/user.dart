@@ -1,13 +1,6 @@
-class User{
+class User{ //Class to store username and password of current user
 
   static String username;
   static String password;
 
-  String get userName{
-    return username;
-  }
-
-  // set userName(String name){
-  //   this.username = name;
-  // }
 }

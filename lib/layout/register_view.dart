@@ -18,7 +18,7 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus.unfocus(),
+      onTap: () => FocusManager.instance.primaryFocus.unfocus(), //Unfocus current focus on background tap
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -41,7 +41,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  Widget registerUsername(){
+  Widget registerUsername(){ //Textfield for username input
     return Padding(
       padding: EdgeInsets.only(top: 50, left: 50, right: 50),
       child: Container(
@@ -67,7 +67,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  Widget registerPassword(){
+  Widget registerPassword(){ //Textfield for password input
     return Padding(
       padding: EdgeInsets.only(top: 20, right: 50, left: 50),
       child: Container(
@@ -94,7 +94,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  Widget registerButton(){
+  Widget registerButton(){ //Button to register new username and password
     return Padding(
       padding: EdgeInsets.only(top: 40, right: 50, left: 200),
       child: Container(
@@ -145,7 +145,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  Widget loginPageButton(){
+  Widget loginPageButton(){ //Button to redirect page to Login View
     return Padding(
       padding: EdgeInsets.only(top: 30, left: 50),
       child: Container(
@@ -180,7 +180,7 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  Future checkRegisterData(String username) async {
+  Future checkRegisterData(String username) async { //Check if username is already registered
     CollectionReference registerCollection = FirebaseFirestore.instance.collection('User');
     QuerySnapshot querySnapshots = await registerCollection.get();
 
@@ -198,28 +198,32 @@ class _RegisterViewState extends State<RegisterView> {
     }
   }
 
+  //Add username and password to Cloud Firestore
   Future updateRegisterData(String username, String password) async {
     await FirebaseFirestore.instance.collection('User').doc(username).set({'password' : password});
   }
 
+  //Set initial data upon registration
   Future setInitialData(String username, String password) async {
     await FirebaseFirestore.instance.collection('Background').doc(username).set({'volume' : 0.5});
     await FirebaseFirestore.instance.collection('Sfx').doc(username).set({'volume' : 0.5});
     await FirebaseFirestore.instance.collection('Tts').doc(username).set({'volume' : 0.5, 'rate' : 1.0});
   }
 
+  //Set username input to username variable
   void setUsername(String name){
     setState(() {
       username = name;
     });
-    print(username);
+    //print(username);
   }
 
+  //Set password input to password variable
   void setPassword(String pass){
     setState(() {
       password = pass;
     });
-    print(password);
+    //print(password);
   }
 
   Color hexColors(String hexColor){

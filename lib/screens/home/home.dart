@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
     fetchBackgroundData();
   }
 
-  Future fetchBackgroundData() async {
+  Future fetchBackgroundData() async { //Future class for backgroundVolume upon Sign In
     await context.read<ImageData>().fetchBackgroundVolume;
     setState(() {
       proceed = true;

@@ -12,7 +12,7 @@ class DragResultSuccess extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.of(context).pop(), //Pop current page
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -49,7 +49,7 @@ class DragResultSuccess extends StatelessWidget {
 
             BounceInDown(
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: (){ //Pop until first page
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
 
@@ -78,7 +78,7 @@ class DragResultSuccess extends StatelessWidget {
 
             BounceInDown(
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: (){ //Push replacement page of Drag and Drop Quiz
                   Navigator.of(context).pushReplacementNamed('/dragQuiz');
                 },
 

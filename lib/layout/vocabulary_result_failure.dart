@@ -50,7 +50,7 @@ class VocabularyResultFailure extends StatelessWidget {
 
             BounceInDown(
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: (){ //Pop until first page
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
 
@@ -79,7 +79,7 @@ class VocabularyResultFailure extends StatelessWidget {
 
             BounceInDown(
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: (){ //Pop current page
                   Navigator.pop(context);
                 },
 

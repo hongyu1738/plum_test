@@ -31,7 +31,6 @@ class _DragAndDropState extends State<DragAndDrop> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
@@ -94,7 +93,7 @@ class _DragAndDropState extends State<DragAndDrop> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: value.dragMap.keys.map((label){
-                      return Draggable<String>(
+                      return Draggable<String>( //Draggable item
                         data: score[label] == true ? '' : label,
                         child: DragItem(label: score[label] == true ? '' : label), 
                         feedback: DragItem(label: score[label] == true ? '' : label),
@@ -107,6 +106,7 @@ class _DragAndDropState extends State<DragAndDrop> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: value.dragMap.entries.map((e) => dropItem(e.key, e.value, value.sfxVolume)).toList()..shuffle(Random(randomNum)),
+                    //Shuffle position of drop items
                   )
                 ],
               );
@@ -117,7 +117,7 @@ class _DragAndDropState extends State<DragAndDrop> {
     );
   }
 
-  Widget dropItem(String label, String url, double volume) => DragTarget<String>(
+  Widget dropItem(String label, String url, double volume) => DragTarget<String>( //Drop item
     builder: (BuildContext context, List<String> accepted, List rejected){
       if (score[label] == true) {
         return Container(

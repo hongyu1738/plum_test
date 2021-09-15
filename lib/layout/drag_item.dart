@@ -6,7 +6,7 @@ class DragItem extends StatelessWidget {
   final String label;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { //Individual drag item
     return Material(
       color: Colors.transparent,
       child: Container(

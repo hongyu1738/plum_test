@@ -31,7 +31,7 @@ class _CameraSpeechState extends State<CameraSpeech> {
     );
   }
 
-  getSpeech() async { //Function for text to speech without customization
+  getSpeech() async { //Function for text to speech
     await flutterTts.setVolume(widget.volume);
     await flutterTts.setSpeechRate(widget.rate);
     await flutterTts.speak(widget.label);

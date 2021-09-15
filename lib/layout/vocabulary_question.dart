@@ -13,7 +13,7 @@ class VocabularyQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    vocabularyPlayer.loadAll(["win.wav", "lose.wav"]);
+    vocabularyPlayer.loadAll(["win.wav", "lose.wav"]); //Preload sound for smoother plays
 
     return Column(
       children: [
@@ -23,6 +23,7 @@ class VocabularyQuestion extends StatelessWidget {
     );
   }
 
+  //Show question image on top of screen
   Widget showQuestionImage(BuildContext context, String url) => Padding(
     padding: const EdgeInsets.all(12),
     child: Container(
@@ -39,6 +40,7 @@ class VocabularyQuestion extends StatelessWidget {
     ),
   );
 
+  //Build grid to display answer choices
   Widget buildGrid(BuildContext context, List choices, double volume) => Padding(
     padding: EdgeInsets.all(12),
     child: Container(
@@ -61,6 +63,7 @@ class VocabularyQuestion extends StatelessWidget {
     ),
   );
 
+  //Build container to display answer choices in grid built
   Widget showQuestionChoices(String choice) => Container(
     padding: EdgeInsets.all(12),
     decoration: BoxDecoration(
@@ -80,8 +83,9 @@ class VocabularyQuestion extends StatelessWidget {
     ),
   );
 
+  //Function to check if the answer choice chosen is correct
+  //Play sound effect for feedback
   void compareResult(BuildContext context, int index, double volume){
-
     if(vocabularyLabel == choicesList[index]){
       vocabularyPlayer.play("win.wav", volume: volume);
       Navigator.of(context).pushReplacementNamed('/vocabularyResultSuccess');

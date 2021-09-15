@@ -26,7 +26,6 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(

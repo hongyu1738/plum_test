@@ -20,7 +20,7 @@ class _SettingsState extends State<Settings>{
   double sfxVolume = 0.0;
   String username = "";
 
-  Future <void> getTtsVolume() async {
+  Future <void> getTtsVolume() async { //Get ttsVolume
     username = User.username;
     DocumentSnapshot volumeSnapshot = await FirebaseFirestore.instance.collection('Tts').doc(username).get();
     setState(() {
@@ -28,12 +28,12 @@ class _SettingsState extends State<Settings>{
     });
   }
 
-  Future updateTtsVolume(double volume) async {
+  Future updateTtsVolume(double volume) async { //Update ttsVolume when slider value changes
     username = User.username;
     await FirebaseFirestore.instance.collection('Tts').doc(username).set({ 'volume': volume, 'rate': ttsRate });
   }
 
-  Future <void> getTtsRate() async {
+  Future <void> getTtsRate() async { //Get ttsRate
     username = User.username;
     DocumentSnapshot rateSnapshot = await FirebaseFirestore.instance.collection('Tts').doc(username).get();
     setState(() {
@@ -41,12 +41,12 @@ class _SettingsState extends State<Settings>{
     });
   }
 
-  Future updateTtsRate(double rate) async {
+  Future updateTtsRate(double rate) async { //Update ttsRate when slider value changes
     username = User.username;
     await FirebaseFirestore.instance.collection('Tts').doc(username).set({ 'volume': ttsVolume, 'rate': rate });
   }
 
-  Future <void> getBackgroundVolume() async {
+  Future <void> getBackgroundVolume() async { //Get backgroundVolume
     username = User.username;
     DocumentSnapshot backgroundSnapshot = await FirebaseFirestore.instance.collection('Background').doc(username).get();
     setState(() {
@@ -54,12 +54,12 @@ class _SettingsState extends State<Settings>{
     });
   }
 
-  Future updateBackgroundVolume(double bgVolume) async {
+  Future updateBackgroundVolume(double bgVolume) async { //Update backgroundVolume when slider value changes
     username = User.username;
     await FirebaseFirestore.instance.collection('Background').doc(username).set({ 'volume': bgVolume });
   }
 
-  Future <void> getSfxVolume() async {
+  Future <void> getSfxVolume() async { //Get sfxVolume
     username = User.username;
     DocumentSnapshot sfxSnapshot = await FirebaseFirestore.instance.collection('Sfx').doc(username).get();
     setState(() {
@@ -67,7 +67,7 @@ class _SettingsState extends State<Settings>{
     });
   }
 
-  Future updateSfxVolume(double volume) async {
+  Future updateSfxVolume(double volume) async { //Update sfxVolume when slider value changes
     username = User.username;
     await FirebaseFirestore.instance.collection('Sfx').doc(username).set({ 'volume': volume });
   }
@@ -136,7 +136,7 @@ class _SettingsState extends State<Settings>{
     );
   }
 
-  Widget _volume() {
+  Widget _volume() { //Slider for ttsVolume
     return Slider(
       value: ttsVolume,
       onChanged: (newVolume) {
@@ -154,7 +154,7 @@ class _SettingsState extends State<Settings>{
     );
   }
 
-  Widget _rate() {
+  Widget _rate() { //Slider for ttsRate
     return Slider(
       value: ttsRate,
       onChanged: (newRate) {
@@ -172,7 +172,7 @@ class _SettingsState extends State<Settings>{
     );
   }
 
-  Widget _backgroundVolume(){
+  Widget _backgroundVolume(){ //Slider for backgroundVolume
     return Slider(
       value: backgroundVolume,
       onChanged: (newVolume) {
@@ -191,7 +191,7 @@ class _SettingsState extends State<Settings>{
     );
   }
 
-  Widget _sfxVolume(){
+  Widget _sfxVolume(){ //Slider for sfxVolume
     return Slider(
       value: sfxVolume,
       onChanged: (newVolume){
@@ -209,7 +209,7 @@ class _SettingsState extends State<Settings>{
     );
   }
 
-  Widget _settingsHeading(String text, IconData iconName){
+  Widget _settingsHeading(String text, IconData iconName){ //Heading of Settings
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 0, 8),
         child: Row(
@@ -228,7 +228,7 @@ class _SettingsState extends State<Settings>{
     );
   }
 
-  Widget _settingsSubheading(String text){
+  Widget _settingsSubheading(String text){ //Subheading of Settings
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 8, 0, 0),
       child: Text("$text",
@@ -241,7 +241,7 @@ class _SettingsState extends State<Settings>{
     );
   }
 
-  Widget _divider(){
+  Widget _divider(){ //Divider
     return Divider(
       thickness: 5,
       indent: 20,

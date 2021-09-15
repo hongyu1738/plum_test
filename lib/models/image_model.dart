@@ -35,30 +35,35 @@ class ImageData with ChangeNotifier {
   String _choiceErrorMessage = '';
   List<String> _answerChoices = []; //List to store randomized choices
 
+  //Url data for image_question.dart
   List<String> _urlList = [];
   List<String> _urlChoices = [];
   String _tempUrl = '';
 
-   Map<String, String> _dragMap = {};
-   bool _dragError = false;
-   String _dragErrorMessage = '';
+  //Draggable data for drag_n_drop.dart
+  Map<String, String> _dragMap = {};
+  bool _dragError = false;
+  String _dragErrorMessage = '';
 
+  //Tts data for pronunciation volume and speech rate
   double _ttsVolume = 0.5;
   double _ttsRate = 1.0;
   bool _ttsError = false;
   String _ttsErrorMessage = "";
 
+  //Background data for background volume
   double _bgVolume = 0.2;
   bool _bgError = false;
   String _bgErrorMessage = "";
 
+  //Sound effect data for sfx volume
   double _sfxVolume = 0.5;
   bool _sfxError = false;
   String _sfxErrorMessage = "";
 
+  //Sign In data for authentication
   String _username = "";
   String _password = "";
-  //String _uid = "";
   bool _uidError = false;
   String _uidErrorMessage = "";
 
@@ -89,7 +94,6 @@ class ImageData with ChangeNotifier {
   List<String> get urlChoices => _urlChoices;
 
   Map<String, String> get dragMap => _dragMap;
-  //List<String> get dragList => _dragList;
   bool get dragError => _dragError;
   String get dragErrorMessage => _dragErrorMessage;
 
@@ -108,7 +112,6 @@ class ImageData with ChangeNotifier {
 
   String get username => _username;
   String get password => _password;
-  //String get uid => _uid;
   bool get uidError => _uidError;
   String get uidErrorMessage => _uidErrorMessage;
 
@@ -376,7 +379,7 @@ class ImageData with ChangeNotifier {
   }
 
   Future <void> get fetchVolumeData async {
-    // Function to fetch data on pronunciation volume
+    //Function to fetch data on pronunciation volume
 
     _username = User.username; 
     DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc(_username).get();
@@ -402,7 +405,7 @@ class ImageData with ChangeNotifier {
   }
 
   Future <void> get fetchRateData async {
-    // Function to fetch data on speech rate
+    //Function to fetch data on speech rate
 
     _username = User.username; 
     DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc(_username).get();
@@ -427,6 +430,7 @@ class ImageData with ChangeNotifier {
   }
 
   Future <void> get fetchBackgroundVolume async {
+    //Function to fetch background data for background volume
     
     _username = User.username; 
     DocumentSnapshot backgroundSnapshot = await FirebaseFirestore.instance.collection('Background').doc(_username).get();
@@ -452,6 +456,7 @@ class ImageData with ChangeNotifier {
   }
 
   Future <void> get fetchSfxVolume async {
+    //Function to fetch sfx data for sfx volume
 
     _username = User.username; 
     DocumentSnapshot sfxSnapshot = await FirebaseFirestore.instance.collection('Sfx').doc(_username).get();
@@ -476,6 +481,7 @@ class ImageData with ChangeNotifier {
   }
 
   Future <String> setRegisterData(String username, String password) async {
+    //Function to authenticate username and password for Sign In
     _username = username;
     _password = password;
 
@@ -485,6 +491,7 @@ class ImageData with ChangeNotifier {
   }
 
   Future <void> get fetchRegisterData async {
+    //Compare username and password with data in Cloud Firestore for Sign In
     DocumentSnapshot registerSnapshot = await FirebaseFirestore.instance.collection('User').doc(_username).get();
 
     if (registerSnapshot.exists){
@@ -508,7 +515,7 @@ class ImageData with ChangeNotifier {
     notifyListeners();
   }
   
-  void generateRandomNumber(int counter){
+  void generateRandomNumber(int counter){ //Function to generate random number
     Random random = new Random();
     _randomNum = random.nextInt(counter);
     notifyListeners();

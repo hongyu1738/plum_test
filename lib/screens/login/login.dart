@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Consumer<ImageData>(
       builder: (context, value, child){
-        return LoginView(setRegister: value.setRegisterData);
+        return LoginView(setRegister: value.setRegisterData); //Pass function to check if password corresponds to username
       },
     );
   }

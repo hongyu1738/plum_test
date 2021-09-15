@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:plum_test/layout/register_view.dart';
-import 'package:plum_test/screens/home/home.dart';
 import 'package:plum_test/user.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({ Key key, this.setRegister}) : super(key: key);
 
   final Function setRegister;
-  // final String uid;
-  // final bool uidError;
-  // final String uidErrorMessage;
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -25,7 +21,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus.unfocus(),
+      onTap: () => FocusManager.instance.primaryFocus.unfocus(), //Unfocus current focus on background tap
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -48,7 +44,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget usernameInput(){
+  Widget usernameInput(){ //Textfield for username input
     return Padding(
       padding: EdgeInsets.only(top: 50, left: 50, right: 50),
       child: Container(
@@ -74,7 +70,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget passwordInput(){
+  Widget passwordInput(){ //Textfield for password input
     return Padding(
       padding: EdgeInsets.only(top: 20, right: 50, left: 50),
       child: Container(
@@ -101,7 +97,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget loginButton(){
+  Widget loginButton(){ //Button to authenticate password and username
     return Padding(
       padding: EdgeInsets.only(top: 40, right: 50, left: 200),
       child: Container(
@@ -151,7 +147,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget registerPageButton(){
+  Widget registerPageButton(){ //Button to redirect to Register View
     return Padding(
       padding: EdgeInsets.only(top: 30, left: 50),
       child: Container(
@@ -188,18 +184,18 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  void setUsername(String name){
+  void setUsername(String name){ //Set username input to username variable
     setState(() {
       username = name;
     });
-    print(username);
+    //print(username);
   }
 
-  void setPassword(String pass){
+  void setPassword(String pass){ //Set password input to password variable
     setState(() {
       password = pass;
     });
-    print(password);
+    //print(password);
   }
 
   Color hexColors(String hexColor){

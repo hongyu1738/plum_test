@@ -35,7 +35,7 @@ class _VerticalViewState extends State<VerticalView> {
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
           child: Row(
             children: [
-              Text('${widget.classResult}',
+              Text('${widget.classResult}', //Display class labels for images
                 style: TextStyle(
                   fontSize: 40,
                   letterSpacing: .5,
@@ -45,7 +45,7 @@ class _VerticalViewState extends State<VerticalView> {
               Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: IconButton(
-                  onPressed: getSpeech,
+                  onPressed: getSpeech, //Function for pronunciation
                   icon: Icon(Icons.volume_up_rounded),
                   color: Colors.white,
                   iconSize: 45,
@@ -68,7 +68,7 @@ class _VerticalViewState extends State<VerticalView> {
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.imageResult[widget.classResult].length,
                 itemBuilder: (context, index){
-                  return AnimationConfiguration.staggeredList(
+                  return AnimationConfiguration.staggeredList( //Slide animation when loading revision page
                     position: index,
                     duration: const Duration(milliseconds: 375),
                     child: SlideAnimation(
@@ -86,7 +86,7 @@ class _VerticalViewState extends State<VerticalView> {
     );
   }
 
-  Widget _divider(){
+  Widget _divider(){ //Divider
     return Divider(
       thickness: 5,
       indent: 20,

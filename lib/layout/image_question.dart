@@ -30,7 +30,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
   @override
   Widget build(BuildContext context) {
 
-    widget.imagePlayer.loadAll(["win.wav", "lose.wav"]);
+    widget.imagePlayer.loadAll(["win.wav", "lose.wav"]); //Preload sound for smoother plays
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,6 +54,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
     );
   }
 
+  //Assign section to show quiz images
   Widget showQuizImage(BuildContext context, List<String> urlChoices, double volume) => Padding(
     padding: const EdgeInsets.all(12),
     child: Container(
@@ -70,6 +71,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
     ),
   );
 
+  //Show quiz image as answer choices
   Widget showIndividualImage(BuildContext context, String url) => Padding(
     padding: EdgeInsets.fromLTRB(8, 0, 8, 15),
     child: Container(
@@ -86,6 +88,7 @@ class _ImageQuestionState extends State<ImageQuestion> {
     ),
   );
 
+  //Show quiz label on top of the screen
   Widget showQuizLabel(String label) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 0.0),
       child: Text("$label", 
@@ -98,8 +101,9 @@ class _ImageQuestionState extends State<ImageQuestion> {
       ),
     );
 
+  //Function to check if the answer choice chosen is correct
+  //Play sound effect for feedback
   void compareResult(BuildContext context, int index, double volume){
-
     if(widget.imageUrl == widget.urlChoices[index]){
       widget.imagePlayer.play("win.wav", volume: volume);
       Navigator.of(context).pushReplacementNamed('/imageResultSuccess');

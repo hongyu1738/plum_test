@@ -19,33 +19,36 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin, WidgetsBindingObserver{
 
+  //Instantiate Audioplayer
   AudioCache backgroundCache = AudioCache(prefix: 'assets/audio/');
   AudioPlayer backgroundPlayer;
   String playerState;
 
+  //Check if app is minimized or closed
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      if (playerState == "play"){
+      if (playerState == "play"){ //If application is resumed when audio is playing
         resumeBackground();
-      } else if (playerState == "pause"){
+      } else if (playerState == "pause"){ //If application is resumed when audio is paused
         pauseBackground();
-      } else if (playerState == "stop"){
+      } else if (playerState == "stop"){ //If application is resumed when audio is stopped
         stopBackground();
       }
-    } else {
-      if (playerState == "play"){
+    } else { 
+      if (playerState == "play"){ //If application is minimized when audio is playing
         backgroundPlayer.pause();
         setState(() {
           playerState = "play";
         });
-      } else if (playerState == "pause"){
+      } else if (playerState == "pause"){ //If application is minimized when audio is paused
         pauseBackground();
-      } else if (playerState == "stop"){
+      } else if (playerState == "stop"){ //If application is minimized when audio is stopped
         stopBackground();
       }
     }
   }
 
+  //Function to play background music with specific volume
   Future playBackground() async {
     backgroundPlayer = await backgroundCache.loop("bensound-ukulele.mp3");
     await backgroundPlayer.setVolume(widget.volume);
@@ -54,6 +57,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     });
   }
 
+  //Function to pause Audioplayer
   void pauseBackground(){
     backgroundPlayer.pause();
     setState(() {
@@ -61,6 +65,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     });
   }
 
+  //Function to resume AudioPlayer
   void resumeBackground(){
     backgroundPlayer.resume();
     setState(() {
@@ -68,6 +73,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     });
   }
 
+  //Function to stop AudioPlayer
   void stopBackground(){
     backgroundPlayer.stop();
     setState(() {
@@ -75,6 +81,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     });
   }
 
+  //Function to change volume of AudioPlayer
   void changeVolume(double value){
     backgroundPlayer.setVolume(value);
   }
@@ -109,7 +116,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
       body: Container(
         color: Colors.black,
-        child: AnimatedBackground(
+        child: AnimatedBackground( //vsync for display of Animated Background
           behaviour: SpaceBehaviour(),
           vsync: this,
 
@@ -159,7 +166,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       ),
                     ),
                     
-                    onPressed: (){
+                    onPressed: (){ //Display modal bottom sheet on selection of Game option
                       showMaterialModalBottomSheet(
                         bounce: true,
                         backgroundColor: hexColors('#ffbb00'),
@@ -262,6 +269,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     );
   }
 
+  //Display Sign Out button
   Widget exitButtons(String menuRoute, String menuLabel, Color hexColor, IconData iconName){
     return BounceInDown(
       child: ElevatedButton(
@@ -295,6 +303,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     );
   }
 
+  //Display menu buttons
   Widget menuButtons(String menuRoute, String menuLabel, Color hexColor, IconData iconName){
     return BounceInDown(
       child: ElevatedButton(
@@ -326,7 +335,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget gameButtons(String gameRoute, String gameName, IconData iconName){
+  Widget gameButtons(String gameRoute, String gameName, IconData iconName){ //Display options in modal bottom sheet
     return GestureDetector(
       onTap:(){
         Navigator.pop(context);
@@ -425,13 +434,13 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
             : 
             
-            CupertinoPopoverButton(
+            CupertinoPopoverButton( //Button to display popover list
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
               popoverHeight: 260,
               popoverWidth: 390,
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
-                return CupertinoPopoverMenuList(
+                return CupertinoPopoverMenuList( //Display popover list
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 15),
@@ -456,7 +465,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget appBarButtons(Function appBarFunction, IconData iconName){
+  Widget appBarButtons(Function appBarFunction, IconData iconName){ //Display buttons on appBar
     return Padding(
       padding: EdgeInsets.only(right: 20),
       child: GestureDetector(
@@ -466,7 +475,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget popoverItem(String text, IconData iconData){
+  Widget popoverItem(String text, IconData iconData){ //Display popover items
     return Padding(
       padding: EdgeInsets.fromLTRB(10, 0, 0, 15),
       child: Row(

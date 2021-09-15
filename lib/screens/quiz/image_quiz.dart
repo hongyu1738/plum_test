@@ -28,7 +28,6 @@ class _ImageQuizState extends State<ImageQuiz> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
@@ -57,7 +56,7 @@ class _ImageQuizState extends State<ImageQuiz> {
         actions: [
           Padding(padding: EdgeInsets.only(right: 16),
             child: GestureDetector(
-              onTap: () async { 
+              onTap: () async { //Refetch required data from Cloud Firestore on refresh
                 await context.read<ImageData>().fetchImageQuizData;
                 await context.read<ImageData>().fetchVolumeData;
                 await context.read<ImageData>().fetchRateData;
