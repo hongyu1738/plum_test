@@ -22,7 +22,7 @@ class _RegisterViewState extends State<RegisterView> {
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
-              color: Colors.orangeAccent,
+              color: hexColors('#ffbb00'),
             ),
           child: ListView(
             children: [
@@ -55,7 +55,7 @@ class _RegisterViewState extends State<RegisterView> {
           onChanged: setUsername,
           decoration: InputDecoration(
             border: InputBorder.none,
-            fillColor: Colors.orangeAccent,
+            fillColor: hexColors('#ffbb00'),
             labelText: 'New Username',
             labelStyle: TextStyle(
               fontSize: 50,
@@ -81,6 +81,7 @@ class _RegisterViewState extends State<RegisterView> {
           obscureText: true,
           onChanged: setPassword,
           decoration: InputDecoration(
+            fillColor: hexColors('#ffbb00'),
             border: InputBorder.none,
             labelText: 'New Password',
             labelStyle: TextStyle(
@@ -100,7 +101,8 @@ class _RegisterViewState extends State<RegisterView> {
         alignment: Alignment.bottomRight,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(15)
+          color: Colors.white, 
+          borderRadius: BorderRadius.circular(15)
         ),
         child: TextButton(
           onPressed: () async {
@@ -108,6 +110,7 @@ class _RegisterViewState extends State<RegisterView> {
 
             if (message == ""){
               await updateRegisterData(username, password);
+              await setInitialData(username, password);
               Navigator.pop(context);
             } else {
               Fluttertoast.showToast(
@@ -126,13 +129,13 @@ class _RegisterViewState extends State<RegisterView> {
               Text(
                 'OK',
                 style: TextStyle(
-                  color: Colors.orangeAccent,
+                  color: hexColors('#ffbb00'),
                   fontSize: 30,
                 ),
               ),
               Icon(
                 Icons.arrow_forward,
-                color: Colors.orangeAccent,
+                color: hexColors('#ffbb00'),
                 size: 45,
               ),
             ],
@@ -163,7 +166,7 @@ class _RegisterViewState extends State<RegisterView> {
                 Navigator.pop(context);
               },
               child: Text(
-                'Sign Up',
+                'Sign In',
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.white,
@@ -181,18 +184,28 @@ class _RegisterViewState extends State<RegisterView> {
     CollectionReference registerCollection = FirebaseFirestore.instance.collection('User');
     QuerySnapshot querySnapshots = await registerCollection.get();
 
-    for (QueryDocumentSnapshot registerSnapshot in querySnapshots.docs){
-      if(registerSnapshot.id == username){
-        message = "Username taken. Please try again.";
-        break;
-      } else {
-        message = "";
+    if (querySnapshots.docs.length == 0){
+      message = "";
+    } else {
+      for (QueryDocumentSnapshot registerSnapshot in querySnapshots.docs){
+        if(registerSnapshot.id == username){
+          message = "Username taken. Please try again.";
+          break;
+        } else {
+          message = "";
+        }
       }
     }
   }
 
   Future updateRegisterData(String username, String password) async {
     await FirebaseFirestore.instance.collection('User').doc(username).set({'password' : password});
+  }
+
+  Future setInitialData(String username, String password) async {
+    await FirebaseFirestore.instance.collection('Background').doc(username).set({'volume' : 0.5});
+    await FirebaseFirestore.instance.collection('Sfx').doc(username).set({'volume' : 0.5});
+    await FirebaseFirestore.instance.collection('Tts').doc(username).set({'volume' : 0.5, 'rate' : 1.0});
   }
 
   void setUsername(String name){
@@ -207,5 +220,9 @@ class _RegisterViewState extends State<RegisterView> {
       password = pass;
     });
     print(password);
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }

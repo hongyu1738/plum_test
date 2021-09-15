@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:plum_test/layout/register_view.dart';
+import 'package:plum_test/screens/home/home.dart';
+import 'package:plum_test/user.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({ Key key, this.setRegister}) : super(key: key);
@@ -27,7 +29,7 @@ class _LoginViewState extends State<LoginView> {
       child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
-            color: Colors.orangeAccent,
+            color: hexColors('#f9a603'),
           ),
           child: ListView(
             children: [
@@ -60,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
           onChanged: setUsername,
           decoration: InputDecoration(
             border: InputBorder.none,
-            fillColor: Colors.orangeAccent,
+            fillColor: hexColors('#f9a603'),
             labelText: 'Username',
             labelStyle: TextStyle(
               fontSize: 50,
@@ -87,6 +89,7 @@ class _LoginViewState extends State<LoginView> {
           onChanged: setPassword,
           decoration: InputDecoration(
             border: InputBorder.none,
+            fillColor: hexColors('#f9a603'),
             labelText: 'Password',
             labelStyle: TextStyle(
               color: Colors.white70,
@@ -112,6 +115,8 @@ class _LoginViewState extends State<LoginView> {
             String status = await widget.setRegister(username, password);
             
             if (status == ""){
+              User.username = username;
+              User.password = password;
               Navigator.of(context).pushReplacementNamed('/home');
             } else {
               Fluttertoast.showToast(
@@ -130,13 +135,13 @@ class _LoginViewState extends State<LoginView> {
               Text(
                 'OK',
                 style: TextStyle(
-                  color: Colors.orangeAccent,
+                  color: hexColors('#f9a603'),
                   fontSize: 30,
                 ),
               ),
               Icon(
                 Icons.arrow_forward,
-                color: Colors.orangeAccent,
+                color: hexColors('#f9a603'),
                 size: 45,
               ),
             ],
@@ -195,5 +200,9 @@ class _LoginViewState extends State<LoginView> {
       password = pass;
     });
     print(password);
+  }
+
+  Color hexColors(String hexColor){
+    return Color(int.parse(hexColor.replaceAll('#', '0xff')));
   }
 }

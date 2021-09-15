@@ -11,6 +11,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:plum_test/layout/camera_speech.dart';
 import 'package:plum_test/models/image_model.dart';
+import 'package:plum_test/user.dart';
 import 'package:tflite/tflite.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -200,10 +201,12 @@ class _CameraState extends State<Camera> {
   //Function to upload images to Cloud Storage
   Future addImageToStorage(File image) async {
 
+    String username = User.username;
+
     String imagePath = image.path.split('/').last;
 
     //Set image path in Cloud Storage
-    String imageLocation = "$_label/$imagePath";
+    String imageLocation = "$username/$_label/$imagePath";
 
     //Upload images to Cloud Storage
     await _storage.ref().child(imageLocation).putFile(image);
@@ -224,7 +227,10 @@ class _CameraState extends State<Camera> {
 
     List urlList = [];
 
-    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection("Images").get();
+    String username = User.username;
+
+    //QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection("Images").get();
+    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').doc(username).collection('Images').get();
 
     for (var doc in imageSnapshot.docs){
       Map<String, dynamic> urlMap = doc.data();
@@ -248,11 +254,12 @@ class _CameraState extends State<Camera> {
       //Upload download URL of images to Cloud Firestore
 
       int imageSnapshotSize = imageSnapshot.size;
-      await FirebaseFirestore.instance.collection("Images").doc(imageSnapshotSize.toString()).set({ 'url' : locationString, 'label' : _label});
+      await FirebaseFirestore.instance.collection("Images").doc(username).collection('Images').
+      doc(imageSnapshotSize.toString()).set({ 'url' : locationString, 'label' : _label });
     }
 
 
-    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection("Class").get();
+    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection("Class").doc(username).collection('Class').get();
 
     for (var doc in classSnapshot.docs) {
       Map<String, dynamic> labelMap = doc.data();
@@ -262,7 +269,8 @@ class _CameraState extends State<Camera> {
 
     if (!labelList.contains('$_label')){
       int classSnapshotSize = classSnapshot.size;
-      await FirebaseFirestore.instance.collection("Class").doc(classSnapshotSize.toString()).set({'label' : _label});
+      await FirebaseFirestore.instance.collection("Class").doc(username).collection('Class').
+      doc(classSnapshotSize.toString()).set({'label' : _label});
     } 
   }
 

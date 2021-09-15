@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:plum_test/layout/login_view.dart';
 import 'dart:math';
+
+import 'package:plum_test/user.dart';
 
 class ImageData with ChangeNotifier {
 
@@ -113,7 +114,8 @@ class ImageData with ChangeNotifier {
 
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
-    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').get();
+    _username = User.username; 
+    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').doc(_username).collection('Images').get();
     List<DocumentSnapshot<Object>> imageDocuments = imageSnapshot.docs;
     _imageResults.clear();
     _urlList.clear();
@@ -148,7 +150,8 @@ class ImageData with ChangeNotifier {
   }
 
   Future<void> get fetchClassData async { //Function to fetch class data from Cloud Firestore
-    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection('Class').get();
+    _username = User.username; 
+    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection('Class').doc(_username).collection('Class').get();
     List<DocumentSnapshot<Object>> classDocuments = classSnapshot.docs; 
     _classResults.clear();
 
@@ -238,6 +241,7 @@ class ImageData with ChangeNotifier {
     //Function to fetch a random image and label as the question and answer
 
     await fetchImageData;
+    _username = User.username; 
 
     if (_imageResults.keys.length < 2) {
       _vocabularyError = true;
@@ -249,7 +253,8 @@ class ImageData with ChangeNotifier {
       //Generate a random number for random image label and url
       generateRandomNumber(_imageCounter);
       String rand = _randomNum.toString();
-      DocumentSnapshot vocabularySnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
+      DocumentSnapshot vocabularySnapshot = await FirebaseFirestore.instance.collection('Images').doc(_username).
+      collection('Images').doc('$rand').get();
 
       if (vocabularySnapshot.exists){
         try {
@@ -278,6 +283,7 @@ class ImageData with ChangeNotifier {
   Future<void> get fetchDragData async {
     //Function to fetch data for Drag and Drop Quiz
 
+    _username = User.username; 
     await fetchImageData; //Fetch data from Images
     _dragMap.clear(); //Clear pre-existing data from dragMap
 
@@ -290,7 +296,8 @@ class ImageData with ChangeNotifier {
         //Generate random number based on imageCounter
         generateRandomNumber(_imageCounter); 
         String rand = _randomNum.toString();
-        DocumentSnapshot dragSnapshot = await FirebaseFirestore.instance.collection('Images').doc('$rand').get();
+        DocumentSnapshot dragSnapshot = await FirebaseFirestore.instance.collection('Images').doc(_username).
+        collection('Images').doc('$rand').get();
 
         if (dragSnapshot.exists){
           try {
@@ -370,7 +377,9 @@ class ImageData with ChangeNotifier {
 
   Future <void> get fetchVolumeData async {
     // Function to fetch data on pronunciation volume
-    DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('volume').get();
+
+    _username = User.username; 
+    DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc(_username).get();
 
     if (ttsSnapshot.exists){
       try {
@@ -394,7 +403,9 @@ class ImageData with ChangeNotifier {
 
   Future <void> get fetchRateData async {
     // Function to fetch data on speech rate
-    DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('rate').get();
+
+    _username = User.username; 
+    DocumentSnapshot ttsSnapshot = await FirebaseFirestore.instance.collection('Tts').doc(_username).get();
 
     if (ttsSnapshot.exists){
       try {
@@ -416,7 +427,9 @@ class ImageData with ChangeNotifier {
   }
 
   Future <void> get fetchBackgroundVolume async {
-    DocumentSnapshot backgroundSnapshot = await FirebaseFirestore.instance.collection('Background').doc('volume').get();
+    
+    _username = User.username; 
+    DocumentSnapshot backgroundSnapshot = await FirebaseFirestore.instance.collection('Background').doc(_username).get();
 
     if (backgroundSnapshot.exists){
       try {
@@ -439,7 +452,9 @@ class ImageData with ChangeNotifier {
   }
 
   Future <void> get fetchSfxVolume async {
-    DocumentSnapshot sfxSnapshot = await FirebaseFirestore.instance.collection('Sfx').doc('volume').get();
+
+    _username = User.username; 
+    DocumentSnapshot sfxSnapshot = await FirebaseFirestore.instance.collection('Sfx').doc(_username).get();
 
     if (sfxSnapshot.exists){
       try {
@@ -489,35 +504,7 @@ class ImageData with ChangeNotifier {
       _uidError = true;
       _uidErrorMessage = "Invalid username or password. Please try again.";
     }
-    // CollectionReference registerCollection = FirebaseFirestore.instance.collection('User');
-    // QuerySnapshot querySnapshots = await registerCollection.get();
-
-    // for (QueryDocumentSnapshot registerSnapshot in querySnapshots.docs){
-    //   if (registerSnapshot.exists){
-    //     try {
-    //       if (registerSnapshot['username'] == _username && registerSnapshot['password'] == _password){
-    //         _uid = registerSnapshot.id;
-    //         _uidError = false;
-    //         break;
-    //       } else {
-    //         _uid = "";
-    //         _uidError = true;
-    //         _uidErrorMessage = "Invalid username or password. Please try again.";
-    //       }  
-    //     } catch(e) {
-    //       _uid = "";
-    //       _uidError = true;
-    //       _uidErrorMessage = e.toString();
-    //     }
-    //   } else {
-    //     _uid = "";
-    //     _uidError = true;
-    //     _uidErrorMessage = "Invalid username or password. Please try again.";
-    //   }
-    // }
-
-    // print(_uid);
-    // print(_uidErrorMessage);
+    
     notifyListeners();
   }
   

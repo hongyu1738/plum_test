@@ -6,6 +6,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:plum_test/screens/settings/settings.dart';
 import 'package:animated_background/animated_background.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:plum_test/user.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({ Key key, this.volume }) : super(key: key);
@@ -116,6 +117,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+
+                SizedBox(height: MediaQuery.of(context).size.height * (1/18)),
 
                 Text('PLUM', 
                   style: TextStyle(
@@ -248,10 +251,46 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                     )
                   ),
                 ),
+
+                SizedBox(height: MediaQuery.of(context).size.height * (1/36)),
+                exitButtons('/', 'Sign Out', hexColors('#f9a603'), Ionicons.md_exit),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget exitButtons(String menuRoute, String menuLabel, Color hexColor, IconData iconName){
+    return BounceInDown(
+      child: ElevatedButton(
+          onPressed: (){
+            User.username = "";
+            User.password = "";
+            Navigator.pushReplacementNamed(context, menuRoute);
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(iconName, color: Colors.white, size: 45), 
+              SizedBox(width: MediaQuery.of(context).size.width * (1/27)),
+              Text(menuLabel,
+                style: TextStyle(
+                  fontFamily: 'MouseMemoirs', 
+                )
+              ),
+            ],
+          ),
+
+        style: ElevatedButton.styleFrom(
+          primary: hexColor,
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+          textStyle: TextStyle(
+            fontSize: 35,
+          ),
+        )
       ),
     );
   }

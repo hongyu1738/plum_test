@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:plum_test/user.dart';
 
 class Settings extends StatefulWidget {
   const Settings({ Key key, this.resetVolume }) : super(key: key);
@@ -17,49 +18,58 @@ class _SettingsState extends State<Settings>{
   double ttsRate = 0.0;
   double backgroundVolume = 0.0;
   double sfxVolume = 0.0;
+  String username = "";
 
   Future <void> getTtsVolume() async {
-    DocumentSnapshot volumeSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('volume').get();
+    username = User.username;
+    DocumentSnapshot volumeSnapshot = await FirebaseFirestore.instance.collection('Tts').doc(username).get();
     setState(() {
       ttsVolume = volumeSnapshot['volume'];
     });
   }
 
   Future updateTtsVolume(double volume) async {
-    await FirebaseFirestore.instance.collection('Tts').doc('volume').set({ 'volume': volume });
+    username = User.username;
+    await FirebaseFirestore.instance.collection('Tts').doc(username).set({ 'volume': volume, 'rate': ttsRate });
   }
 
   Future <void> getTtsRate() async {
-    DocumentSnapshot rateSnapshot = await FirebaseFirestore.instance.collection('Tts').doc('rate').get();
+    username = User.username;
+    DocumentSnapshot rateSnapshot = await FirebaseFirestore.instance.collection('Tts').doc(username).get();
     setState(() {
       ttsRate = rateSnapshot['rate'];
     });
   }
 
   Future updateTtsRate(double rate) async {
-    await FirebaseFirestore.instance.collection('Tts').doc('rate').set({ 'rate': rate });
+    username = User.username;
+    await FirebaseFirestore.instance.collection('Tts').doc(username).set({ 'volume': ttsVolume, 'rate': rate });
   }
 
   Future <void> getBackgroundVolume() async {
-    DocumentSnapshot backgroundSnapshot = await FirebaseFirestore.instance.collection('Background').doc('volume').get();
+    username = User.username;
+    DocumentSnapshot backgroundSnapshot = await FirebaseFirestore.instance.collection('Background').doc(username).get();
     setState(() {
       backgroundVolume = backgroundSnapshot['volume'];   
     });
   }
 
   Future updateBackgroundVolume(double bgVolume) async {
-    await FirebaseFirestore.instance.collection('Background').doc('volume').set({ 'volume': bgVolume });
+    username = User.username;
+    await FirebaseFirestore.instance.collection('Background').doc(username).set({ 'volume': bgVolume });
   }
 
   Future <void> getSfxVolume() async {
-    DocumentSnapshot sfxSnapshot = await FirebaseFirestore.instance.collection('Sfx').doc('volume').get();
+    username = User.username;
+    DocumentSnapshot sfxSnapshot = await FirebaseFirestore.instance.collection('Sfx').doc(username).get();
     setState(() {
       sfxVolume = sfxSnapshot['volume'];
     });
   }
 
   Future updateSfxVolume(double volume) async {
-    await FirebaseFirestore.instance.collection('Sfx').doc('volume').set({ 'volume': volume });
+    username = User.username;
+    await FirebaseFirestore.instance.collection('Sfx').doc(username).set({ 'volume': volume });
   }
 
   @override
