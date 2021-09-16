@@ -163,7 +163,7 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
       child: Container(
         alignment: Alignment.topRight,
         height: MediaQuery.of(context).size.height * 0.2,
-        child: Row(
+        child: Column(
           children: [
             Text(
               'Register?',
@@ -172,7 +172,7 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                 color: Colors.white,
               ),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
+            SizedBox(height: MediaQuery.of(context).size.height * (1/36)),
             TextButton(
               onPressed: () {
                 player.play('click_pop.mp3');

@@ -63,6 +63,7 @@ class _DragAndDropState extends State<DragAndDrop> {
           Padding(padding: EdgeInsets.only(right: 16),
             child: GestureDetector(
               onTap: () async { //Clear score and refetch DragData and SfxVolume on refresh
+                await player.play('click_pop.mp3');
                 await context.read<ImageData>().fetchDragData;
                 await context.read<ImageData>().fetchSfxVolume;
                 setState(() {
