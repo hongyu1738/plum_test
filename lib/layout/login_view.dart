@@ -163,7 +163,7 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
       child: Container(
         alignment: Alignment.topRight,
         height: MediaQuery.of(context).size.height * 0.2,
-        child: Column(
+        child: Row(
           children: [
             Text(
               'Register?',

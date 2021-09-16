@@ -163,18 +163,18 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
     return Padding(
       padding: EdgeInsets.only(top: 30, left: 50),
       child: Container(
-        alignment: Alignment.topRight,
+        alignment: Alignment.topLeft,
         height: MediaQuery.of(context).size.height * 0.2,
-        child: Column(
+        child: Row(
           children: [
             Text(
-              'Already have an account?',
+              'Registered?',
               style: TextStyle(
                 fontSize: 30,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * (1/36)),
+            SizedBox(height: MediaQuery.of(context).size.width * (1/36)),
             TextButton(
               onPressed: () {
                 player.play('click_pop.mp3');
