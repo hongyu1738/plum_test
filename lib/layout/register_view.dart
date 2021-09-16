@@ -174,7 +174,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.width * (1/36)),
+            Spacer(),
             TextButton(
               onPressed: () {
                 player.play('click_pop.mp3');
