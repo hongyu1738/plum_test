@@ -118,7 +118,7 @@ class ImageData with ChangeNotifier {
 
   Future<void> get fetchImageData async { //Function to fetch image data from Cloud Firestore
     _username = User.username; 
-    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').doc(_username).collection('Images').get();
+    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').doc(_username).collection('Image').get();
     List<DocumentSnapshot<Object>> imageDocuments = imageSnapshot.docs;
     _imageResults.clear();
     _urlList.clear();
@@ -154,7 +154,7 @@ class ImageData with ChangeNotifier {
 
   Future<void> get fetchClassData async { //Function to fetch class data from Cloud Firestore
     _username = User.username; 
-    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection('Class').doc(_username).collection('Class').get();
+    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection('Classes').doc(_username).collection('Class').get();
     List<DocumentSnapshot<Object>> classDocuments = classSnapshot.docs; 
     _classResults.clear();
 
@@ -257,7 +257,7 @@ class ImageData with ChangeNotifier {
       generateRandomNumber(_imageCounter);
       String rand = _randomNum.toString();
       DocumentSnapshot vocabularySnapshot = await FirebaseFirestore.instance.collection('Images').doc(_username).
-      collection('Images').doc('$rand').get();
+      collection('Image').doc('$rand').get();
 
       if (vocabularySnapshot.exists){
         try {
@@ -300,7 +300,7 @@ class ImageData with ChangeNotifier {
         generateRandomNumber(_imageCounter); 
         String rand = _randomNum.toString();
         DocumentSnapshot dragSnapshot = await FirebaseFirestore.instance.collection('Images').doc(_username).
-        collection('Images').doc('$rand').get();
+        collection('Image').doc('$rand').get();
 
         if (dragSnapshot.exists){
           try {

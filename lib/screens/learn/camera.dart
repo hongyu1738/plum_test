@@ -230,7 +230,7 @@ class _CameraState extends State<Camera> {
     String username = User.username;
 
     //QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection("Images").get();
-    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').doc(username).collection('Images').get();
+    QuerySnapshot imageSnapshot = await FirebaseFirestore.instance.collection('Images').doc(username).collection('Image').get();
 
     for (var doc in imageSnapshot.docs){
       Map<String, dynamic> urlMap = doc.data();
@@ -254,12 +254,12 @@ class _CameraState extends State<Camera> {
       //Upload download URL of images to Cloud Firestore
 
       int imageSnapshotSize = imageSnapshot.size;
-      await FirebaseFirestore.instance.collection("Images").doc(username).collection('Images').
+      await FirebaseFirestore.instance.collection('Images').doc(username).collection('Image').
       doc(imageSnapshotSize.toString()).set({ 'url' : locationString, 'label' : _label });
     }
 
 
-    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection("Class").doc(username).collection('Class').get();
+    QuerySnapshot classSnapshot = await FirebaseFirestore.instance.collection('Classes').doc(username).collection('Class').get();
 
     for (var doc in classSnapshot.docs) {
       Map<String, dynamic> labelMap = doc.data();
@@ -269,7 +269,7 @@ class _CameraState extends State<Camera> {
 
     if (!labelList.contains('$_label')){
       int classSnapshotSize = classSnapshot.size;
-      await FirebaseFirestore.instance.collection("Class").doc(username).collection('Class').
+      await FirebaseFirestore.instance.collection('Classes').doc(username).collection('Class').
       doc(classSnapshotSize.toString()).set({'label' : _label});
     } 
   }
@@ -277,12 +277,12 @@ class _CameraState extends State<Camera> {
   //Function for default loading of image classification model
   loadModel() async {
 
-    var loadModelResult = await Tflite.loadModel(
+    await Tflite.loadModel(
       labels: "assets/labels.txt",
       model: "assets/model_unquant.tflite"
     );
 
-    print("Result: $loadModelResult");
+    //print("Result: $loadModelResult");
   }
 
   //Run image classification model for image selected
