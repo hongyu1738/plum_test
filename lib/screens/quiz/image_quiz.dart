@@ -25,6 +25,7 @@ class _ImageQuizState extends State<ImageQuiz> {
   }
 
   final imagePlayer = AudioCache(prefix: 'assets/audio/');
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,10 @@ class _ImageQuizState extends State<ImageQuiz> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () async {
+            await player.play('click_pop.mp3');
+            Navigator.of(context).pop();
+          },
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -57,6 +61,7 @@ class _ImageQuizState extends State<ImageQuiz> {
           Padding(padding: EdgeInsets.only(right: 16),
             child: GestureDetector(
               onTap: () async { //Refetch required data from Cloud Firestore on refresh
+                await player.play('click_pop.mp3');
                 await context.read<ImageData>().fetchImageQuizData;
                 await context.read<ImageData>().fetchVolumeData;
                 await context.read<ImageData>().fetchRateData;

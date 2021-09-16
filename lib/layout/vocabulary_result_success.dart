@@ -1,9 +1,18 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-class VocabularyResultSuccess extends StatelessWidget {
+class VocabularyResultSuccess extends StatefulWidget {
   const VocabularyResultSuccess({ Key key }) : super(key: key);
+
+  @override
+  _VocabularyResultSuccessState createState() => _VocabularyResultSuccessState();
+}
+
+class _VocabularyResultSuccessState extends State<VocabularyResultSuccess> {
+
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +21,10 @@ class VocabularyResultSuccess extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(), //Pop current page
+          onPressed: () async {
+            await player.play('click_pop.mp3');
+            Navigator.of(context).pop();
+          }, //Pop current page
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -49,7 +61,8 @@ class VocabularyResultSuccess extends StatelessWidget {
 
             BounceInDown(
               child: ElevatedButton(
-                onPressed: (){ //Pop until first page
+                onPressed: () async { //Pop until first page
+                  await player.play('click_pop.mp3');
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
 
@@ -78,7 +91,8 @@ class VocabularyResultSuccess extends StatelessWidget {
 
             BounceInDown(
               child: ElevatedButton(
-                onPressed: (){ //Push replacement page of Vocabulary Quiz
+                onPressed: () async { //Push replacement page of Vocabulary Quiz
+                  await player.play('click_pop.mp3');
                   Navigator.of(context).pushReplacementNamed('/vocabularyQuiz');
                 },
               

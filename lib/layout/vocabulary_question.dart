@@ -54,7 +54,9 @@ class VocabularyQuestion extends StatelessWidget {
         itemCount: choices.length,
         itemBuilder: (context, index){
           return InkWell(
-              onTap: () => [compareResult(context, index, volume)],
+              onTap: () {
+                compareResult(context, index, volume);
+              },
               splashColor: Colors.orangeAccent,
               child: showQuestionChoices(choices[index])
           );

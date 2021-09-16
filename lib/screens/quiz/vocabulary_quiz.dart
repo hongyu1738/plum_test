@@ -23,6 +23,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
   }
 
   final vocabularyPlayer = AudioCache(prefix: 'assets/audio/');
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,10 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () async {
+            await player.play('click_pop.mp3');
+            Navigator.of(context).pop();
+          },
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -55,6 +59,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
           Padding(padding: EdgeInsets.only(right: 16),
             child: GestureDetector(
               onTap: () async { 
+                await player.play('click_pop.mp3');
                 await context.read<ImageData>().fetchRandomAnswer;
                 await context.read<ImageData>().fetchSfxVolume;
               },

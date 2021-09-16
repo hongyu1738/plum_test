@@ -21,6 +21,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
   //Instantiate Audioplayer
   AudioCache backgroundCache = AudioCache(prefix: 'assets/audio/');
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
   AudioPlayer backgroundPlayer;
   String playerState;
 
@@ -166,7 +167,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                       ),
                     ),
                     
-                    onPressed: (){ //Display modal bottom sheet on selection of Game option
+                    onPressed: () async { //Display modal bottom sheet on selection of Game option
+                      await player.play('click_pop.mp3');
                       showMaterialModalBottomSheet(
                         bounce: true,
                         backgroundColor: hexColors('#ffbb00'),
@@ -192,7 +194,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                                     Spacer(),
                                     Container(
                                       child: GestureDetector(
-                                        onTap: (){
+                                        onTap: () async {
+                                          await player.play('click_pop.mp3');
                                           Navigator.pop(context);
                                         },
                                         child: Icon(Icons.close, color: Colors.white, size: 45),
@@ -227,7 +230,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
                 BounceInDown(
                   child: ElevatedButton(
-                      onPressed: (){
+                      onPressed: () async {
+                        await player.play('click_pop.mp3');
                         Navigator.of(context).push(
                           new MaterialPageRoute(builder: (context){
                             return new Settings(resetVolume: changeVolume);
@@ -273,7 +277,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   Widget exitButtons(String menuRoute, String menuLabel, Color hexColor, IconData iconName){
     return BounceInDown(
       child: ElevatedButton(
-          onPressed: (){
+          onPressed: () async {
+            await player.play('click_pop.mp3');
             User.username = "";
             User.password = "";
             Navigator.pushReplacementNamed(context, menuRoute);
@@ -307,7 +312,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   Widget menuButtons(String menuRoute, String menuLabel, Color hexColor, IconData iconName){
     return BounceInDown(
       child: ElevatedButton(
-          onPressed: (){
+          onPressed: () async {
+            await player.play('click_pop.mp3');
             Navigator.pushNamed(context, menuRoute);
           },
           child: Row(
@@ -337,7 +343,8 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
   Widget gameButtons(String gameRoute, String gameName, IconData iconName){ //Display options in modal bottom sheet
     return GestureDetector(
-      onTap:(){
+      onTap:() async {
+        await player.play('click_pop.mp3');
         Navigator.pop(context);
         Navigator.pushNamed(context, gameRoute);
       },
@@ -381,6 +388,10 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
               popoverHeight: 260,
               popoverWidth: 390,
+              onTap: (){
+                player.play('click_pop.mp3');
+                return false;
+              },
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
@@ -409,6 +420,10 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
               popoverHeight: 325,
               popoverWidth: 390,
+              onTap: (){
+                player.play('click_pop.mp3');
+                return false;
+              },
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList(
@@ -438,6 +453,10 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
               child: Icon(Icons.info_outline, size: 40, color: Colors.white),
               popoverHeight: 260,
               popoverWidth: 390,
+              onTap: (){
+                player.play('click_pop.mp3');
+                return false;
+              },
               direction: CupertinoPopoverDirection.top,
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList( //Display popover list

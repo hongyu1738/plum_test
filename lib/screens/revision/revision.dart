@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cool_ui/cool_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -16,6 +17,8 @@ class Revision extends StatefulWidget {
 
 class _RevisionState extends State<Revision> {
 
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
+
   void initState() {
     super.initState();
     context.read<ImageData>().fetchImageData; //Fetch image data of type ImageData
@@ -31,7 +34,10 @@ class _RevisionState extends State<Revision> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () async {
+            await player.play('click_pop.mp3');
+            Navigator.of(context).pop();
+          },
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -59,6 +65,10 @@ class _RevisionState extends State<Revision> {
               ),
               popoverHeight: 325,
               popoverWidth: 390,
+              onTap: (){
+                player.play('click_pop.mp3');
+                return false;
+              },
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList( //Display popover list
                   children: [

@@ -20,6 +20,7 @@ class _DragAndDropState extends State<DragAndDrop> {
   Random random = new Random();
   int randomNum;
   final dragPlayer = AudioCache(prefix: 'assets/audio/');
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   void initState() {
     super.initState();
@@ -36,7 +37,10 @@ class _DragAndDropState extends State<DragAndDrop> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () async {
+            await player.play('click_pop.mp3');
+            Navigator.of(context).pop();
+          },
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,

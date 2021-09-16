@@ -1,19 +1,30 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-class VocabularyResultFailure extends StatelessWidget {
+class VocabularyResultFailure extends StatefulWidget {
   const VocabularyResultFailure({ Key key }) : super(key: key);
 
   @override
+  _VocabularyResultFailureState createState() => _VocabularyResultFailureState();
+}
+
+class _VocabularyResultFailureState extends State<VocabularyResultFailure> {
+
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
+
+  @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: hexColors('#ffbb00'),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () async {
+            await player.play('click_pop.mp3');
+            Navigator.of(context).pop();
+          },
         ), 
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -50,7 +61,8 @@ class VocabularyResultFailure extends StatelessWidget {
 
             BounceInDown(
               child: ElevatedButton(
-                onPressed: (){ //Pop until first page
+                onPressed: () async { //Pop until first page
+                  await player.play('click_pop.mp3');
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 },
 
@@ -79,7 +91,8 @@ class VocabularyResultFailure extends StatelessWidget {
 
             BounceInDown(
               child: ElevatedButton(
-                onPressed: (){ //Pop current page
+                onPressed: () async { //Pop current page
+                  await player.play('click_pop.mp3');
                   Navigator.pop(context);
                 },
 

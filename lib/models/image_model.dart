@@ -501,7 +501,7 @@ class ImageData with ChangeNotifier {
           _uidErrorMessage = "";
         } else {
           _uidError = true;
-          _uidErrorMessage = "Invalid username or password. Please try again.";
+          _uidErrorMessage = "Invalid username\nor password. Please\ntry again.";
         }
       } catch(e) {
         _uidError = true;

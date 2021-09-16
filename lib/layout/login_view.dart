@@ -1,3 +1,5 @@
+import 'package:animated_background/animated_background.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:plum_test/layout/register_view.dart';
@@ -12,11 +14,12 @@ class LoginView extends StatefulWidget {
   _LoginViewState createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMixin {
 
   String username;
   String password;
   String errorMessage;
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +30,21 @@ class _LoginViewState extends State<LoginView> {
           decoration: BoxDecoration(
             color: hexColors('#f9a603'),
           ),
-          child: ListView(
-            children: [
-              Column(
-                children: [
-                  usernameInput(),
-                  passwordInput(),
-                  loginButton(),
-                  registerPageButton(),
-                ],
-              ),
-            ],
+          child: AnimatedBackground(
+            behaviour: RacingLinesBehaviour(),
+            vsync: this,
+            child: ListView(
+              children: [
+                Column(
+                  children: [
+                    usernameInput(),
+                    passwordInput(),
+                    loginButton(),
+                    registerPageButton(),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -56,13 +63,14 @@ class _LoginViewState extends State<LoginView> {
             color: Colors.white,
           ),
           onChanged: setUsername,
+          onTap: playClick,
           decoration: InputDecoration(
             border: InputBorder.none,
             fillColor: hexColors('#f9a603'),
             labelText: 'Username',
             labelStyle: TextStyle(
               fontSize: 50,
-              color: Colors.white70,
+              color: Colors.white,
             ),
           ),
         ),
@@ -83,12 +91,13 @@ class _LoginViewState extends State<LoginView> {
           ),
           obscureText: true,
           onChanged: setPassword,
+          onTap: playClick,
           decoration: InputDecoration(
             border: InputBorder.none,
             fillColor: hexColors('#f9a603'),
             labelText: 'Password',
             labelStyle: TextStyle(
-              color: Colors.white70,
+              color: Colors.white,
               fontSize: 50,
             ),
           ),
@@ -108,6 +117,7 @@ class _LoginViewState extends State<LoginView> {
         ),
         child: TextButton(
           onPressed: () async {
+            player.play('click_pop.mp3');
             String status = await widget.setRegister(username, password);
             
             if (status == ""){
@@ -159,12 +169,13 @@ class _LoginViewState extends State<LoginView> {
               'Register?',
               style: TextStyle(
                 fontSize: 30,
-                color: Colors.white70,
+                color: Colors.white,
               ),
             ),
-            SizedBox(width: 20),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             TextButton(
               onPressed: () {
+                player.play('click_pop.mp3');
                 Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterView())
                 );
@@ -200,5 +211,9 @@ class _LoginViewState extends State<LoginView> {
 
   Color hexColors(String hexColor){
     return Color(int.parse(hexColor.replaceAll('#', '0xff')));
+  }
+
+  Future playClick() async{
+    await player.play('click_pop.mp3');
   }
 }

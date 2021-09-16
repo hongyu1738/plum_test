@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -19,6 +20,7 @@ class _SettingsState extends State<Settings>{
   double backgroundVolume = 0.0;
   double sfxVolume = 0.0;
   String username = "";
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   Future <void> getTtsVolume() async { //Get ttsVolume
     username = User.username;
@@ -88,7 +90,10 @@ class _SettingsState extends State<Settings>{
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () async {
+            await player.play('click_pop.mp3');
+            Navigator.of(context).pop();
+          },
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,

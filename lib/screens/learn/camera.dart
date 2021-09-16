@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_ui/cool_ui.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -42,6 +43,8 @@ class _CameraState extends State<Camera> {
 
   //Double to store confidence level of class labels
   double _confidence;
+
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   //Load image classification model on screen initialization
   @override
@@ -168,6 +171,8 @@ class _CameraState extends State<Camera> {
   }
 
   Future cropImage() async { //Function to manage cropping of image
+
+    await player.play('click_pop.mp3');
 
     File croppedFile = await ImageCropper.cropImage(
       sourcePath: _image.path,
@@ -323,7 +328,10 @@ class _CameraState extends State<Camera> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () async {
+            await player.play('click_pop.mp3');
+            Navigator.of(context).pop();
+          },
         ), 
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -351,6 +359,10 @@ class _CameraState extends State<Camera> {
               ),
               popoverHeight: 260,
               popoverWidth: 390,
+              onTap: (){
+                player.play('click_pop.mp3');
+                return false;
+              },
               popoverBuild: (BuildContext context){
                 return CupertinoPopoverMenuList( //Display popover list
                   children: [
@@ -474,6 +486,12 @@ class _CameraState extends State<Camera> {
       ),
 
       floatingActionButton: SpeedDial(
+        onOpen: () async {
+          await player.play('click_pop.mp3');
+        },
+        onClose: () async {
+          await player.play('click_pop.mp3');
+        },
         overlayColor: Colors.black54,
         buttonSize: 84,
         childrenButtonSize: 84,
@@ -548,7 +566,8 @@ class _CameraState extends State<Camera> {
                   color: Colors.white,
                 )
               ),
-              onPressed: () {
+              onPressed: () async {
+                await player.play('click_pop.mp3');
                 Navigator.of(context).pop();
               },
             ),

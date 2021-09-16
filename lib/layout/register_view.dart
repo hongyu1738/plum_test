@@ -1,6 +1,8 @@
+import 'package:animated_background/animated_background.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({ Key key }) : super(key: key);
@@ -9,11 +11,12 @@ class RegisterView extends StatefulWidget {
   _RegisterViewState createState() => _RegisterViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _RegisterViewState extends State<RegisterView> with SingleTickerProviderStateMixin {
 
   String username;
   String password;
   String message;
+  AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +27,25 @@ class _RegisterViewState extends State<RegisterView> {
           decoration: BoxDecoration(
               color: hexColors('#ffbb00'),
             ),
-          child: ListView(
-            children: [
-              Column(
-                children: [
-                  registerUsername(),
-                  registerPassword(),
-                  registerButton(),
-                  loginPageButton(),
-                ],
+          child: AnimatedBackground(
+            behaviour: RandomParticleBehaviour(
+              options: ParticleOptions(
+                baseColor: Colors.white,
               )
-            ],
+            ),
+            vsync: this,
+            child: ListView(
+              children: [
+                Column(
+                  children: [
+                    registerUsername(),
+                    registerPassword(),
+                    registerButton(),
+                    loginPageButton(),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -53,13 +64,14 @@ class _RegisterViewState extends State<RegisterView> {
             fontSize: 30,
           ),
           onChanged: setUsername,
+          onTap: playClick,
           decoration: InputDecoration(
             border: InputBorder.none,
             fillColor: hexColors('#ffbb00'),
             labelText: 'New Username',
             labelStyle: TextStyle(
               fontSize: 50,
-              color: Colors.white70,
+              color: Colors.white,
             ),
           ),
         ),
@@ -80,12 +92,13 @@ class _RegisterViewState extends State<RegisterView> {
           ),
           obscureText: true,
           onChanged: setPassword,
+          onTap: playClick,
           decoration: InputDecoration(
             fillColor: hexColors('#ffbb00'),
             border: InputBorder.none,
             labelText: 'New Password',
             labelStyle: TextStyle(
-              color: Colors.white70,
+              color: Colors.white,
               fontSize: 50,
             ),
           ),
@@ -106,7 +119,8 @@ class _RegisterViewState extends State<RegisterView> {
         ),
         child: TextButton(
           onPressed: () async {
-            await checkRegisterData(username);
+            player.play('click_pop.mp3');
+            await checkRegisterData(username, password);
 
             if (message == ""){
               await updateRegisterData(username, password);
@@ -157,12 +171,13 @@ class _RegisterViewState extends State<RegisterView> {
               'Already have an account?',
               style: TextStyle(
                 fontSize: 30,
-                color: Colors.white70,
+                color: Colors.white,
               ),
             ),
-            SizedBox(width: 20),
+            SizedBox(width: MediaQuery.of(context).size.width * (1/36)),
             TextButton(
               onPressed: () {
+                player.play('click_pop.mp3');
                 Navigator.pop(context);
               },
               child: Text(
@@ -180,19 +195,23 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  Future checkRegisterData(String username) async { //Check if username is already registered
+  Future checkRegisterData(String username, String password) async { //Check if username is already registered
     CollectionReference registerCollection = FirebaseFirestore.instance.collection('User');
     QuerySnapshot querySnapshots = await registerCollection.get();
 
-    if (querySnapshots.docs.length == 0){
-      message = "";
+    if (username == null || password == null){
+      message = "Username or password\nmust not be blank.\nPlease try again.";
     } else {
-      for (QueryDocumentSnapshot registerSnapshot in querySnapshots.docs){
-        if(registerSnapshot.id == username){
-          message = "Username taken. Please try again.";
-          break;
-        } else {
-          message = "";
+      if (querySnapshots.docs.length == 0){
+        message = "";
+      } else {
+        for (QueryDocumentSnapshot registerSnapshot in querySnapshots.docs){
+          if(registerSnapshot.id == username){
+            message = "Username taken. Please try again.";
+            break;
+          } else {
+            message = "";
+          }
         }
       }
     }
@@ -228,5 +247,9 @@ class _RegisterViewState extends State<RegisterView> {
 
   Color hexColors(String hexColor){
     return Color(int.parse(hexColor.replaceAll('#', '0xff')));
+  }
+
+  Future playClick() async{
+    await player.play('click_pop.mp3');
   }
 }
