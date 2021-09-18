@@ -88,7 +88,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
               child: Consumer<ImageData>(
                   builder: (context, value, child){
                     return (value.vocabularyImageLabel == '' && value.vocabularyImageUrl == '' && !value.vocabularyError)
-                    && (value.choiceResults.length == 0 && value.answerChoices.length == 0)
+                    //&& (value.choiceResults.length == 0 && value.answerChoices.length == 0)
                     ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator())) 
                     : value.vocabularyError ? SizedBox(
                       height: MediaQuery.of(context).size.height * 0.75,
@@ -109,12 +109,12 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     //   fontSize: 24,
                     //   fontWeight: FontWeight.w400,
                     // ), )
-                    : value.choiceResults.length != 0 && value.answerChoices.length == 0
-                    //Load circular progress indicator when fetching data for answerChocies
-                    ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
-                    : value.choiceResults.length == 0 && value.answerChoices.length != 0
-                    //Load circular progress indicator when fetching data for choiceResults
-                    ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
+                    // : value.choiceResults.length != 0 && value.answerChoices.length == 0
+                    // //Load circular progress indicator when fetching data for answerChocies
+                    // ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
+                    // : value.choiceResults.length == 0 && value.answerChoices.length != 0
+                    // //Load circular progress indicator when fetching data for choiceResults
+                    // ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
                     : value.vocabularyImageLabel == '' && value.vocabularyImageUrl != ''
                     //Load circular progress indicator when fetching data for vocabularyImageLabel
                     ? SizedBox(height: MediaQuery.of(context).size.height, child: Center(child: CircularProgressIndicator()))
