@@ -29,10 +29,16 @@ class ImageData with ChangeNotifier {
   String _vocabularyErrorMessage = '';
 
   //Choices data for vocabulary_quiz.dart
-  List<dynamic> _choiceResults = []; //List to store all possible choices
-  Map<String, dynamic> _choiceMap = {};
-  bool _choiceError = false;
-  String _choiceErrorMessage = '';
+  List<dynamic> _choiceResults = //List to store all possible choices
+  ['Bottle', 'Cup', 'Plate', 'Apple', 'Mushroom',
+  'Orange', 'Pepper', 'Keyboard', 'Telephone', 'Television',
+  'Bed', 'Chair', 'Wardrobe', 'Castle', 'Road', 
+  'Cloud', 'Forest', 'Mountain', 'Chimpanzee', 'Elephant',
+  'Leopard', 'Lion', 'Tiger', 'Wolf', 'Bicycle',
+  'Bus', 'Motorcycle', 'Lawnmower', 'Rocket', 'Tank']; 
+  // Map<String, dynamic> _choiceMap = {};
+  // bool _choiceError = false;
+  // String _choiceErrorMessage = '';
   List<String> _answerChoices = []; //List to store randomized choices
 
   //Url data for image_question.dart
@@ -85,9 +91,9 @@ class ImageData with ChangeNotifier {
   String get vocabularyErrorMessage => _vocabularyErrorMessage;
 
   List <dynamic> get choiceResults => _choiceResults;
-  Map<String, dynamic> get choiceMap => _choiceMap;
-  bool get choiceError => _choiceError;
-  String get choiceErrorMessage => _choiceErrorMessage;
+  // Map<String, dynamic> get choiceMap => _choiceMap;
+  // bool get choiceError => _choiceError;
+  // String get choiceErrorMessage => _choiceErrorMessage;
   List <String> get answerChoices => _answerChoices;
 
   List<String> get urlList => _urlList;
@@ -182,49 +188,53 @@ class ImageData with ChangeNotifier {
     //print(_classResults);
   }
 
-  Future<void> get fetchChoicesData async { 
-    //Function to fetch all possible choices of answer from Cloud Firestore
-    QuerySnapshot choiceSnapshot = await FirebaseFirestore.instance.collection('Answer').get();
-    List<DocumentSnapshot<Object>> choiceDocuments = choiceSnapshot.docs;
-    _choiceResults.clear();
+  // Future<void> get fetchChoicesData async { 
+  //   //Function to fetch all possible choices of answer from Cloud Firestore
+  //   QuerySnapshot choiceSnapshot = await FirebaseFirestore.instance.collection('Answer').get();
+  //   List<DocumentSnapshot<Object>> choiceDocuments = choiceSnapshot.docs;
+  //   _choiceResults.clear();
 
-    if (choiceDocuments.isNotEmpty){
-      try {
-        for (var doc in choiceDocuments){ 
-          _choiceMap = doc.data(); 
-          var answer = _choiceMap['answer']; 
-          _choiceResults.add(answer);
-        }
-        _choiceError = false;
-      } catch (e) {
-        _choiceError = true;
-        _choiceErrorMessage = "Something went wrong.\n" + e.toString();
-        _choiceMap = {};
-      }
-    } else {
-      _choiceError = true;
-      _choiceErrorMessage = "There are no images found. Take an image to get started!";
-      _choiceMap = {};
-    }
+  //   if (choiceDocuments.isNotEmpty){
+  //     try {
+  //       for (var doc in choiceDocuments){ 
+  //         _choiceMap = doc.data(); 
+  //         var answer = _choiceMap['answer']; 
+  //         _choiceResults.add(answer);
+  //       }
+  //       _choiceError = false;
+  //     } catch (e) {
+  //       _choiceError = true;
+  //       _choiceErrorMessage = "Something went wrong.\n" + e.toString();
+  //       _choiceMap = {};
+  //     }
+  //   } else {
+  //     _choiceError = true;
+  //     _choiceErrorMessage = "There are no images found. Take an image to get started!";
+  //     _choiceMap = {};
+  //   }
 
-    notifyListeners(); 
-    //print(_answerResults);
-  }
+  //   notifyListeners(); 
+  //   //print(_answerResults);
+  // }
 
   Future<void> get fetchRandomAnswer async { 
     //Function to fetch randomized answer choices for Vocabulary Quiz
 
-    await fetchChoicesData; //Fetch data for choiceResults
+    //await fetchChoicesData; //Fetch data for choiceResults
     await fetchVocabularyImage; //Fetch data for vocabularyImageLabel and vocabularyImageUrl
 
     _answerChoices.clear(); //Clear pre-existing image labels in answerChoices
     _answerChoices.add(_vocabularyImageLabel); //Add vocabularyImageLabel as answer
+
+    //print(_choiceResults);
 
     for (var i = 1; i < 4; i++){ //Loop four times for four different answers
       //Generate random number with a max value of 29
       generateRandomNumber(30);
       //Acquire random answer from choiceResults
       String ans = _choiceResults[_randomNum];
+      //print("Choice Length: " + _choiceResults.length.toString());
+      //print("Random Num: " + _randomNum.toString());
 
       //If random answer is already in answerChoices, then rerun the loop
       if (_answerChoices.contains(ans)){
@@ -243,8 +253,8 @@ class ImageData with ChangeNotifier {
   Future<void> get fetchVocabularyImage async { 
     //Function to fetch a random image and label as the question and answer
 
-    await fetchImageData;
     _username = User.username; 
+    await fetchImageData;
 
     if (_imageResults.keys.length < 2) {
       _vocabularyError = true;

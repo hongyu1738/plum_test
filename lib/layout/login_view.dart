@@ -172,7 +172,7 @@ class _LoginViewState extends State<LoginView> with SingleTickerProviderStateMix
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.width * 0.2),
+            SizedBox(height: MediaQuery.of(context).size.width * 0.4),
             TextButton(
               onPressed: () {
                 player.play('click_pop.mp3');
