@@ -441,7 +441,7 @@ class _CameraState extends State<Camera> {
                 _confidence < 0.9 ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('No classes found.   ',
+                    Text('Unrecognized image.   ',
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w400,
@@ -549,7 +549,7 @@ class _CameraState extends State<Camera> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('No classes found for the image.\nTry again?', 
+                Text('Image unrecognized.\nTry again?', 
                   style: TextStyle(
                     fontSize: 35,
                     color: Colors.white,
