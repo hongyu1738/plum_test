@@ -348,7 +348,8 @@ class _CameraState extends State<Camera> {
     } else {
 
       String labels = _result[0]["label"]; //Assign class labels to labels variable
-      _label = labels[0].toUpperCase() + labels.substring(1);
+      _label = labels.split(" ").map((str) => str[0].toUpperCase()).join(" ");
+      //_label = labels[0].toUpperCase() + labels.substring(1);
 
       closeModel();
     }
