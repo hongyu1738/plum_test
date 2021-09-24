@@ -44,13 +44,14 @@ class _CameraState extends State<Camera> {
   //Double to store confidence level of class labels
   double _confidence;
 
+  double _alternativeConfidence = 0.0;
+
   AudioCache player = AudioCache(prefix: 'assets/audio/');
 
   //Load image classification model on screen initialization
   @override
   void initState() { 
     super.initState();
-    loadModel();
     context.read<ImageData>().fetchVolumeData;
     context.read<ImageData>().fetchRateData;
   }
@@ -77,7 +78,7 @@ class _CameraState extends State<Camera> {
 
         await runModel(_image); //Classify image from camera
 
-        if (_confidence > 0.9){ 
+        if (_confidence > 0.5 || _alternativeConfidence > 0.5){ 
 
         //Add image to Cloud Firestore and Gallery only when confidence level of class label > 0.9
           
@@ -135,7 +136,7 @@ class _CameraState extends State<Camera> {
 
         await runModel(_image); //Classify image from gallery
 
-        if (_confidence > 0.9){
+        if (_confidence > 0.5 || _alternativeConfidence > 0.5){
 
         //Add image to Cloud Firestore only when confidence level of class label > 0.9
 
@@ -197,7 +198,7 @@ class _CameraState extends State<Camera> {
 
       await runModel(_image);
 
-      if (_confidence > 0.9){
+      if (_confidence > 0.5 || _alternativeConfidence > 0.5){
         addImageToStorage(_image);
       }
     }
@@ -231,6 +232,8 @@ class _CameraState extends State<Camera> {
     List labelList = [];
 
     List urlList = [];
+
+    List answerList = [];
 
     String username = User.username;
 
@@ -276,48 +279,111 @@ class _CameraState extends State<Camera> {
       int classSnapshotSize = classSnapshot.size;
       await FirebaseFirestore.instance.collection('Classes').doc(username).collection('Class').
       doc(classSnapshotSize.toString()).set({'label' : _label});
-    } 
+    }
+
+    QuerySnapshot answerSnapshot = await FirebaseFirestore.instance.collection('Answer').get();
+
+    for (var doc in answerSnapshot.docs) {
+      Map<String, dynamic> answerMap = doc.data();
+      String answer = answerMap['answer'].toString();
+      answerList.add(answer);
+    }
+
+    if (!answerList.contains('$_label')){
+      int answerSnapshotSize = answerSnapshot.size;
+      await FirebaseFirestore.instance.collection('Answer').
+      doc(answerSnapshotSize.toString()).set({'answer' : _label});
+    }
   }
 
   //Function for default loading of image classification model
   loadModel() async {
 
     await Tflite.loadModel(
-      labels: "assets/labels.txt",
-      model: "assets/model_unquant.tflite"
+      labels: 'assets/labels_nasnet.txt',
+      model: 'assets/nasnet_mobile.tflite',
     );
+  }
 
-    //print("Result: $loadModelResult");
+  loadAlternativeModel() async {
+
+    await Tflite.loadModel(
+      labels: "assets/labels.txt",
+      model: "assets/model_unquant.tflite",
+    );
+  }
+
+  closeModel() async {
+
+    await Tflite.close();
   }
 
   //Run image classification model for image selected
   runModel(File file) async {
 
+    loadModel();
+
     var runModelResult = await Tflite.runModelOnImage( 
 
       //Customization for display on threshold and number of results
       path: file.path,
-      numResults: 50,
-      threshold: 0.1,
+      numResults: 30,
+      threshold: 0.35,
       imageMean: 127.5,
       imageStd: 127.5,
     );
 
     setState(() {
-      _result = runModelResult; //Assign results to _result list variable
 
-      String labels = _result[0]["label"]; //Assign class labels to labels variable
-      _label = labels.substring(3); //Assign class labels to _label variable 
-
-      //Set confidence level of image to 0.2, if image classification is below passing thresholds
-      _confidence = _result != null ? (_result[0]["confidence"]) : 0.1 ;
-
-      //Show alert dialog if confidence level is below passing thresholds
-      if (_confidence < 0.9){
-        _alertDialog();
-      }
+      _result = runModelResult;
+      _confidence = _result.length != 0 ? (_result[0]["confidence"]) : 0.1 ;
 
     });
+
+    if (_confidence < 0.5){
+      //Show alert dialog if confidence level is below passing thresholds
+      closeModel();
+      await runAlternativeModel(file);
+
+    } else {
+
+      String labels = _result[0]["label"]; //Assign class labels to labels variable
+      _label = labels[0].toUpperCase() + labels.substring(1);
+
+      closeModel();
+    }
+
+  }
+
+  runAlternativeModel(File file) async {
+
+    loadAlternativeModel();
+
+    var runAlternativeModelResult = await Tflite.runModelOnImage(
+      path: file.path,
+      numResults: 30,
+      threshold: 0.35,
+      imageMean: 127.5,
+      imageStd: 127.5,
+    );
+
+    setState(() {
+      _result = runAlternativeModelResult; //Assign results to _result list variable
+      _alternativeConfidence = _result.length != 0 ? (_result[0]["confidence"]) : 0.1 ;
+    });
+
+    if (_alternativeConfidence < 0.5){
+
+      _alertDialog();
+      closeModel();
+
+    } else {
+
+      String labels = _result[0]["label"]; //Assign class labels to labels variable
+      _label = labels.substring(3); //Assign class labels to _label variable
+
+      closeModel();
+    }
   }
 
 
@@ -417,13 +483,13 @@ class _CameraState extends State<Camera> {
             
             : Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                SizedBox(height: MediaQuery.of(context).size.height * 1/18),
 
                 Center(
                   child: GestureDetector(
                     onTap: cropImage,
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.of(context).size.width * 0.8,
                       width: MediaQuery.of(context).size.width * 0.8,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
@@ -436,9 +502,18 @@ class _CameraState extends State<Camera> {
                   ),
                 ),
 
-                SizedBox(height: MediaQuery.of(context).size.height * (1/9)),
+                SizedBox(height: MediaQuery.of(context).size.height * (1/27)),
 
-                _confidence < 0.9 ? Row(
+                 _confidence < 0.5 && _alternativeConfidence == 0.0 ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                  ],
+                )
+
+                :
+
+                 _confidence < 0.5 && _alternativeConfidence < 0.5 ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Unrecognized image.   ',
