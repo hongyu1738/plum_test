@@ -78,7 +78,7 @@ class _CameraState extends State<Camera> {
 
         await runModel(_image); //Classify image from camera
 
-        if (_confidence > 0.5 || _alternativeConfidence > 0.5){ 
+        if (_confidence > 0.5 || _alternativeConfidence > 0.9){ 
 
         //Add image to Cloud Firestore and Gallery only when confidence level of class label > 0.9
           
@@ -136,7 +136,7 @@ class _CameraState extends State<Camera> {
 
         await runModel(_image); //Classify image from gallery
 
-        if (_confidence > 0.5 || _alternativeConfidence > 0.5){
+        if (_confidence > 0.5 || _alternativeConfidence > 0.9){
 
         //Add image to Cloud Firestore only when confidence level of class label > 0.9
 
@@ -198,7 +198,7 @@ class _CameraState extends State<Camera> {
 
       await runModel(_image);
 
-      if (_confidence > 0.5 || _alternativeConfidence > 0.5){
+      if (_confidence > 0.5 || _alternativeConfidence > 0.9){
         addImageToStorage(_image);
       }
     }
@@ -373,7 +373,7 @@ class _CameraState extends State<Camera> {
       _alternativeConfidence = _result.length != 0 ? (_result[0]["confidence"]) : 0.1 ;
     });
 
-    if (_alternativeConfidence < 0.5){
+    if (_alternativeConfidence < 0.9){
 
       _alertDialog();
       closeModel();
@@ -516,7 +516,7 @@ class _CameraState extends State<Camera> {
 
                 :
 
-                 _confidence < 0.5 && _alternativeConfidence < 0.5 ? Row(
+                 _confidence < 0.5 && _alternativeConfidence < 0.9 ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Unrecognized image.   ',
