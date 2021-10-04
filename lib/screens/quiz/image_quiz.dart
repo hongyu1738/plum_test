@@ -104,6 +104,7 @@ class _ImageQuizState extends State<ImageQuiz> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 32,
+                        color: Colors.white,
                         fontWeight: FontWeight.w400,
                       ), )
                     )

@@ -98,6 +98,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 32,
+                          color: Colors.white,
                           fontWeight: FontWeight.w400,
                         ), ),
                       ),
@@ -107,6 +108,7 @@ class _VocabularyQuizState extends State<VocabularyQuiz> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 24,
+                      color: Colors.white,
                       fontWeight: FontWeight.w400,
                     ), )
                     : value.choiceResults.length != 0 && value.answerChoices.length == 0

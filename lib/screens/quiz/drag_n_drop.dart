@@ -88,6 +88,7 @@ class _DragAndDropState extends State<DragAndDrop> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,
+                  color: Colors.white,
                   fontWeight: FontWeight.w400,
                 ), ),
               )
