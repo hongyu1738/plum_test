@@ -4,21 +4,21 @@ A simple mobile application to introduce basic vocabulary via image classificati
 
 ## Introduction
 
-Plum is an interactive learning mobile application that aims to assist children in the practice of basic vocabulary.
+Plum is an interactive mobile education application that aims to aid children in the learning of basic vocabulary.
 Some highlight modules include:
 
-- **Learn Module**: Upload images for introduction of vocabulary via image classification
+- **Learn Module**: Upload images for the introduction of vocabulary via image classification
 - **Revision Module**: Revise past introduced vocabularies
 - **Games Module**: Play minigames related to past introduced vocabularies
-- **Settings Module**: Adjust basic settings to Plum
+- **Settings Module**: Adjust basic application settings to Plum
 
 ## Instructions
 
 The instructions to the features are included in the respective modules.  
 
-## Current Release
+## Stable Release
 
-The current stable release is [plum-v1.8+4](https://github.com/hongyu1738/plum_test/releases/tag/plum-v1.8%2B4)
+The current stable release is [plum-v1.8+4].(https://github.com/hongyu1738/plum_test/releases/tag/plum-v1.8%2B4)
 
 ## Known Limitations
 
