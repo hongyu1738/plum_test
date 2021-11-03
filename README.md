@@ -18,7 +18,7 @@ The instructions to the features are included in the respective modules.
 
 ## Releases
 
-The current release is [plum-v1.8+4](https://github.com/hongyu1738/plum_test/releases/tag/plum-v1.8%2B4).
+The latest pre-release is [plum-v1.8+4](https://github.com/hongyu1738/plum_test/releases/tag/plum-v1.8%2B4).
 
 ## Known Limitations
 
