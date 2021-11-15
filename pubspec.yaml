@@ -90,9 +90,9 @@ flutter:
         - asset: assets/fonts/MouseMemoirs-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-    - family: CrayonKids
-      fonts:
-        - asset: assets/fonts/CrayonKids.ttf
+  #  - family: CrayonKids
+  #    fonts:
+  #      - asset: assets/fonts/CrayonKids.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
